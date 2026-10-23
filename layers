@@ -1,0 +1,7 @@
+#!/data/data/com.termux/files/usr/bin/bash
+cd "$(dirname "$0")" || exit 1
+case "$1" in
+  snapshot|plan|apply|reapply|profile) exec python3 tui.py "--$1" ;;
+  tui|"") exec python3 tui.py ;;
+  *) echo "usage: layers [snapshot|plan|apply|reapply|profile|tui]"; exit 2 ;;
+esac
