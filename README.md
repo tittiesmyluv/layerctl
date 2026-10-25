@@ -69,13 +69,16 @@ cd layerctl
 知る手段が無い。**だから適用前後の差分が唯一の物証になる。**
 この道具は叩くたびに自分の効果を数字で報告する。
 
-実測例（SC-53F / 4GB機）:
+実測例（すべて実機。MemAvailable の増加＝解放）:
 
-| 対象 | MemAvailable | procs |
-|---|---|---|
-| 全体 re-assert (5 cmd) | **+82.1 MB** | −2 |
-| 仮想通貨アプリ1本を C1 へ | **+276.3 MB** | −10 |
-| clone 直後の全適用 (7 cmd) | **+486.7 MB** | −2 |
+| 端末 | 対象 | MemAvailable | procs |
+|---|---|---|---|
+| SC-53F | 全体 re-assert (5 cmd) | **+82.1 MB** | −2 |
+| SC-53F | 仮想通貨アプリ1本を C1 へ | **+276.3 MB** | −10 |
+| SC-53F | clone 直後の全適用 (7 cmd) | **+486.7 MB** | −2 |
+| SH-53D (wish3) | clone 直後の全適用 (116 cmd) | **+287.0 MB** | −56 |
+
+wish3 の同時実測: SwapFree **+1232.0 MB**。適用直後の残差 plan は 0 に収束した。
 
 ## 層モデル
 
@@ -144,6 +147,8 @@ TUI の操作:
 端末固有データは **`profiles/` の1ファイルだけ**に入っている。`tui.py` 本体は
 端末を知らない。輸送層も `core.detect()` に閉じている。
 
+同梱プロファイル: `sc53f` (Galaxy A25 5G) / `sh53d` (AQUOS wish3) / `generic`（未知機の受け皿）。
+
 ~~~
 cp profiles/generic.py profiles/pixel9.py
 # NAME / MATCH_MODEL / MATCH_PLATFORM / D_HARD / C2_HARD / L0_HARD / IMPACT を書く
@@ -170,6 +175,8 @@ cp profiles/generic.py profiles/pixel9.py
 - `EXEMPTED` は doze whitelist と同義ではない
 - OTA は `appops` をリセットする。`--reapply` で復旧する
 - `layers.tsv` は**意志**。`snapshot` は書き換えず、観測は `layers.observed.tsv` に隔離される
+- `seed` 直後の初回 `plan` は、bucket5(EXEMPTED) を whitelist へ昇格させる一回性の
+  正規化を含む。適用後は 0 に収束する（実測: 116 cmd → 0）
 
 ## License
 
