@@ -64,3 +64,10 @@ class TestStore(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+class TestProfilesSh53d(unittest.TestCase):
+    def test_match(self):
+        self.assertEqual(load_profile("SH-53D", "mt6833").__name__.split(".")[-1], "sh53d")
+
+    def test_generic_not_shadowed(self):
+        self.assertEqual(load_profile("Pixel", "tensor").__name__.split(".")[-1], "generic")

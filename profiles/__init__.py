@@ -3,7 +3,7 @@ import importlib
 
 from . import generic
 
-KNOWN = ("sc53f",)
+KNOWN = ("sc53f", "sh53d")
 
 
 def load_profile(model="", platform=""):
