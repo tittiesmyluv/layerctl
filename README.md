@@ -1,5 +1,7 @@
 # layerctl
 
+![ci](https://github.com/tittiesmyluv/layerctl/actions/workflows/ci.yml/badge.svg)
+
 **Non-root Android app-standby layer switchboard.** Re-map every installed
 package into 7 tiers, then apply only the diff. No root. No ROM.
 
