@@ -24,3 +24,4 @@ layers.new.tsv
 *.orig
 *.swp
 *.tmp
+layers.observed.tsv

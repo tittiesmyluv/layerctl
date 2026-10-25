@@ -6,6 +6,7 @@ HOME = os.path.expanduser("~")
 DIR = os.path.dirname(os.path.abspath(__file__))
 RISH = os.path.join(HOME, "rish")
 TSV = os.path.join(DIR, "layers.tsv")
+OBS = os.path.join(DIR, "layers.observed.tsv")
 
 LAYERS = ["0", "A", "B1", "B2", "C1", "C2", "D"]
 TITLE = {"0": "UNTOUCHABLE", "A": "DAILY", "B1": "THROTTLED", "B2": "FREQUENT",
@@ -182,18 +183,20 @@ def show_delta(b, a):
     print("  load1         %+8.2f" % (a.get("load", 0.0) - b.get("load", 0.0)))
 
 
-def save(recs):
-    os.makedirs(DIR, exist_ok=True)
-    with open(TSV, "w") as f:
+def save(recs, path=None):
+    path = path or TSV
+    os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
+    with open(path, "w") as f:
         f.write("# layer\tpkg\taction\trisk\timpact\n")
         for L, p, a, r, imp in recs:
             f.write("%s\t%s\t%s\t%d\t%s\n" % (L, p, a, r, imp))
 
-def load():
-    if not os.path.exists(TSV):
+def load(path=None):
+    path = path or TSV
+    if not os.path.exists(path):
         return None
     recs = []
-    for line in open(TSV):
+    for line in open(path):
         line = line.rstrip("\n")
         if not line or line.startswith("#"):
             continue
@@ -388,7 +391,7 @@ def _ui(std, recs, orig):
 
 def main():
     if "--help" in sys.argv or "-h" in sys.argv:
-        print("usage: tui.py [--profile|--snapshot|--plan|--reapply]")
+        print("usage: tui.py [--profile|--snapshot|--seed|--diff|--plan|--apply|--reapply]")
         return
     if "--profile" in sys.argv:
         from profiles import names
@@ -399,16 +402,37 @@ def main():
         for k, v in sorted(PROFILE.QUIRKS.items()):
             print("  %-28s %s" % (k, v))
         return
-    if "--snapshot" in sys.argv:
+    if "--snapshot" in sys.argv or "--seed" in sys.argv:
         pkgs, dis, wht, bkt, ops, rsn = probe()
         recs = infer(pkgs, dis, wht, bkt, ops, rsn)
-        save(recs)
-        print("snapshot -> " + TSV)
+        if "--seed" in sys.argv:
+            save(recs, TSV)
+            print("seed -> " + TSV)
+            return
+        save(recs, OBS)
+        seeded = False
+        if not os.path.exists(TSV):
+            save(recs, TSV)
+            seeded = True
+        print("observed -> " + OBS + ("   (seeded " + TSV + ")" if seeded else ""))
         n = {L: 0 for L in LAYERS}
         for L, p, a, r, imp in recs:
             n[L] += 1
         for L in LAYERS:
             print("  %-3s %-12s %4d" % (L, TITLE[L], n[L]))
+        return
+    if "--diff" in sys.argv:
+        recs = load()
+        if recs is None:
+            print("no " + TSV); return
+        pkgs, dis, wht, bkt, ops, rsn = probe()
+        now = {r[1]: r[0] for r in infer(pkgs, dis, wht, bkt, ops, rsn)}
+        will = {r[1]: r[0] for r in recs}
+        ch = [(p, will.get(p, "-"), now.get(p, "-"))
+              for p in sorted(set(will) | set(now)) if will.get(p) != now.get(p)]
+        print("diff: %d" % len(ch))
+        for p, a, b in ch:
+            print("  %-3s -> %-3s  %s" % (a, b, p))
         return
     if "--plan" in sys.argv or "--reapply" in sys.argv or "--apply" in sys.argv:
         recs = load()

@@ -88,12 +88,17 @@ flowchart LR
 
 ~~~
 ./layers profile     # 使用中のプロファイルと能力検出を表示
-./layers snapshot    # 現状を走査して layers.tsv を生成（数秒）
+./layers snapshot    # 現状を走査して layers.observed.tsv に記録（layers.tsv は不変）
+./layers seed        # 観測を layers.tsv（意志）へ昇格
+./layers diff        # 意志と観測のズレだけ表示
 ./layers plan        # 差分コマンドだけ抽出。実行しない
 ./layers apply       # 差分を適用し、8秒後のメモリ差分を表示
 ./layers reapply     # 全件を再主張（OTA 後の復旧用）
 ./layers             # TUI
 ~~~
+
+`layers.tsv` は**意志**（望む層）、`layers.observed.tsv` は**観測**。`snapshot` は観測を
+更新するだけで意志を壊さない。意志を観測へ合わせたい時だけ `seed` を打つ。
 
 ライブダッシュボード:
 
@@ -145,8 +150,7 @@ cp profiles/generic.py profiles/pixel9.py
 - 保護パッケージ（fmm / kgclient / knox.cloudmdm）は `restricted` を保持しない
 - `EXEMPTED` は doze whitelist と同義ではない
 - OTA は `appops` をリセットする。`--reapply` で復旧する
-- `layers.tsv` は `snapshot` が現在状態で上書きする。TUI の `w` 保存と同居するため、
-  「観測」と「意志」が同一ファイルに載る
+- `layers.tsv` は**意志**。`snapshot` は書き換えず、観測は `layers.observed.tsv` に隔離される
 
 ## License
 

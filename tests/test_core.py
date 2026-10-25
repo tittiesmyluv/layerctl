@@ -52,5 +52,15 @@ class TestProfiles(unittest.TestCase):
     def test_fallback(self):
         self.assertEqual(load_profile("Nonexistent", "zzz").__name__.split(".")[-1], "generic")
 
+class TestStore(unittest.TestCase):
+    def test_roundtrip(self):
+        import tempfile
+        import tui
+        d = tempfile.mkdtemp()
+        p = os.path.join(d, "x.tsv")
+        recs = [["A", "com.a", "none", 1, ""], ["C1", "com.b", "disable", 2, "note"]]
+        tui.save(recs, p)
+        self.assertEqual(tui.load(p), recs)
+
 if __name__ == "__main__":
     unittest.main()
