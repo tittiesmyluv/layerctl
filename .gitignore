@@ -25,3 +25,4 @@ layers.new.tsv
 *.swp
 *.tmp
 layers.observed.tsv
+hwparam.json

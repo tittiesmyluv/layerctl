@@ -3,7 +3,7 @@
 ![ci](https://github.com/tittiesmyluv/layerctl/actions/workflows/ci.yml/badge.svg)
 
 **Non-root Android app-standby layer switchboard.** Re-map every installed
-package into 7 tiers, then apply only the diff. No root. No ROM.
+package into 7 tiers, then apply only the diff. No root required — rish(Shizuku) / adb / su(root) の3経路。No ROM.
 
 非root Android のアプリ層スイッチボード。端末の全パッケージを7つの層に分類して
 `layers.tsv` に固定し、**現在状態との差分だけ**を適用する。適用のたびに前後8秒の
@@ -59,7 +59,7 @@ cd layerctl
 ./layers apply       # 適用し、8秒後のメモリ差分を見る
 ~~~
 
-同梱の `layers.tsv` は作者の SC-53F の層割り当てだ。別機種なら `seed` で
+同梱の `layers.tsv` は作者の Pixel 6 Pro の層割り当てだ（SC-53F 版は docs/layers.sc53f.tsv）。別機種なら `seed` で
 自分の観測に置き換えるところから始めろ。`plan` は何も壊さないので、まずそれで
 差分を眺めるのが安全だ。
 
