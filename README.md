@@ -77,8 +77,13 @@ cd layerctl
 | SC-53F | 仮想通貨アプリ1本を C1 へ | **+276.3 MB** | −10 |
 | SC-53F | clone 直後の全適用 (7 cmd) | **+486.7 MB** | −2 |
 | SH-53D (wish3) | clone 直後の全適用 (116 cmd) | **+287.0 MB** | −56 |
+| Pixel 6 Pro (raven) | 全適用 (97 cmd) | +0.0 MB ※ | ±0 |
 
 wish3 の同時実測: SwapFree **+1232.0 MB**。適用直後の残差 plan は 0 に収束した。
+
+※ Pixel 6 Pro は適用の瞬間に既に落ち着いていた（RAM 12GB / procs 732）。
+手で `am kill-all` を撃つと MemAvailable **+318 MB** / SwapFree **+505 MB** 動く。
+差分ゼロは無効の証拠ではない。詳細は `docs/raven.md`。
 
 ## 層モデル
 
@@ -104,6 +109,8 @@ wish3 の同時実測: SwapFree **+1232.0 MB**。適用直後の残差 plan は 
   - `rish`（Shizuku を起動し `~/rish` に配置 + `chmod +x`）— 端末上で完結
   - `adb`（USB デバッグ）— PC から。`ANDROID_SERIAL` でデバイスを固定
     - macOS: `brew install android-platform-tools` などで導入。初回は端末側で RSA 承認が要る
+  - `su`（root 経由。adb があれば `adb -s <serial> exec-out "su -c '<cmd>'"`。Termux 同居で固定するなら `VENICE_SU_LOCAL=1`）
+    - `su 0 id` は対話プロンプトに落ちる個体がある。`su -c` を使え
 - root 不要
 
 ## 使い方
