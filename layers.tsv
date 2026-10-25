@@ -5,7 +5,7 @@ A	android.auto_generated_rro_vendor__	none	1
 A	android.autoinstalls.config.samsung	none	1	
 C1	beartail.dr.keihi	disable	1	
 C1	cc.bitbank.bitbank	disable	1	
-B1	com.Slack	restrict	1	
+C1	com.Slack	disable	1	
 D	com.ai.venice	none	3	このアプリ
 C1	com.amazon.appmanager	disable	1	
 A	com.android.apps.tag	none	1	
@@ -20,7 +20,7 @@ A	com.android.cameraextensions	none	1
 A	com.android.carrierconfig	none	1	
 A	com.android.carrierdefaultapp	none	1	
 A	com.android.certinstaller	none	1	
-B2	com.android.chrome	frequent	1	
+A	com.android.chrome	none	1	
 C1	com.android.companiondevicemanager	disable	1	
 A	com.android.companiondevicemanager.auto_generated_characteristics_rro	none	1	
 C1	com.android.contacts	disable	1	
@@ -100,7 +100,7 @@ C1	com.chachastation.app	disable	1
 C1	com.cstap.anpi2	disable	1	
 C1	com.dandadanapp	disable	1	
 B1	com.dena.automotive.taxibell	restrict	1	
-B1	com.discord	restrict	1	
+A	com.discord	none	1	
 C1	com.dstukalov.walocalstoragestickers	disable	1	
 C1	com.facebook.appmanager	disable	1	
 C1	com.facebook.services	disable	1	
@@ -118,15 +118,16 @@ C1	com.google.android.apps.bard	disable	1
 C1	com.google.android.apps.carrier.carrierwifi	disable	1	
 C1	com.google.android.apps.chromecast.app	disable	1	
 B1	com.google.android.apps.docs	restrict	1	
+B2	com.google.android.apps.docs.editors.docs	frequent	1	
 C1	com.google.android.apps.docs.editors.sheets	disable	1	
 B1	com.google.android.apps.fitness	restrict	1	
 C1	com.google.android.apps.magazines	disable	1	
-C1	com.google.android.apps.maps	disable	1	
+A	com.google.android.apps.maps	none	1	
 0	com.google.android.apps.messaging	protect	3	SMSの受け皿。認証コードが届く
-B2	com.google.android.apps.photos	frequent	1	
+A	com.google.android.apps.photos	none	1	
 C1	com.google.android.apps.restore	disable	1	
 C1	com.google.android.apps.setupwizard.searchselector	disable	1	
-C1	com.google.android.apps.subscriptions.red	disable	1	
+B2	com.google.android.apps.subscriptions.red	frequent	1	
 C1	com.google.android.apps.tachyon	disable	1	
 B1	com.google.android.apps.tasks	restrict	1	
 C1	com.google.android.apps.turbo	disable	1	
@@ -140,7 +141,7 @@ A	com.google.android.captiveportallogin	none	1
 A	com.google.android.configupdater	none	1	
 A	com.google.android.connectivity.resources	none	1	
 B1	com.google.android.contactkeys	restrict	1	
-B1	com.google.android.contacts	restrict	1	
+A	com.google.android.contacts	none	1	
 B2	com.google.android.documentsui	frequent	1	
 A	com.google.android.euicc	none	1	
 A	com.google.android.ext.services	none	1	
@@ -198,7 +199,7 @@ C1	com.google.android.verifier	disable	1
 A	com.google.android.verifier.overlay	none	1	
 C1	com.google.android.videos	disable	1	
 A	com.google.android.webview	none	1	
-C1	com.google.android.youtube	disable	1	
+A	com.google.android.youtube	none	1	
 C1	com.google.ar.core	disable	1	
 B1	com.google.audio.hearing.visualization.accessibility.scribe	restrict	1	
 C1	com.google.mainline.adservices	disable	1	
@@ -207,6 +208,7 @@ C1	com.handycloset.android.photolayers	disable	1
 C1	com.hellotalk	disable	1	
 C1	com.hiya.star	disable	2	迷惑電話の識別が止まる
 A	com.instagram.android	none	1	Instagram。B1で通知が遅延する
+A	com.izzle.go	none	1	
 C1	com.kitasoft.screenrec	disable	1	
 0	com.knox.vpn.proxyhandler	protect	3	
 A	com.mediatek.FrameworkResOverlayExt	none	1	
@@ -247,7 +249,7 @@ B1	com.openai.chatgpt	restrict	1
 C1	com.paidy.paidy	disable	1	
 B1	com.picsart.studio	restrict	1	
 C1	com.piriform.ccleaner	disable	1	
-A	com.revolut.revolut	none	1	
+B1	com.revolut.revolut	restrict	1	
 B2	com.salesforce.authenticator	frequent	1	
 0	com.samsung.SMT	protect	3	
 A	com.samsung.SMT.lang_en_us_l03	none	1	
@@ -427,7 +429,7 @@ C1	com.sec.android.CcInfo	disable	1
 0	com.sec.android.app.SecSetupWizard	protect	3	
 A	com.sec.android.app.billing	none	1	
 0	com.sec.android.app.bluetoothagent	protect	3	
-A	com.sec.android.app.camera	none	1	
+B2	com.sec.android.app.camera	frequent	1	
 A	com.sec.android.app.chromecustomizations	none	1	
 A	com.sec.android.app.clockpackage	none	1	
 0	com.sec.android.app.factorykeystring	protect	3	
@@ -495,7 +497,8 @@ B1	com.soundcloud.android	restrict	1
 B1	com.starbucks.jp	restrict	1	
 0	com.termux	protect	3	
 B1	com.termux.styling	restrict	1	
-B1	com.twitter.android	restrict	1	
+A	com.tinder	none	1	
+A	com.twitter.android	none	1	
 B1	com.valvesoftware.android.steam.community	restrict	1	
 B1	com.weawow	restrict	1	
 A	com.whatsapp	none	1	WhatsApp
@@ -512,13 +515,13 @@ A	jp.co.omronsoft.mushroom.commonphrase	none	1
 C1	jp.co.rakuten.android	disable	1	
 0	jp.co.rakuten.mobile.rcs	protect	3	Rakuten Link。着信。層0必須
 C1	jp.co.rakuten.pay	disable	1	
-B1	jp.co.rakuten_bank.rakutenbank	restrict	1	
+C1	jp.co.rakuten_bank.rakutenbank	disable	1	
 C1	jp.jmty.app2	disable	1	
 B1	jp.linecorp.linemusic.android	restrict	1	
 C1	jp.mixi.minimo	disable	1	
 0	jp.naver.line.android	protect	3	LINE。通知が生命線
 C1	jp.nekonote.tryfull	disable	1	
-A	moe.shizuku.privileged.api	none	1	
-A	org.fdroid.fdroid	none	1	
+B2	moe.shizuku.privileged.api	frequent	1	
+B2	org.fdroid.fdroid	frequent	1	
 C1	org.intoorbit.spectrum	disable	1	
 C1	org.telegram.messenger	disable	1	
