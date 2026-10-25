@@ -1,13 +1,20 @@
-# venice/layers
+# layerctl
 
-非root Android のアプリ層スイッチボード。**root 不要**。Shizuku の `rish` 経由で shell(uid 2000) 権限を使う。
+**Non-root Android app-standby layer switchboard.** Re-map every installed
+package into 7 tiers, then apply only the diff. No root. No ROM.
 
-端末の全パッケージを7つの層に分類して `layers.tsv` に固定し、**現在状態との差分だけ**を適用する。適用のたびに前後8秒のメモリ差分を自動表示する。
+非root Android のアプリ層スイッチボード。端末の全パッケージを7つの層に分類して
+`layers.tsv` に固定し、**現在状態との差分だけ**を適用する。適用のたびに前後8秒の
+メモリ差分を自動表示する。
+
+輸送層は `core.detect()` が **rish(Shizuku) / adb / su** から自動選択する。
+端末上の Termux でも、PC から USB 経由の adb でも、同じコマンドが等価に動く。
 
 ## なぜ差分計測なのか
 
-非root では `dmesg` も LMKD のログも読めない。プロセスが何MB解放されたかを知る手段が無い。
-**だから適用前後の差分が唯一の物証になる。** この道具は叩くたびに自分の効果を数字で報告する。
+非root では `dmesg` も LMKD のログも読めない。プロセスが何MB解放されたかを
+知る手段が無い。**だから適用前後の差分が唯一の物証になる。**
+この道具は叩くたびに自分の効果を数字で報告する。
 
 実測例（SC-53F / 4GB機）:
 
@@ -28,24 +35,35 @@
 | C2 | pinned | 殺せないので縛る | `appops ignore` + `bucket restricted` | 揮発 |
 | D | greyout | 手が届かない（root 必須） | — | 対象外 |
 
-`0` と `C1` は `pm disable-user` と `deviceidle whitelist` で書かれるため **OTA 以外で崩れない**。
-`A` `B1` `B2` `C2` は bucket 系で**揮発する**。だから `--reapply` は収束演算ではなく**再主張**であり、残差は 5〜6 本で振動する。
+`0` と `C1` は `pm disable-user` と `deviceidle whitelist` で書かれるため
+**OTA 以外で崩れない**。`A` `B1` `B2` `C2` は bucket 系で**揮発する**。
+だから `--reapply` は収束演算ではなく**再主張**であり、残差は常に数本残って振動する。
+
 ## 必要環境
 
 - Android 11 以上
-- Termux + `python3`
-- Shizuku を起動し、`rish` を `~/rish` に配置して `chmod +x ~/rish`
+- `python3`（標準ライブラリのみ。依存なし）
+- 輸送層のいずれか:
+  - `rish`（Shizuku を起動し `~/rish` に配置 + `chmod +x`）— 端末上で完結
+  - `adb`（USB デバッグ）— PC から。`ANDROID_SERIAL` でデバイスを固定
 - root 不要
 
 ## 使い方
 
 ~~~
-python3 tui.py --profile     # 使用中のプロファイルと能力検出を表示
-python3 tui.py --snapshot    # 現状を走査して layers.tsv を生成（数秒）
-python3 tui.py --plan        # 差分コマンドだけ抽出。実行しない
-python3 tui.py --apply       # 差分を適用し、8秒後のメモリ差分を表示
-python3 tui.py --reapply     # 全件を再主張（OTA 後の復旧用）
-python3 tui.py               # TUI
+./layers profile     # 使用中のプロファイルと能力検出を表示
+./layers snapshot    # 現状を走査して layers.tsv を生成（数秒）
+./layers plan        # 差分コマンドだけ抽出。実行しない
+./layers apply       # 差分を適用し、8秒後のメモリ差分を表示
+./layers reapply     # 全件を再主張（OTA 後の復旧用）
+./layers             # TUI
+~~~
+
+ライブダッシュボード:
+
+~~~
+python3 stat.py          # curses。メモリ / swap / CPU / RX / TX をスパークライン表示
+python3 stat.py --dump   # 1フレームを素テキストで（CI / 検品用）
 ~~~
 
 TUI の操作:
@@ -63,14 +81,16 @@ TUI の操作:
 
 ## 移植
 
-端末固有データは **`profiles/` の1ファイルだけ**に入っている。`tui.py` 本体は端末を知らない。
+端末固有データは **`profiles/` の1ファイルだけ**に入っている。`tui.py` 本体は
+端末を知らない。輸送層も `core.detect()` に閉じている。
 
 ~~~
 cp profiles/generic.py profiles/pixel9.py
 # NAME / MATCH_MODEL / MATCH_PLATFORM / D_HARD / C2_HARD / L0_HARD / IMPACT を書く
 ~~~
 
-`ro.product.model` か `ro.board.platform` が一致すれば自動で選ばれる。外れれば `generic` に落ちる。
+`ro.product.model` か `ro.board.platform` が一致すれば自動で選ばれる。外れれば
+`generic` に落ちる。輸送層は `VENICE_TRANSPORT=adb` で明示固定できる。
 
 ## 実測で確定した地雷
 
@@ -79,6 +99,7 @@ cp profiles/generic.py profiles/pixel9.py
 | 出力が全部空になる | `rish` が stdout/stderr を気まぐれに振り分ける | 常に `2>&1` |
 | スクリプトが途中で止まる | `rish` が stdin を飲み尽くす | 常に `</dev/null` |
 | `timeout` でハングする | 非前景プロセスグループで SIGTTOU | `timeout --foreground` |
+| `adb shell` が `\r\n` を混ぜる | PTY 経由 | `adb exec-out` + `\r` 除去 |
 | `dumpsys euicc` が無い | 正は `dumpsys econtroller` | QUIRKS に記録 |
 | `/proc/swaps` が Permission denied | `dumpsys meminfo` の ZRAM 行で代用 | — |
 
@@ -88,6 +109,8 @@ cp profiles/generic.py profiles/pixel9.py
 - 保護パッケージ（fmm / kgclient / knox.cloudmdm）は `restricted` を保持しない
 - `EXEMPTED` は doze whitelist と同義ではない
 - OTA は `appops` をリセットする。`--reapply` で復旧する
+- `layers.tsv` は `snapshot` が現在状態で上書きする。TUI の `w` 保存と同居するため、
+  「観測」と「意志」が同一ファイルに載る
 
 ## License
 

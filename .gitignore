@@ -20,3 +20,7 @@ snap*.out
 verify.*
 layers.old.tsv
 layers.new.tsv
+.DS_Store
+*.orig
+*.swp
+*.tmp
