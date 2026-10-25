@@ -3,7 +3,7 @@
 ro.product.model = SC-53F, ro.board.platform = mt6835 で照合される。
 このファイルだけ書き換えれば他端末へ移植できる。"""
 NAME = "sc53f"
-DESC = "docomo SC-53F / Galaxy A25 5G / mt6835 / Android 16 / RAM 3.48GiB / 非root + Shizuku"
+DESC = "docomo SC-53F / Galaxy A25 5G / mt6835 / Android 16 / RAM 3.48GiB / 非root（rish/adb どちらでも）"
 MATCH_MODEL = ("SC-53F",)
 MATCH_PLATFORM = ("mt6835",)
 

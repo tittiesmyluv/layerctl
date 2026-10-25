@@ -46,6 +46,23 @@ flowchart LR
 `tui.py` と `stat.py` は `core` の口だけを見る。
 
 
+## クイックスタート
+
+~~~
+git clone https://github.com/tittiesmyluv/layerctl
+cd layerctl
+./layers profile     # 端末が認識されるか確認（外れれば generic に落ちる）
+./layers snapshot    # 現状を観測。意志は壊れない
+./layers diff        # 同梱の layers.tsv（作者の端末）とのズレを見る
+./layers seed        # 自分の端末に合わせて意志を作り直す
+./layers plan        # 差分コマンドを確認。実行はしない
+./layers apply       # 適用し、8秒後のメモリ差分を見る
+~~~
+
+同梱の `layers.tsv` は作者の SC-53F の層割り当てだ。別機種なら `seed` で
+自分の観測に置き換えるところから始めろ。`plan` は何も壊さないので、まずそれで
+差分を眺めるのが安全だ。
+
 ## なぜ差分計測なのか
 
 非root では `dmesg` も LMKD のログも読めない。プロセスが何MB解放されたかを
@@ -82,6 +99,7 @@ flowchart LR
 - 輸送層のいずれか:
   - `rish`（Shizuku を起動し `~/rish` に配置 + `chmod +x`）— 端末上で完結
   - `adb`（USB デバッグ）— PC から。`ANDROID_SERIAL` でデバイスを固定
+    - macOS: `brew install android-platform-tools` などで導入。初回は端末側で RSA 承認が要る
 - root 不要
 
 ## 使い方
