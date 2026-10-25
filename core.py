@@ -22,7 +22,14 @@ class Rish(_T):
 class Adb(_T):
     name = "adb"
     def ok(self): return shutil.which("adb") is not None
-    def argv(self, c): return ["adb", "shell", c]
+    def argv(self, c):
+        a = ["adb"]
+        dev = os.environ.get("ANDROID_SERIAL")
+        if dev:
+            a += ["-s", dev]
+        return a + ["exec-out", c]
+    def run(self, cmd, timeout=30):
+        return super().run(cmd, timeout).replace("\r\n", "\n").replace("\r", "\n")
 
 class Su(_T):
     name = "su(root)"
@@ -30,6 +37,7 @@ class Su(_T):
     def argv(self, c): return ["su", "-c", c]
 
 def detect(prefer=None):
+    prefer = prefer or os.environ.get("VENICE_TRANSPORT")
     order = [Rish, Adb, Su]
     if prefer == "adb": order = [Adb, Rish, Su]
     elif prefer == "su": order = [Su, Rish, Adb]
@@ -52,7 +60,7 @@ def env(t):
     out = t.run(ENV_CMD).splitlines()
     out += [""] * (len(ENV_KEYS) - len(out))
     d = dict(zip(ENV_KEYS, [x.strip() for x in out]))
-    d["root"] = "1" if shutil.which("su") else "0"
+    d["root"] = "1" if t.run("command -v su || which su").strip() else "0"
     d["adb_bin"] = "1" if shutil.which("adb") else "0"
     d["rish"] = "1" if os.access(RISH, os.X_OK) else "0"
     d["transport"] = t.name

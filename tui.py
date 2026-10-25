@@ -3,8 +3,8 @@
 import curses, os, subprocess, sys, time
 
 HOME = os.path.expanduser("~")
+DIR = os.path.dirname(os.path.abspath(__file__))
 RISH = os.path.join(HOME, "rish")
-DIR = os.path.join(HOME, "venice")
 TSV = os.path.join(DIR, "layers.tsv")
 
 LAYERS = ["0", "A", "B1", "B2", "C1", "C2", "D"]
@@ -18,16 +18,19 @@ ACTION = {"0": "protect", "A": "none", "B1": "restrict", "B2": "frequent",
 
 # 端末固有データは profiles/ に分離。下の load_profile() で注入される
 
+_T = None
+
 def rish(cmd, timeout=300):
+    if _T is None:
+        return ""
     try:
-        r = subprocess.run([RISH, "-c", cmd], stdout=subprocess.PIPE,
-                           stderr=subprocess.STDOUT, text=True, timeout=timeout,
-                           stdin=subprocess.DEVNULL)
-        return r.stdout
+        return _T.run(cmd, timeout=timeout)
     except Exception:
         return ""
 
 sys.path.insert(0, DIR)
+import core
+_T = core.detect(os.environ.get("VENICE_TRANSPORT"))
 from profiles import load_profile
 
 PROFILE = load_profile(rish("getprop ro.product.model").strip(),
