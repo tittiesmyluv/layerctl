@@ -32,9 +32,23 @@ class Adb(_T):
         return super().run(cmd, timeout).replace("\r\n", "\n").replace("\r", "\n")
 
 class Su(_T):
+    """root 経由。adb が居れば端末側の su を、居なければ同居の su を使う。
+    Termux 同居で強制するときは VENICE_SU_LOCAL=1。"""
     name = "su(root)"
-    def ok(self): return shutil.which("su") is not None
-    def argv(self, c): return ["su", "-c", c]
+    def _via_adb(self):
+        return os.environ.get("VENICE_SU_LOCAL") != "1" and shutil.which("adb") is not None
+    def ok(self):
+        return shutil.which("adb") is not None or shutil.which("su") is not None
+    def argv(self, c):
+        if not self._via_adb():
+            return ["su", "-c", c]
+        a = ["adb"]
+        dev = os.environ.get("ANDROID_SERIAL")
+        if dev:
+            a += ["-s", dev]
+        return a + ["exec-out", "su -c '%s'" % c]
+    def run(self, cmd, timeout=30):
+        return super().run(cmd, timeout).replace("\r\n", "\n").replace("\r", "\n")
 
 def detect(prefer=None):
     prefer = prefer or os.environ.get("VENICE_TRANSPORT")
