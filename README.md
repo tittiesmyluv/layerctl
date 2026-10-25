@@ -10,6 +10,8 @@ package into 7 tiers, then apply only the diff. No root. No ROM.
 輸送層は `core.detect()` が **rish(Shizuku) / adb / su** から自動選択する。
 端末上の Termux でも、PC から USB 経由の adb でも、同じコマンドが等価に動く。
 
+![layerctl dashboard](assets/dashboard.svg)
+
 ## なぜ差分計測なのか
 
 非root では `dmesg` も LMKD のログも読めない。プロセスが何MB解放されたかを
