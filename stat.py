@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """venice/stat - live dashboard. rish/adb/su."""
-import curses, os, sys
-sys.path.insert(0, os.path.expanduser("~/venice"))
+import curses, os, sys, time
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import core
 
 SPARK = "▁▂▃▄▅▆▇█"
@@ -117,11 +117,43 @@ def loop(std, t, iv):
         elif ch == ord("-"):
             iv = max(1.0, iv - 1); std.timeout(int(iv * 1000))
 
+def dump(t):
+    env = core.env(t)
+    prev = core.snapshot(t)
+    time.sleep(1.2)
+    cur = core.snapshot(t)
+    r = core.rates(prev, cur)
+    av = cur["mem"].get("MemAvailable", 0)
+    st = cur["mem"].get("SwapTotal", 0)
+    sf = cur["mem"].get("SwapFree", 0)
+    print("DEVICE %s / %s android %s sdk %s via %s"
+          % (env["model"], env["platform"], env["android"], env["sdk"], env["transport"]))
+    print("MemAvailable %d MB" % core.mb(av))
+    print("Swap used %d MB" % core.mb(max(0, st - sf)))
+    if cur["df"]:
+        print("/data free %d MB" % core.mb(cur["df"][1]))
+    print("CPU %.1f %%" % (r["cpu"] or 0))
+    print("RX/TX %.1f/%.1f kbps" % (r["rx_kbps"], r["tx_kbps"]))
+    print("procs %d load %s" % (cur["procs"], cur["load"][:24]))
+    if cur.get("zram"):
+        o, c, m = cur["zram"]
+        print("zram stored %dMB -> %dMB ratio %.2f:1 RAM cost %dMB"
+              % (o / 1048576, c / 1048576, (o / c if c else 0), m / 1048576))
+
 def main():
     t = core.detect()
     if t is None:
         print("no transport"); return
+    if not sys.stdout.isatty() and os.path.exists("/dev/tty"):
+        fd = os.open("/dev/tty", os.O_RDWR)
+        os.dup2(fd, 0); os.dup2(fd, 1); os.dup2(fd, 2)
     curses.wrapper(loop, t, 3.0)
 
 if __name__ == "__main__":
-    main()
+    if "--dump" in sys.argv:
+        _t = core.detect()
+        if _t is None:
+            print("no transport"); raise SystemExit(1)
+        dump(_t)
+    else:
+        main()
