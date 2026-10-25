@@ -14,6 +14,38 @@ package into 7 tiers, then apply only the diff. No root. No ROM.
 
 ![layerctl dashboard](assets/dashboard.svg)
 
+## アーキテクチャ
+
+~~~mermaid
+flowchart LR
+  subgraph host["ホスト: Termux / macOS / Linux"]
+    TUI["tui.py<br/>層スイッチボード"]
+    STAT["stat.py<br/>ライブダッシュボード"]
+    CORE["core.py<br/>detect / snapshot / rates"]
+    PROF["profiles/<br/>端末固有データ + QUIRKS"]
+  end
+  subgraph dev["Android 端末 (非root)"]
+    RISH["rish (Shizuku)"]
+    ADB["adbd (USB)"]
+    SU["su (任意)"]
+    SH["/system/bin/sh uid 2000"]
+  end
+  TUI --> CORE
+  STAT --> CORE
+  TUI --> PROF
+  CORE -->|自動選択| RISH
+  CORE -->|自動選択| ADB
+  CORE -->|自動選択| SU
+  RISH --> SH
+  ADB --> SH
+  SU --> SH
+  SH --> API["pm / cmd appops / dumpsys / deviceidle"]
+~~~
+
+本体は端末を知らない。輸送層とプロファイルの両方が差し替え可能で、
+`tui.py` と `stat.py` は `core` の口だけを見る。
+
+
 ## なぜ差分計測なのか
 
 非root では `dmesg` も LMKD のログも読めない。プロセスが何MB解放されたかを
