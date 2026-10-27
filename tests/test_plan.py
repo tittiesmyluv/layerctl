@@ -400,5 +400,32 @@ class AppliedEffect(unittest.TestCase):
         self.assertEqual(residual, [])
 
 
+class ClassifyStuck(unittest.TestCase):
+    """stuck を『揮発』と『永続』に分ける。
+
+    am set-standby-bucket / cmd appops set はシステムが書き戻すので、
+    効かなかった＝失敗とは限らない。pm disable-user / deviceidle whitelist は
+    持続するので、残っていれば本当の失敗。
+    """
+
+    def test_splits(self):
+        stuck = ["pm disable-user --user 0 com.a",
+                 "am set-standby-bucket com.b restricted",
+                 "cmd appops set com.c RUN_ANY_IN_BACKGROUND ignore",
+                 "dumpsys deviceidle whitelist +com.d"]
+        hard, vol = tui.classify_stuck(stuck)
+        self.assertEqual(hard, ["pm disable-user --user 0 com.a",
+                                "dumpsys deviceidle whitelist +com.d"])
+        self.assertEqual(len(vol), 2)
+
+    def test_all_volatile(self):
+        hard, vol = tui.classify_stuck(["am set-standby-bucket com.a restricted"])
+        self.assertEqual(hard, [])
+        self.assertEqual(len(vol), 1)
+
+    def test_empty(self):
+        self.assertEqual(tui.classify_stuck([]), ([], []))
+
+
 if __name__ == "__main__":
     unittest.main()

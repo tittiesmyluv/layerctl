@@ -346,6 +346,17 @@ def applied_effect(recs, planned, st_after, installed=None):
     return residual, stuck
 
 
+# システムが書き戻すコマンド。効かなかった＝失敗とは限らない
+VOLATILE_CMD = ("am set-standby-bucket", "cmd appops set")
+
+
+def classify_stuck(stuck):
+    """stuck を (永続で効かなかった, 揮発で書き戻された) に分ける。"""
+    hard = [c for c in stuck if not c.startswith(VOLATILE_CMD)]
+    vol = [c for c in stuck if c.startswith(VOLATILE_CMD)]
+    return hard, vol
+
+
 def report_verify(recs, planned, installed=None):
     """適用後にもう一度観測して、残差と『効かなかった』を報告する。"""
     pkgs, dis, wht, bkt, ops, _ = probe()
@@ -354,14 +365,22 @@ def report_verify(recs, planned, installed=None):
         print("--- 検証: 残差 0 本 ---")
         return residual, stuck
     print("--- 検証: 適用後に残った差分 %d 本 ---" % len(residual))
-    if stuck:
-        print("  うち %d 本は適用したのに効かなかった:" % len(stuck))
-        for c in stuck[:10]:
-            print("    " + c)
-        if len(stuck) > 10:
-            print("    ... 他 %d 本" % (len(stuck) - 10))
-    else:
+    if not stuck:
         print("  適用した %d 本はすべて効いた（残りは揮発層の振動）" % len(planned))
+        return residual, stuck
+    hard, vol = classify_stuck(stuck)
+    if vol:
+        print("  揮発で書き戻された（異常ではない）: %d 本" % len(vol))
+        for c in vol[:5]:
+            print("    " + c)
+        if len(vol) > 5:
+            print("    ... 他 %d 本" % (len(vol) - 5))
+    if hard:
+        print("  永続なのに効かなかった（本当の失敗）: %d 本" % len(hard))
+        for c in hard[:10]:
+            print("    " + c)
+    else:
+        print("  永続コマンドの失敗は 0 本")
     return residual, stuck
 
 
