@@ -225,6 +225,29 @@ def show_delta(b, a):
     print("  load1         %+8.2f" % (a.get("load", 0.0) - b.get("load", 0.0)))
 
 
+def sample_kill(n=5, settle=8.0):
+    """am kill-all を n 回撃ち、各回の MemAvailable 差分(MB)を返す。
+
+    掃除の効果は分散が大きい（実測 +1211 / +335 / -268 MB）。単発では語れない。
+    """
+    ds = []
+    for _ in range(n):
+        b = metrics()
+        rish("am kill-all")
+        time.sleep(settle)
+        a = metrics()
+        ds.append((a.get("avail_kb", 0) - b.get("avail_kb", 0)) / 1024.0)
+    return ds
+
+
+def median(xs):
+    xs = sorted(xs)
+    if not xs:
+        return 0.0
+    m = len(xs) // 2
+    return xs[m] if len(xs) % 2 else (xs[m - 1] + xs[m]) / 2.0
+
+
 def apply_measure(lines, do_kill=True, settle=8.0, cmd_settle=2.0):
     """コマンドを適用し、『層変更の効果』と『掃除の効果』を分けて計測する。
 
@@ -418,7 +441,7 @@ def _ui(std, recs, orig):
 
 def main():
     if "--help" in sys.argv or "-h" in sys.argv:
-        print("usage: tui.py [--profile|--snapshot|--seed|--diff|--plan|--apply|--reapply] [--no-kill] [--json]")
+        print("usage: tui.py [--profile|--snapshot|--seed|--diff|--plan|--apply|--reapply] [--no-kill] [--json] [--repeat N]")
         return
     if "--profile" in sys.argv:
         from profiles import names
@@ -482,6 +505,22 @@ def main():
         if "--json" not in sys.argv:
             print("plan -> " + os.path.join(DIR, "plan.txt"))
         if "--plan" in sys.argv:
+            return
+        if "--repeat" in sys.argv:
+            try:
+                n = max(1, int(sys.argv[sys.argv.index("--repeat") + 1]))
+            except (IndexError, ValueError):
+                n = 5
+            b, m1, _ = apply_measure(lines, do_kill=False)
+            print("applied %d commands" % len(lines))
+            print("--- delta: layer commands only ---")
+            show_delta(b, m1)
+            print("--- am kill-all x%d (掃除の分。中央値で見る) ---" % n)
+            ds = sample_kill(n)
+            for i, d in enumerate(ds, 1):
+                print("  %2d回目  MemAvailable %+8.1f MB" % (i, d))
+            print("  中央値 %+.1f MB  /  最小 %+.1f  /  最大 %+.1f"
+                  % (median(ds), min(ds), max(ds)))
             return
         b, m1, m2 = apply_measure(lines, do_kill="--no-kill" not in sys.argv)
         print("applied %d commands" % len(lines))

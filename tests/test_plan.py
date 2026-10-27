@@ -243,5 +243,36 @@ class NameRules(unittest.TestCase):
         self.assertEqual(self.infer("com.google.android.gm"), "C1")
 
 
+class SampleKill(unittest.TestCase):
+    """掃除の効果は分散が大きい。単発でなく複数回サンプルして中央値で見る。"""
+
+    def setUp(self):
+        self.calls, self.seq = [], []
+        self._rish, self._metrics, self._sleep = tui.rish, tui.metrics, tui.time.sleep
+        tui.rish = lambda cmd, timeout=300: (self.calls.append(cmd), "")[1]
+        tui.metrics = lambda: self.seq.pop(0)
+        tui.time.sleep = lambda s: None
+
+    def tearDown(self):
+        tui.rish, tui.metrics, tui.time.sleep = self._rish, self._metrics, self._sleep
+
+    def test_samples_n_times(self):
+        self.seq = [{"avail_kb": 0}, {"avail_kb": 1024},
+                    {"avail_kb": 0}, {"avail_kb": 2048},
+                    {"avail_kb": 0}, {"avail_kb": 0}]
+        ds = tui.sample_kill(3, settle=0)
+        self.assertEqual(ds, [1.0, 2.0, 0.0])
+        self.assertEqual(self.calls, ["am kill-all"] * 3)
+
+    def test_median_odd(self):
+        self.assertEqual(tui.median([3.0, 1.0, 2.0]), 2.0)
+
+    def test_median_even(self):
+        self.assertEqual(tui.median([1.0, 2.0, 3.0, 4.0]), 2.5)
+
+    def test_median_empty(self):
+        self.assertEqual(tui.median([]), 0.0)
+
+
 if __name__ == "__main__":
     unittest.main()
