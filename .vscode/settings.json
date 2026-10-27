@@ -1,0 +1,36 @@
+{
+  "python.defaultInterpreterPath": "/opt/local/bin/python3",
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+  "editor.rulers": [100],
+  "files.exclude": {
+    "**/__pycache__": true,
+    "*.bak*": true,
+    "*.raw": true,
+    "*.out": true,
+    "_*": true,
+    "buckets.*": true,
+    "diag*.sh": true,
+    "diag*.out": true,
+    "snap*.out": true,
+    "verify.*": true,
+    "plan.txt": true,
+    "layers.observed.tsv": true,
+    "layers.old.tsv": true,
+    "layers.new.tsv": true,
+    "usagestats.txt": true,
+    "hwparam.json": true
+  },
+  "search.exclude": {
+    "**/__pycache__": true,
+    "*.bak*": true,
+    "*.raw": true
+  },
+  "[tsv]": {
+    "editor.insertSpaces": false,
+    "editor.detectIndentation": false
+  },
+  "terminal.integrated.env.osx": {
+    "PATH": "/opt/local/bin:/opt/local/sbin:${env:PATH}"
+  }
+}

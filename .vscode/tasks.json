@@ -1,0 +1,13 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    { "label": "layerctl: profile",  "type": "shell", "command": "./layers profile",  "problemMatcher": [] },
+    { "label": "layerctl: snapshot", "type": "shell", "command": "./layers snapshot", "problemMatcher": [] },
+    { "label": "layerctl: diff",     "type": "shell", "command": "./layers diff",     "problemMatcher": [] },
+    { "label": "layerctl: plan",     "type": "shell", "command": "./layers plan",     "problemMatcher": [],
+      "group": { "kind": "build", "isDefault": true } },
+    { "label": "layerctl: apply",    "type": "shell", "command": "./layers apply",    "problemMatcher": [] },
+    { "label": "layerctl: tests",    "type": "shell", "command": "python3 -m unittest discover -s tests -v",
+      "problemMatcher": [], "group": "test" }
+  ]
+}
