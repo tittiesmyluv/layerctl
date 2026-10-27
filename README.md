@@ -251,6 +251,10 @@ TUI の操作:
 
 同梱プロファイル: `sc53f` (Galaxy A25 5G) / `sh53d` (AQUOS wish3) / `generic`（未知機の受け皿）。
 
+端末ごとの意志の実例は `docs/` に置いてある（`layers.sc53f.tsv` / `layers.sh53d.tsv`）。
+**意志は端末固有**なので、他機種の意志で `apply` すると未インストール分が差分に
+残る（`plan` は installed で絞るので実行は安全）。別機種ではまず `seed` を打て。
+
 ~~~
 cp profiles/generic.py profiles/pixel9.py
 # NAME / MATCH_MODEL / MATCH_PLATFORM / D_HARD / C2_HARD / L0_HARD / IMPACT を書く
