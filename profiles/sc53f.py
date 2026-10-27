@@ -73,5 +73,6 @@ QUIRKS = {
         "com.samsung.android.kgclient",
         "com.sec.enterprise.knox.cloudmdm.smdms",
     ],
-    "shizuku_demoted": "moe.shizuku.privileged.api が約10-25分おきに bucket30 へ降格される",
+    # 実測: 約10-25分おきに bucket30 へ降格される。whitelist に入れて状態を固定する
+    "l0_force": ["moe.shizuku.privileged.api"],
 }

@@ -29,14 +29,14 @@ diff: 22（正しい端末と意志の組み合わせ。他機種の意志だと
 | c2_does_not_hold_bucket | fmm / kgclient / knox.cloudmdm（themostore は除く） |
 | euicc_service | econtroller |
 | proc_swaps_denied | True |
-| shizuku_demoted | moe.shizuku.privileged.api が10-25分おきに bucket30 へ |
+| l0_force | moe.shizuku.privileged.api（10-25分おきに bucket30 へ降格されるため whitelist で固定） |
 
 ## 未検証
 
 - C2 の4件が実際に restricted を保持しないこと（書き戻し）の直接観測。
   `c2_does_not_hold_bucket` に3件を記録済みだが、plan の残差で間接的にしか
   見えていない
-- `shizuku_demoted` は QUIRKS にあるが `infer` に配線されていない
+- ~~`shizuku_demoted` は未配線~~ → `l0_force` として infer に配線した
 
 ## 普段使い端末としての実測 (2026-10-27)
 

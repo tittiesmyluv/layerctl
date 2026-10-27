@@ -327,5 +327,42 @@ class PlanInstalledFilter(unittest.TestCase):
         self.assertEqual(len(out), 3)
 
 
+class L0Force(unittest.TestCase):
+    """システムが繰り返し降格させるパッケージは、whitelist に入れて状態を安定させる。
+
+    sc53f の QUIRKS.shizuku_demoted が「moe.shizuku.privileged.api が10-25分おきに
+    bucket30 へ降格される」と記録している。whitelist に入れれば infer は bucket を
+    見なくなるので、降格されても差分が出ない。
+    """
+
+    def setUp(self):
+        self._saved = tui.PROFILE
+
+    def tearDown(self):
+        tui.PROFILE = self._saved
+
+    def infer(self, pkg):
+        return tui.infer([pkg], set(), set(), {}, set())[0][0]
+
+    def test_l0_force_pins_to_l0(self):
+        class Fake:
+            QUIRKS = {"l0_force": ["com.a"]}
+        tui.PROFILE = Fake()
+        self.assertEqual(self.infer("com.a"), "0")
+
+    def test_l0_force_survives_demoted_bucket(self):
+        class Fake:
+            QUIRKS = {"l0_force": ["com.a"]}
+        tui.PROFILE = Fake()
+        # 降格されて bucket 30 でも 0 のまま（差分が出ない）
+        self.assertEqual(tui.infer(["com.a"], set(), set(), {"com.a": "30"}, set())[0][0], "0")
+
+    def test_other_packages_unaffected(self):
+        class Fake:
+            QUIRKS = {"l0_force": ["com.a"]}
+        tui.PROFILE = Fake()
+        self.assertEqual(self.infer("com.b"), "A")
+
+
 if __name__ == "__main__":
     unittest.main()

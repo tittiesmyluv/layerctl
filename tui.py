@@ -158,7 +158,7 @@ def infer(pkgs, dis, wht, bkt, ops, rsn=None):
             L = "D"
         elif p in c2_hard:
             L = "C2"
-        elif p in L0_HARD:
+        elif p in L0_HARD or p in _quirks_list("l0_force"):
             L = "0"
         elif p in dis:
             L = "C1"
