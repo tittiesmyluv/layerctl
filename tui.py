@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """venice/layers - A/B/C/D layer switchboard (non-root, rish backend)"""
-import collections, curses, json, os, subprocess, sys, time
+import collections, curses, json, os, re, subprocess, sys, time
 
 HOME = os.path.expanduser("~")
 DIR = os.path.dirname(os.path.abspath(__file__))
@@ -32,7 +32,7 @@ def rish(cmd, timeout=300):
 sys.path.insert(0, DIR)
 import core
 _T = core.detect(os.environ.get("VENICE_TRANSPORT"))
-from profiles import load_profile
+from profiles import load_profile, base as pbase
 
 PROFILE = load_profile(rish("getprop ro.product.model").strip(),
                        rish("getprop ro.board.platform").strip())
@@ -49,6 +49,17 @@ BUCKET_NEUTRAL = "working_set"
 def _quirks_list(key):
     """QUIRKS を呼び出し時に読む（プロファイル差し替えに追随させるため）"""
     return set(PROFILE.QUIRKS.get(key, ()))
+
+
+def name_layer(p):
+    """名前だけで層を推定する。観測が何も言わないときの最後の床。
+
+    プロファイルの NAME_RULES が base より優先される。
+    """
+    for L, rx in tuple(getattr(PROFILE, "NAME_RULES", ())) + pbase.NAME_RULES:
+        if re.search(rx, p):
+            return L
+    return None
 
 
 def risk_of(L, p):
@@ -129,7 +140,7 @@ def infer(pkgs, dis, wht, bkt, ops, rsn=None):
         elif b in B2_B:
             L = "B2"
         else:
-            L = "A"
+            L = name_layer(p) or "A"
         recs.append([L, p, ACTION[L], risk_of(L, p), IMPACT.get(p, "")])
     return recs
 

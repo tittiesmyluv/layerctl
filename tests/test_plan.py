@@ -178,5 +178,70 @@ class PlanJson(unittest.TestCase):
         self.assertEqual(j["counts"]["commands"], 0)
 
 
+class NameRules(unittest.TestCase):
+    """profiles/base.py の名前規則。未知機の seed を実用にするための床。"""
+
+    def setUp(self):
+        self._saved = (tui.PROFILE, tui.D_HARD)
+
+    def tearDown(self):
+        tui.PROFILE, tui.D_HARD = self._saved
+
+    def infer(self, pkg, dis=(), wht=(), bkt=None, ops=()):
+        return tui.infer([pkg], set(dis), set(wht), dict(bkt or {}), set(ops))[0][0]
+
+    def test_phone_is_l0(self):
+        self.assertEqual(self.infer("com.android.phone"), "0")
+
+    def test_dialer_is_l0(self):
+        self.assertEqual(self.infer("com.google.android.dialer"), "0")
+
+    def test_messaging_is_l0(self):
+        self.assertEqual(self.infer("com.google.android.apps.messaging"), "0")
+
+    def test_launcher_is_l0(self):
+        self.assertEqual(self.infer("com.google.android.apps.nexuslauncher"), "0")
+
+    def test_gmail_is_b1(self):
+        self.assertEqual(self.infer("com.google.android.gm"), "B1")
+
+    def test_photos_is_b1(self):
+        self.assertEqual(self.infer("com.google.android.apps.photos"), "B1")
+
+    def test_docs_editors_is_b1(self):
+        self.assertEqual(self.infer("com.google.android.apps.docs.editors.sheets"), "B1")
+
+    def test_sdm_plugins_is_c1(self):
+        self.assertEqual(self.infer("com.android.sdm.plugins.dcmo"), "C1")
+
+    def test_carrier_is_c1(self):
+        self.assertEqual(self.infer("com.verizon.services"), "C1")
+
+    def test_wellbeing_is_c1(self):
+        self.assertEqual(self.infer("com.google.android.apps.wellbeing"), "C1")
+
+    def test_unknown_falls_to_a(self):
+        self.assertEqual(self.infer("com.example.nothing"), "A")
+
+    def test_observation_beats_name_rule(self):
+        self.assertEqual(self.infer("com.google.android.videos",
+                                    wht=["com.google.android.videos"]), "0")
+
+    def test_disabled_beats_name_rule(self):
+        self.assertEqual(self.infer("com.google.android.gm",
+                                    dis=["com.google.android.gm"]), "C1")
+
+    def test_d_hard_beats_name_rule(self):
+        tui.D_HARD = {"com.android.phone"}
+        self.assertEqual(self.infer("com.android.phone"), "D")
+
+    def test_profile_override_wins(self):
+        class Fake:
+            QUIRKS = {}
+            NAME_RULES = (("C1", r"^com\.google\.android\.gm$"),)
+        tui.PROFILE = Fake()
+        self.assertEqual(self.infer("com.google.android.gm"), "C1")
+
+
 if __name__ == "__main__":
     unittest.main()

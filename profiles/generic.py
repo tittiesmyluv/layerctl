@@ -9,6 +9,10 @@ C2_HARD = set()
 L0_HARD = {"com.android.phone", "com.google.android.apps.messaging", "com.google.android.gms"}
 IMPACT = {}
 
+# NAME_RULES を書くと profiles/base.py の規則より優先される。
+# 未知機向けの受け皿なので、ここは空のまま base に任せるのが既定。
+# NAME_RULES = (("C1", r"^com\.example\.bloat$"),)
+
 QUIRKS = {
     "proc_swaps_denied": True,
     "euicc_service": "euicc",
