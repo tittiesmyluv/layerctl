@@ -198,8 +198,10 @@ def plan_lines(recs, st, installed=None):
         elif L in ("B1", "C2"):
             if p not in ops:
                 out.append("cmd appops set %s RUN_ANY_IN_BACKGROUND ignore" % p)
-            # restricted を書き戻される個体は bucket を主張しない（実測）
-            if L == "C2" and p in _quirks_list("c2_does_not_hold_bucket"):
+            # 書き戻される個体は bucket を主張しない（実測）。
+            # c2_does_not_hold_bucket は後方互換。no_bucket_hold は層を問わず効く
+            if p in _quirks_list("no_bucket_hold") or \
+               (L == "C2" and p in _quirks_list("c2_does_not_hold_bucket")):
                 pass
             elif bkt.get(p) != "45":
                 out.append("am set-standby-bucket %s restricted" % p)

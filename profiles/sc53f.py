@@ -75,4 +75,9 @@ QUIRKS = {
     ],
     # 実測: 約10-25分おきに bucket30 へ降格される。whitelist に入れて状態を固定する
     "l0_force": ["moe.shizuku.privileged.api"],
+    # 実測: restricted にしても必ず書き戻される。bucket を主張しない
+    "no_bucket_hold": [
+        "com.google.android.apps.tasks",
+        "com.microsoft.office.outlook",
+    ],
 }

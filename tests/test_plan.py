@@ -427,5 +427,48 @@ class ClassifyStuck(unittest.TestCase):
         self.assertEqual(tui.classify_stuck([]), ([], []))
 
 
+class NoBucketHold(unittest.TestCase):
+    """システムが bucket を書き戻す個体には、bucket を主張しない。
+
+    c2_does_not_hold_bucket は C2 専用だったが、同じ現象は B1 でも起きる
+    (実測: com.google.android.apps.tasks / com.microsoft.office.outlook が毎回戻る)。
+    no_bucket_hold は層を問わず効く。
+    """
+
+    def setUp(self):
+        self._saved = tui.PROFILE
+
+    def tearDown(self):
+        tui.PROFILE = self._saved
+
+    def _plan(self, layer, pkg):
+        return tui.plan_lines([[layer, pkg, "x", 1, ""]], (set(), set(), {}, set()))
+
+    def test_b1_skips_bucket_when_no_hold(self):
+        class Fake:
+            QUIRKS = {"no_bucket_hold": ["com.a"]}
+        tui.PROFILE = Fake()
+        out = self._plan("B1", "com.a")
+        self.assertIn("cmd appops set com.a RUN_ANY_IN_BACKGROUND ignore", out)
+        self.assertNotIn("am set-standby-bucket com.a restricted", out)
+
+    def test_b1_keeps_bucket_when_not_listed(self):
+        class Fake:
+            QUIRKS = {"no_bucket_hold": ["com.b"]}
+        tui.PROFILE = Fake()
+        self.assertIn("am set-standby-bucket com.a restricted", self._plan("B1", "com.a"))
+
+    def test_c2_quirk_still_works(self):
+        class Fake:
+            QUIRKS = {"c2_does_not_hold_bucket": ["com.a"]}
+        tui.PROFILE = Fake()
+        self.assertNotIn("am set-standby-bucket com.a restricted", self._plan("C2", "com.a"))
+
+    def test_infer_still_says_b1_via_appops(self):
+        # bucket を主張しなくても、appops ignore があるので infer は B1 のまま
+        self.assertEqual(tui.infer(["com.a"], set(), set(), {},
+                                   {"com.a"})[0][0], "B1")
+
+
 if __name__ == "__main__":
     unittest.main()
