@@ -6,8 +6,7 @@
 package into 7 tiers, then apply only the diff. No root required — rish(Shizuku) / adb / su(root) の3経路。No ROM.
 
 非root Android のアプリ層スイッチボード。端末の全パッケージを7つの層に分類して
-`layers.tsv` に固定し、**現在状態との差分だけ**を適用する。適用のたびに前後8秒の
-メモリ差分を自動表示する。
+`layers.tsv` に固定し、**現在状態との差分だけ**を適用する。適用のたびに **層コマンドの効果と掃除(kill-all)の効果を分けて実測** して表示する。
 
 輸送層は `core.detect()` が **rish(Shizuku) / adb / su** から自動選択する。
 端末上の Termux でも、PC から USB 経由の adb でも、同じコマンドが等価に動く。
@@ -61,7 +60,7 @@ cd layerctl
 ./layers diff        # 同梱の layers.tsv（作者の端末）とのズレを見る
 ./layers seed        # 自分の端末に合わせて意志を作り直す
 ./layers plan        # 差分コマンドを確認。実行はしない
-./layers apply       # 適用し、8秒後のメモリ差分を見る
+./layers apply       # 適用。層コマンドと掃除を分けて計測し、適用後に検証する
 ~~~
 
 同梱の `layers.tsv` は作者の Pixel 6 Pro の層割り当てだ（SC-53F 版は docs/layers.sc53f.tsv）。別機種なら `seed` で
@@ -82,10 +81,6 @@ cd layerctl
 `--no-kill` で2段目を止められる。
 
 ### 実測: 3台で測った
-
-非root では `dmesg` も LMKD のログも読めない。前後の差分が唯一の物証になる。
-だが `am kill-all` を同じバッチに混ぜると、解放が層変更のせいなのか掃除の
-せいなのか区別できない。だから `apply` は2段で測る。
 
 **(a) 層コマンドのみ — 小さく、向きも一定しない**
 
