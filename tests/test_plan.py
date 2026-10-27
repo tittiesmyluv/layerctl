@@ -142,12 +142,11 @@ class ApplyMeasure(unittest.TestCase):
         self.assertIs(m1, m2)
         self.assertEqual(self.calls, ["cmd x"])
 
-    def test_empty_lines_runs_nothing(self):
-        self.seq = [{"avail_kb": 1000}]
+    def test_empty_lines_still_kills(self):
+        self.seq = [{"avail_kb": 1000}, {"avail_kb": 1000}, {"avail_kb": 1200}]
         b, m1, m2 = tui.apply_measure([], settle=0, cmd_settle=0)
-        self.assertEqual(self.calls, [])
-        self.assertIs(b, m1)
-        self.assertIs(b, m2)
+        self.assertEqual(self.calls, ["am kill-all"])
+        self.assertEqual(m2["avail_kb"], 1200)
 
 
 class PlanJson(unittest.TestCase):
@@ -202,8 +201,9 @@ class NameRules(unittest.TestCase):
     def test_launcher_is_l0(self):
         self.assertEqual(self.infer("com.google.android.apps.nexuslauncher"), "0")
 
-    def test_gmail_is_b1(self):
-        self.assertEqual(self.infer("com.google.android.gm"), "B1")
+    def test_gmail_falls_to_a(self):
+        # raven の実機検証で gm は A。通知は FCM 経由なので制限したくない
+        self.assertEqual(self.infer("com.google.android.gm"), "A")
 
     def test_photos_is_b1(self):
         self.assertEqual(self.infer("com.google.android.apps.photos"), "B1")

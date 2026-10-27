@@ -235,13 +235,13 @@ def apply_measure(lines, do_kill=True, settle=8.0, cmd_settle=2.0):
     戻り値: (before, after_cmds, after_kill)。do_kill=False なら after_kill は after_cmds。
     """
     b = metrics()
-    if not lines:
-        return b, b, b
-    rish("; ".join(lines))
-    time.sleep(cmd_settle)
+    if lines:
+        rish("; ".join(lines))
+        time.sleep(cmd_settle)
     m1 = metrics()
     if not do_kill:
         return b, m1, m1
+    # plan が 0 本でも掃除は撃つ。撃たないと掃除の効果が測れない
     rish("am kill-all")
     time.sleep(max(0.0, settle - cmd_settle))
     return b, m1, metrics()
