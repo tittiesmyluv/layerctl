@@ -41,6 +41,15 @@ C2_HARD = PROFILE.C2_HARD
 L0_HARD = PROFILE.L0_HARD
 IMPACT = PROFILE.IMPACT
 
+# bucket 値: 10=ACTIVE 20=WORKING_SET 30=FREQUENT 40=RARE 45=RESTRICTED 50=NEVER
+BUCKET_RESTRICTIVE = ("30", "40", "45", "50")
+BUCKET_NEUTRAL = "working_set"
+
+
+def _quirks_list(key):
+    """QUIRKS を呼び出し時に読む（プロファイル差し替えに追随させるため）"""
+    return set(PROFILE.QUIRKS.get(key, ()))
+
 
 def risk_of(L, p):
     if L in ("D", "0", "C2"):
@@ -100,12 +109,14 @@ def probe():
 def infer(pkgs, dis, wht, bkt, ops, rsn=None):
     # bucket: 5=EXEMPTED 10=ACTIVE 20=WORKING_SET 30=FREQUENT 40=RARE 45=RESTRICTED 50=NEVER
     B1_B, B2_B = ("45", "40", "50"), ("30",)
+    # pm disable-user を拒む個体は C2 へ回す（profiles/*.py の QUIRKS に実測記録済み）
+    c2_hard = C2_HARD | _quirks_list("protected_refuse_disable")
     recs = []
     for p in pkgs:
         b = bkt.get(p, "")
         if p in D_HARD:
             L = "D"
-        elif p in C2_HARD:
+        elif p in c2_hard:
             L = "C2"
         elif p in L0_HARD:
             L = "0"
@@ -141,7 +152,10 @@ def plan_lines(recs, st):
         elif L in ("B1", "C2"):
             if p not in ops:
                 out.append("cmd appops set %s RUN_ANY_IN_BACKGROUND ignore" % p)
-            if bkt.get(p) != "45":
+            # restricted を書き戻される個体は bucket を主張しない（実測）
+            if L == "C2" and p in _quirks_list("c2_does_not_hold_bucket"):
+                pass
+            elif bkt.get(p) != "45":
                 out.append("am set-standby-bucket %s restricted" % p)
         elif L == "B2":
             if p in ops:
@@ -151,6 +165,9 @@ def plan_lines(recs, st):
         elif L == "A":
             if p in ops:
                 out.append("cmd appops set %s RUN_ANY_IN_BACKGROUND allow" % p)
+            # 制限系 bucket から中立へ戻す。未観測(None)は触らない
+            if bkt.get(p) in BUCKET_RESTRICTIVE:
+                out.append("am set-standby-bucket %s %s" % (p, BUCKET_NEUTRAL))
     return out
 
 
@@ -195,9 +212,10 @@ def load(path=None):
     path = path or TSV
     if not os.path.exists(path):
         return None
+    with open(path) as fh:
+        raw = fh.read().splitlines()
     recs = []
-    for line in open(path):
-        line = line.rstrip("\n")
+    for line in raw:
         if not line or line.startswith("#"):
             continue
         c = line.split("\t")
@@ -205,34 +223,6 @@ def load(path=None):
             c.append("")
         recs.append([c[0], c[1], c[2], int(c[3] or 1), c[4]])
     return recs
-
-def cmds_for(L, p, prev):
-    c = []
-    if prev == "C1" and L != "C1":
-        c.append("pm enable --user 0 " + p)
-    if L == "C1":
-        c.append("pm disable-user --user 0 " + p)
-    elif L in ("B1", "C2"):
-        c.append("cmd appops set %s RUN_ANY_IN_BACKGROUND ignore" % p)
-        c.append("am set-standby-bucket %s restricted" % p)
-    elif L == "B2":
-        c.append("cmd appops set %s RUN_ANY_IN_BACKGROUND allow" % p)
-        c.append("am set-standby-bucket %s frequent" % p)
-    elif L == "0":
-        c.append("dumpsys deviceidle whitelist +" + p)
-    elif L == "A":
-        c.append("cmd appops set %s RUN_ANY_IN_BACKGROUND allow" % p)
-    return c
-
-def apply_recs(recs, orig):
-    lines = []
-    for L, p, a, r, imp in recs:
-        lines += cmds_for(L, p, orig.get(p))
-    if lines:
-        lines.append("am kill-all")
-        rish("; ".join(lines))
-    for L, p, a, r, imp in recs:
-        orig[p] = L
 
 def ui(recs, orig):
     curses.wrapper(_ui, recs, orig)
