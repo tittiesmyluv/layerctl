@@ -308,5 +308,24 @@ class Baseline(unittest.TestCase):
             tui.STATE = saved
 
 
+class PlanInstalledFilter(unittest.TestCase):
+    """意志は端末固有。他機種の意志を使うと未インストール分が永久に差分に残る。"""
+
+    def test_skips_uninstalled_when_given(self):
+        recs = [["C1", "com.a", "disable", 3, ""], ["C1", "com.gone", "disable", 3, ""]]
+        out = tui.plan_lines(recs, (set(), set(), {}, set()), installed={"com.a"})
+        self.assertEqual(out, ["pm disable-user --user 0 com.a"])
+
+    def test_no_filter_when_not_given(self):
+        recs = [["C1", "com.gone", "disable", 3, ""]]
+        self.assertEqual(tui.plan_lines(recs, (set(), set(), {}, set())),
+                         ["pm disable-user --user 0 com.gone"])
+
+    def test_filter_keeps_everything_installed(self):
+        recs = [["0", "com.a", "protect", 3, ""], ["B1", "com.b", "restrict", 1, ""]]
+        out = tui.plan_lines(recs, (set(), set(), {}, set()), installed={"com.a", "com.b"})
+        self.assertEqual(len(out), 3)
+
+
 if __name__ == "__main__":
     unittest.main()

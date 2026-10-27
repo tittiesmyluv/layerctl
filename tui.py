@@ -149,11 +149,17 @@ def current_state():
     return dis, wht, bkt, ops
 
 
-def plan_lines(recs, st):
-    """recs と現在状態 st=(dis,wht,bkt,ops) の差分コマンドだけを返す"""
+def plan_lines(recs, st, installed=None):
+    """recs と現在状態 st=(dis,wht,bkt,ops) の差分コマンドだけを返す。
+
+    installed を渡すと、未インストールのパッケージを落とす。
+    意志は端末固有なので、他機種の意志を使うと未インストール分が永久に差分に残る。
+    """
     dis, wht, bkt, ops = st
     out = []
     for L, p, a, r, imp in recs:
+        if installed is not None and p not in installed:
+            continue
         if L == "C1":
             if p not in dis:
                 out.append("pm disable-user --user 0 " + p)
@@ -531,6 +537,9 @@ def main():
         ch = [(p, will.get(p, "-"), now.get(p, "-"))
               for p in sorted(set(will) | set(now)) if will.get(p) != now.get(p)]
         print("diff: %d" % len(ch))
+        gone = [c for c in ch if c[2] == "-"]
+        if gone:
+            print("  うち未インストール（意志にのみ存在）: %d" % len(gone))
         for p, a, b in ch:
             print("  %-3s -> %-3s  %s" % (a, b, p))
         return
@@ -541,7 +550,7 @@ def main():
             return
         pkgs, dis, wht, bkt, ops, rsn = probe()
         st = (dis, wht, bkt, ops)
-        lines = plan_lines(recs, st)
+        lines = plan_lines(recs, st, set(pkgs))
         if "--json" in sys.argv:
             print(json.dumps(plan_json(recs, st, PROFILE.NAME,
                                        getattr(_T, "name", "") or ""),

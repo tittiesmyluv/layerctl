@@ -123,6 +123,25 @@ bucket を変えてもプロセスは即座に死なない。**層コマンド�
   `apply` は前提（空き率・procs・前回の掃除からの経過）を毎回表示するので、
   『なぜその数字か』が読める
 
+**(c) 層コマンドの効果は、どの層コマンドかで変わる**
+
+SH-53D (AQUOS wish3 / 4GB / 空き 28% / procs 1257) で、333本の差分
+（`pm disable-user` 167 / `dumpsys` whitelist 101 / `am` bucket 35 / `cmd` appops 30）
+を適用した実測:
+
+| 段 | MemAvailable | SwapFree |
+|---|---|---|
+| 層コマンドのみ (333 cmd) | **+70.4 MB** | **+316.3 MB** |
+| am kill-all x5 | 中央値 +34.5 MB（最小 −337.2 / 最大 +502.3） | |
+
+raven では層コマンドが ≈0 だったのに、ここでは +70.4 MB / swap +316.3 MB 出た。
+**違いは中身。**
+
+- `pm disable-user` = **即時解放**（プロセスが止まる）。167本が効いた
+- `am set-standby-bucket` / `appops` = **政策のみ**。即時解放はしない。
+  raven の14本はこれだけだったので ≈0 だった
+- `am kill-all` = 蓄積の掃除。蓄積量の関数で分散が大きい
+
 旧計測（2段に分ける前。kill-all を混ぜている）:
 
 | 端末 | 対象 | MemAvailable | procs |
@@ -261,6 +280,8 @@ cp profiles/generic.py profiles/pixel9.py
 - `seed` 直後の初回 `plan` は、bucket5(EXEMPTED) を whitelist へ昇格させる一回性の
   正規化を含む。適用後は 0 に収束する（実測: 116 cmd → 0）
 
+- 意志 `layers.tsv` は端末固有。他機種の意志を使うと未インストールのパッケージが
+  差分に残り続ける。`plan` は installed で絞るようにした（`diff` は別枠で件数を出す）
 - `A` 層は「制限を解除する層」。制限系の bucket（frequent/rare/restricted/never）を
   `working_set` へ戻す。bucket が未観測のアプリは触らない
 - 2段計測の1段目は層変更そのものの効果、2段目は `am kill-all` の効果。
