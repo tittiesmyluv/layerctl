@@ -364,5 +364,41 @@ class L0Force(unittest.TestCase):
         self.assertEqual(self.infer("com.b"), "A")
 
 
+class AppliedEffect(unittest.TestCase):
+    """適用後に read-back して『効かなかった』を炙り出す。
+
+    rish() は失敗を握り潰すので、打ったのに効かなかったことが検出できない。
+    plan を撃ち直して、適用済みコマンドが残っていれば『効かなかった』と判定する。
+    """
+
+    def test_detects_stuck(self):
+        recs = [["C1", "com.a", "disable", 3, ""]]
+        planned = ["pm disable-user --user 0 com.a"]
+        residual, stuck = tui.applied_effect(recs, planned, (set(), set(), {}, set()))
+        self.assertEqual(residual, planned)
+        self.assertEqual(stuck, planned)
+
+    def test_clean_when_took_effect(self):
+        recs = [["C1", "com.a", "disable", 3, ""]]
+        planned = ["pm disable-user --user 0 com.a"]
+        residual, stuck = tui.applied_effect(recs, planned, ({"com.a"}, set(), {}, set()))
+        self.assertEqual(residual, [])
+        self.assertEqual(stuck, [])
+
+    def test_residual_without_stuck_is_oscillation(self):
+        # 適用した3本は効いたが、別の1本が新たに差分になった（揮発層の振動）
+        recs = [["C1", "com.a", "disable", 3, ""], ["B1", "com.b", "restrict", 1, ""]]
+        planned = ["pm disable-user --user 0 com.a"]
+        residual, stuck = tui.applied_effect(recs, planned, ({"com.a"}, set(), {}, set()))
+        self.assertEqual(stuck, [])
+        self.assertEqual(len(residual), 2)   # com.b の appops + bucket
+
+    def test_respects_installed_filter(self):
+        recs = [["C1", "com.gone", "disable", 3, ""]]
+        residual, stuck = tui.applied_effect(recs, [], (set(), set(), {}, set()),
+                                             installed=set())
+        self.assertEqual(residual, [])
+
+
 if __name__ == "__main__":
     unittest.main()

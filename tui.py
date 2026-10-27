@@ -332,6 +332,39 @@ def median(xs):
     return xs[m] if len(xs) % 2 else (xs[m - 1] + xs[m]) / 2.0
 
 
+def applied_effect(recs, planned, st_after, installed=None):
+    """適用後に read-back して『効かなかった』を炙り出す。
+
+    rish() は失敗を握り潰す。だから打ちっぱなしでは何が効かなかったか分からない。
+    適用後にもう一度 plan を引き、適用済みコマンドが残っていれば stuck と判定する。
+
+    戻り値: (residual, stuck)
+    """
+    residual = plan_lines(recs, st_after, installed)
+    rset = set(residual)
+    stuck = [c for c in planned if c in rset]
+    return residual, stuck
+
+
+def report_verify(recs, planned, installed=None):
+    """適用後にもう一度観測して、残差と『効かなかった』を報告する。"""
+    pkgs, dis, wht, bkt, ops, _ = probe()
+    residual, stuck = applied_effect(recs, planned, (dis, wht, bkt, ops), installed or set(pkgs))
+    if not residual:
+        print("--- 検証: 残差 0 本 ---")
+        return residual, stuck
+    print("--- 検証: 適用後に残った差分 %d 本 ---" % len(residual))
+    if stuck:
+        print("  うち %d 本は適用したのに効かなかった:" % len(stuck))
+        for c in stuck[:10]:
+            print("    " + c)
+        if len(stuck) > 10:
+            print("    ... 他 %d 本" % (len(stuck) - 10))
+    else:
+        print("  適用した %d 本はすべて効いた（残りは揮発層の振動）" % len(planned))
+    return residual, stuck
+
+
 def apply_measure(lines, do_kill=True, settle=8.0, cmd_settle=2.0):
     """コマンドを適用し、『層変更の効果』と『掃除の効果』を分けて計測する。
 
@@ -643,6 +676,7 @@ def main():
                 print("  %2d回目  MemAvailable %+8.1f MB" % (i, d))
             print("  中央値 %+.1f MB  /  最小 %+.1f  /  最大 %+.1f"
                   % (median(ds), min(ds), max(ds)))
+            report_verify(recs, lines)
             return
         print("--- 計測の前提 ---")
         print("  " + baseline_line(metrics(), since_last_kill()))
@@ -653,6 +687,7 @@ def main():
         if m2 is not m1:
             print("--- delta: after am kill-all (掃除の分。層変更とは別物) ---")
             show_delta(m1, m2)
+        report_verify(recs, lines)
         return
     recs = load()
     if recs is None:
