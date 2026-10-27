@@ -2,7 +2,7 @@
 # 引数は全部 tui.py に流す。$1 だけ渡すと --repeat 7 のような後続が落ちる。
 cd "$(dirname "$0")" || exit 1
 case "$1" in
-  snapshot|seed|diff|plan|apply|reapply|profile)
+  snapshot|seed|diff|plan|apply|reapply|profile|import)
     a="--$1"; shift; exec python3 tui.py "$a" "$@" ;;
   tui|"") exec python3 tui.py "$@" ;;
   *) echo "usage: layers [snapshot|plan|apply|reapply|profile|tui] [options]"; exit 2 ;;

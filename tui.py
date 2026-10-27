@@ -33,6 +33,7 @@ sys.path.insert(0, DIR)
 import core
 _T = core.detect(os.environ.get("VENICE_TRANSPORT"))
 from profiles import load_profile, base as pbase
+import importers
 
 PROFILE = load_profile(rish("getprop ro.product.model").strip(),
                        rish("getprop ro.board.platform").strip())
@@ -49,6 +50,34 @@ BUCKET_NEUTRAL = "working_set"
 def _quirks_list(key):
     """QUIRKS を呼び出し時に読む（プロファイル差し替えに追随させるため）"""
     return set(PROFILE.QUIRKS.get(key, ()))
+
+
+# 外部リストの verdict を層に写像する。語彙は importers が正規化済み。
+VERDICT_LAYER = {
+    "recommended": "C1",   # 消してよい
+    "advanced": "C1",
+    "expert": "B1",        # 止めると影響が出る
+    "unsafe": "A",         # 触らない
+    "keep": "A",
+    "": "C1",              # verdict 無しの debloat リスト
+}
+
+
+def import_recs(path, as_layer=None):
+    """外部リストを読み、層に写像して recs を返す。"""
+    recs = []
+    for pkg, verdict in sorted(importers.load(path).items()):
+        L = as_layer or VERDICT_LAYER.get(verdict or "", "C1")
+        recs.append([L, pkg, ACTION[L], risk_of(L, pkg), IMPACT.get(pkg, "")])
+    return recs
+
+
+def merge_recs(old, new):
+    """pkg を鍵にして上書き統合。並びは pkg 順。"""
+    m = {r[1]: r for r in old}
+    for r in new:
+        m[r[1]] = r
+    return [m[p] for p in sorted(m)]
 
 
 def name_layer(p):
@@ -497,8 +526,40 @@ def _ui(std, recs, orig):
 
 def main():
     if "--help" in sys.argv or "-h" in sys.argv:
-        print("usage: tui.py [--profile|--snapshot|--seed|--diff|--plan|--apply|--reapply] [--no-kill] [--json] [--repeat N]")
+        print("usage: tui.py [--profile|--snapshot|--seed|--diff|--plan|--apply|--reapply] [--no-kill] [--json] [--repeat N] | import <file> [--as LAYER] [--dry]")
         return
+    if "--import" in sys.argv:
+        try:
+            path = sys.argv[sys.argv.index("--import") + 1]
+        except IndexError:
+            print("usage: layers import <file> [--as LAYER] [--dry]")
+            return
+        as_layer = None
+        if "--as" in sys.argv:
+            try:
+                as_layer = sys.argv[sys.argv.index("--as") + 1].upper()
+            except IndexError:
+                print("--as needs a layer"); return
+            if as_layer not in LAYERS:
+                print("unknown layer: " + as_layer); return
+        try:
+            new = import_recs(path, as_layer)
+        except (OSError, ValueError) as e:
+            print("cannot read: %s" % e); return
+        if not new:
+            print("no packages parsed from " + path); return
+        old = load() or []
+        merged = merge_recs(old, new)
+        print("imported %d entries from %s (as=%s)" % (len(new), path, as_layer or "verdict"))
+        for k, v in collections.Counter(r[0] for r in new).most_common():
+            print("  %-3s %d" % (k, v))
+        print("will: %d -> %d records" % (len(old), len(merged)))
+        if "--dry" in sys.argv:
+            return
+        save(merged)
+        print("saved -> " + TSV)
+        return
+
     if "--profile" in sys.argv:
         from profiles import names
         print("active profile : %s" % PROFILE.NAME)
