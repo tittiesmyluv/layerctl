@@ -12,6 +12,11 @@ package into 7 tiers, then apply only the diff. No root required — rish(Shizuk
 輸送層は `core.detect()` が **rish(Shizuku) / adb / su** から自動選択する。
 端末上の Termux でも、PC から USB 経由の adb でも、同じコマンドが等価に動く。
 
+> **立ち位置**: 個々のコマンド（`pm disable-user` / `appops` / `set-standby-bucket`）は
+> 既存ツールと重なっている。layerctl が他に無いのは **モデル** のほう — 全パッケージを
+> 層に固定した「意志」を持ち、観測との差分だけを適用し、適用の効果を実測で報告する。
+> 重なりの内訳は「既存ツールとの関係」節に正直に書いた。
+
 ![layerctl dashboard](assets/dashboard.svg)
 
 ## アーキテクチャ
@@ -63,34 +68,45 @@ cd layerctl
 自分の観測に置き換えるところから始めろ。`plan` は何も壊さないので、まずそれで
 差分を眺めるのが安全だ。
 
-## なぜ差分計測なのか
+## なぜ差分計測なのか、そしてなぜ2段なのか
 
 非root では `dmesg` も LMKD のログも読めない。プロセスが何MB解放されたかを
 知る手段が無い。**だから適用前後の差分が唯一の物証になる。**
-この道具は叩くたびに自分の効果を数字で報告する。
+
+ただし `am kill-all` を同じバッチに混ぜると、**解放が層変更のせいなのか
+掃除のせいなのか区別できない。** そこで `apply` は2段で測る:
+
+1. 層コマンドだけを適用 → 計測（層変更そのものの効果）
+2. `am kill-all` → 計測（掃除の効果）
+
+`--no-kill` で2段目を止められる。
 
 実測例（すべて実機。MemAvailable の増加＝解放）:
 
-| 端末 | 対象 | MemAvailable | procs |
+| 端末 | 対象 | 層コマンドのみ | kill-all 後 |
 |---|---|---|---|
-| SC-53F | 全体 re-assert (5 cmd) | **+82.1 MB** | −2 |
-| SC-53F | 仮想通貨アプリ1本を C1 へ | **+276.3 MB** | −10 |
-| SC-53F | clone 直後の全適用 (7 cmd) | **+486.7 MB** | −2 |
-| SH-53D (wish3) | clone 直後の全適用 (116 cmd) | **+287.0 MB** | −56 |
-| Pixel 6 Pro (raven) | 全適用 (97 cmd) | +0.0 MB ※ | ±0 |
+| SC-53F | 全体 re-assert (5 cmd) | 未分離 | +82.1 MB |
+| SC-53F | 仮想通貨アプリ1本を C1 へ | 未分離 | +276.3 MB |
+| SC-53F | clone 直後の全適用 (7 cmd) | 未分離 | +486.7 MB |
+| SH-53D (wish3) | clone 直後の全適用 (116 cmd) | 未分離 | +287.0 MB |
+| Pixel 6 Pro (raven) | 全適用 (97 cmd) | +0.0 MB ※ | 手撃ちで +318 MB |
 
-wish3 の同時実測: SwapFree **+1232.0 MB**。適用直後の残差 plan は 0 に収束した。
+「未分離」は2段計測を入れる前の値。当時は `am kill-all` を混ぜていた。
 
-※ Pixel 6 Pro は適用の瞬間に既に落ち着いていた（RAM 12GB / procs 732）。
-手で `am kill-all` を撃つと MemAvailable **+318 MB** / SwapFree **+505 MB** 動く。
-差分ゼロは無効の証拠ではない。詳細は `docs/raven.md`。
+**読み方:**
+
+- **差分ゼロは無効の証拠ではない。** Pixel は適用の瞬間に既に落ち着いていた
+  （RAM 12GB / procs 732）。手で `am kill-all` を撃つと MemAvailable
+  **+318 MB** / SwapFree **+505 MB** 動く。詳細は `docs/raven.md`
+- **差分プラスも有効の証拠ではない。** 旧計測の +486 MB のうち、層変更そのものが
+  寄与した分は小さい可能性が高い。2段にして初めて切り分けられる
 
 ## 層モデル
 
 | 層 | 名前 | 意味 | 適用コマンド | 持続性 |
 |---|---|---|---|---|
 | 0 | untouchable | 不可侵 / Doze 保護 | `dumpsys deviceidle whitelist +` | 持続 |
-| A | daily | 常用 | `cmd appops set ... allow` | 揮発 |
+| A | daily | 常用 / 制限を解除 | `appops allow` + bucket を `working_set` へ戻す | 揮発 |
 | B1 | throttled | 通知遅延可 | `appops ignore` + `bucket restricted` | 揮発 |
 | B2 | frequent | 通知維持 | `appops allow` + `bucket frequent` | 揮発 |
 | C1 | dead | 無効化 | `pm disable-user --user 0` | 持続 |
@@ -100,6 +116,32 @@ wish3 の同時実測: SwapFree **+1232.0 MB**。適用直後の残差 plan は 
 `0` と `C1` は `pm disable-user` と `deviceidle whitelist` で書かれるため
 **OTA 以外で崩れない**。`A` `B1` `B2` `C2` は bucket 系で**揮発する**。
 だから `--reapply` は収束演算ではなく**再主張**であり、残差は常に数本残って振動する。
+
+## 既存ツールとの関係
+
+正直に書く。**個々の操作は重なっている。**
+
+| 操作 | 既存の代表 | layerctl |
+|---|---|---|
+| `pm disable-user` で無効化 | Canta / Universal Android Debloater NG / App Manager / ADB AppControl | C1層 |
+| standby bucket の get/set | ADB-Application-Manager / App Manager | A / B1 / B2 / C2層 |
+| `RUN_ANY_IN_BACKGROUND` | AppOpsX / Brevent / Greenify / SuperFreezZ / Hail | A / B1 / C2層 |
+| doze whitelist | Naptime / Battery Guru | 0層 |
+| 安全度バッジ付き一覧 | Canta（UAD リスト参照） | `risk` 列 |
+
+**重なっていないのはモデルのほう:**
+
+| 性質 | 既存 | layerctl |
+|---|---|---|
+| 全パッケージを層に固定した「意志」を持つ | — | `layers.tsv` |
+| 意志と観測を分離する | — | `layers.observed.tsv` |
+| 差分だけを適用する | — | `plan` / `apply` |
+| 適用の効果を実測で報告する | — | `apply` の2段計測 |
+| 端末固有データをコードから追い出す | — | `profiles/` + `QUIRKS` |
+| 輸送層を等価に抽象する | どれか1経路に固定 | rish / adb / su |
+
+要するに **部品は既製品、組み立て方が新しい。** Greenify の代替ではなく
+「Android のアプリ層を宣言的に管理する」道具として使え。
 
 ## 必要環境
 
@@ -121,7 +163,7 @@ wish3 の同時実測: SwapFree **+1232.0 MB**。適用直後の残差 plan は 
 ./layers seed        # 観測を layers.tsv（意志）へ昇格
 ./layers diff        # 意志と観測のズレだけ表示
 ./layers plan        # 差分コマンドだけ抽出。実行しない
-./layers apply       # 差分を適用し、8秒後のメモリ差分を表示
+./layers apply       # 差分を適用。層コマンドのみ / kill-all 後の2段で計測
 ./layers reapply     # 全件を再主張（OTA 後の復旧用）
 ./layers             # TUI
 ~~~
@@ -184,6 +226,11 @@ cp profiles/generic.py profiles/pixel9.py
 - `layers.tsv` は**意志**。`snapshot` は書き換えず、観測は `layers.observed.tsv` に隔離される
 - `seed` 直後の初回 `plan` は、bucket5(EXEMPTED) を whitelist へ昇格させる一回性の
   正規化を含む。適用後は 0 に収束する（実測: 116 cmd → 0）
+
+- `A` 層は「制限を解除する層」。制限系の bucket（frequent/rare/restricted/never）を
+  `working_set` へ戻す。bucket が未観測のアプリは触らない
+- 2段計測の1段目は層変更そのものの効果、2段目は `am kill-all` の効果。
+  合算して「この道具の効果」と呼ぶのは誤り
 
 ## License
 
