@@ -195,7 +195,19 @@ A25 の初回が小さいのは、前回の掃除から5分しか経っていな
 ./layers plan        # 差分コマンドだけ抽出。実行しない
 ./layers apply       # 差分を適用。層コマンドのみ / kill-all 後の2段で計測
 ./layers reapply     # 全件を再主張（OTA 後の復旧用）
+./layers import f    # 外部の debloat リストを取り込む（UAD JSON / TSV / プレーン）
 ./layers             # TUI
+~~~
+
+`apply` は適用後に read-back して検証する。**揮発コマンドが書き戻されたのか、
+永続コマンドが本当に効かなかったのかを分けて報告する**（揮発は異常ではない）。
+
+~~~sh
+./layers plan --json        # 差分を JSON で出す（他ツールから食える）
+./layers apply --no-kill    # 掃除を撃たず、層コマンドだけ
+./layers apply --repeat 7   # 掃除を7回サンプルして中央値・最小・最大を出す
+./layers import f --as C1   # verdict を無視して全部 C1 として取り込む
+./layers import f --dry     # プレビューのみ
 ~~~
 
 `layers.tsv` は**意志**（望む層）、`layers.observed.tsv` は**観測**。`snapshot` は観測を
@@ -261,6 +273,9 @@ cp profiles/generic.py profiles/pixel9.py
 - `seed` 直後の初回 `plan` は、bucket5(EXEMPTED) を whitelist へ昇格させる一回性の
   正規化を含む。適用後は 0 に収束する（実測: 116 cmd → 0）
 
+- `verify` の『揮発で書き戻された』は異常ではない。`am set-standby-bucket` と
+  `cmd appops set` は Android が書き戻す。`pm disable-user` と
+  `deviceidle whitelist` は持続するので、こちらが残ったときだけ本当の失敗
 - 意志 `layers.tsv` は端末固有。他機種の意志を使うと未インストールのパッケージが
   差分に残り続ける。`plan` は installed で絞るようにした（`diff` は別枠で件数を出す）
 - `A` 層は「制限を解除する層」。制限系の bucket（frequent/rare/restricted/never）を
