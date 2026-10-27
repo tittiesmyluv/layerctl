@@ -521,7 +521,7 @@ B1	jp.linecorp.linemusic.android	restrict	1
 C1	jp.mixi.minimo	disable	1	
 0	jp.naver.line.android	protect	3	LINE。通知が生命線
 C1	jp.nekonote.tryfull	disable	1	
-B2	moe.shizuku.privileged.api	frequent	1	
+0	moe.shizuku.privileged.api	protect	3	輸送層。Doze に殺されると rish が死ぬ
 B2	org.fdroid.fdroid	frequent	1	
 C1	org.intoorbit.spectrum	disable	1	
 C1	org.telegram.messenger	disable	1	

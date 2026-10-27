@@ -29,14 +29,22 @@ diff: 22（正しい端末と意志の組み合わせ。他機種の意志だと
 | c2_does_not_hold_bucket | fmm / kgclient / knox.cloudmdm（themostore は除く） |
 | euicc_service | econtroller |
 | proc_swaps_denied | True |
-| l0_force | moe.shizuku.privileged.api（10-25分おきに bucket30 へ降格されるため whitelist で固定） |
+| l0_force | moe.shizuku.privileged.api |
+
+### l0_force を入れた理由
+
+このツールの輸送層（rish）は Shizuku に依存している。Doze に殺されたら
+ツール自身が動かなくなる。だから自分の生命線は whitelist（層0）に入れる。
+
+意志 `docs/layers.sc53f.tsv` は以前 `B2`（frequent で降格を受け入れる）だったが、
+`l0_force` の配線に合わせて `0` に更新した。raven の意志は元から `0`。
 
 ## 未検証
 
 - C2 の4件が実際に restricted を保持しないこと（書き戻し）の直接観測。
   `c2_does_not_hold_bucket` に3件を記録済みだが、plan の残差で間接的にしか
   見えていない
-- ~~`shizuku_demoted` は未配線~~ → `l0_force` として infer に配線した
+- ~~`shizuku_demoted` は未配線~~ → `l0_force` として infer に配線し、意志も `0` に更新した
 
 ## 普段使い端末としての実測 (2026-10-27)
 
