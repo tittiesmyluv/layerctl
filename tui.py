@@ -197,13 +197,17 @@ def plan_json(recs, st, profile="", transport=""):
 
 
 def metrics():
-    o = rish("grep -E 'MemAvailable|SwapFree' /proc/meminfo; "
+    o = rish("grep -E 'MemTotal|MemAvailable|SwapTotal|SwapFree' /proc/meminfo; "
              "echo procs $(ps -A | wc -l); cat /proc/loadavg")
     d = {"procs": 0, "load": 0.0}
     for l in o.splitlines():
         t = l.strip()
-        if t.startswith("MemAvailable"):
+        if t.startswith("MemTotal"):
+            d["total_kb"] = int(t.split()[1])
+        elif t.startswith("MemAvailable"):
             d["avail_kb"] = int(t.split()[1])
+        elif t.startswith("SwapTotal"):
+            d["swaptotal_kb"] = int(t.split()[1])
         elif t.startswith("SwapFree"):
             d["swapfree_kb"] = int(t.split()[1])
         elif t.startswith("procs"):
@@ -244,14 +248,28 @@ def since_last_kill():
         return None
 
 
+def load_hint(m):
+    """蓄積の見立て。空きが多ければ解放は小さく出る（閾値は経験則）。"""
+    tot = m.get("total_kb", 0) or 1
+    free = m.get("avail_kb", 0) / float(tot)
+    if free >= 0.65:
+        return "空きが多い。蓄積が少なく解放は小さく出る"
+    if free >= 0.40:
+        return "空きは中程度"
+    return "空きが少ない。解放は大きく出るはず"
+
+
 def baseline_line(m, since=None):
     """計測の前提。差分だけでは『なぜその数字か』が読めない。"""
-    out = "MemAvailable %d MB / SwapFree %d MB / procs %d" % (
-        m.get("avail_kb", 0) // 1024, m.get("swapfree_kb", 0) // 1024, m.get("procs", 0))
+    av, tot = m.get("avail_kb", 0), m.get("total_kb", 0)
+    pct = (100.0 * av / tot) if tot else 0.0
+    out = "MemAvailable %d MB / %d MB (%.0f%%) / SwapFree %d MB / procs %d" % (
+        av // 1024, tot // 1024, pct, m.get("swapfree_kb", 0) // 1024, m.get("procs", 0))
     if since is not None:
         out += "   (前回の掃除から %d分%02d秒)" % (since // 60, since % 60)
     else:
         out += "   (前回の掃除の記録なし)"
+    out += "\n  " + load_hint(m)
     return out
 
 

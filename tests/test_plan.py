@@ -283,6 +283,15 @@ class Baseline(unittest.TestCase):
         self.assertIn("MemAvailable 1183 MB", s)
         self.assertIn("procs 732", s)
 
+    def test_baseline_line_shows_total_and_percent(self):
+        m = {"avail_kb": 1024 * 8300, "total_kb": 1024 * 12000, "procs": 700}
+        s = tui.baseline_line(m)
+        self.assertIn("/ 12000 MB (69%)", s)
+        self.assertIn("蓄積が少なく解放は小さく出る", s)
+
+    def test_load_hint_low_free(self):
+        self.assertIn("大きく出るはず", tui.load_hint({"avail_kb": 1024, "total_kb": 10240}))
+
     def test_baseline_line_with_elapsed(self):
         m = {"avail_kb": 0, "swapfree_kb": 0, "procs": 1}
         self.assertIn("3分12秒", tui.baseline_line(m, since=192))
