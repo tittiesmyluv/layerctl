@@ -200,6 +200,28 @@ def show_delta(b, a):
     print("  load1         %+8.2f" % (a.get("load", 0.0) - b.get("load", 0.0)))
 
 
+def apply_measure(lines, do_kill=True, settle=8.0, cmd_settle=2.0):
+    """コマンドを適用し、『層変更の効果』と『掃除の効果』を分けて計測する。
+
+    非root では dmesg も LMKD のログも読めないので、前後の差分が唯一の物証になる。
+    だが am kill-all を同じバッチに混ぜると、解放が層変更のせいなのか
+    掃除のせいなのか区別できない。だから2段で測る。
+
+    戻り値: (before, after_cmds, after_kill)。do_kill=False なら after_kill は after_cmds。
+    """
+    b = metrics()
+    if not lines:
+        return b, b, b
+    rish("; ".join(lines))
+    time.sleep(cmd_settle)
+    m1 = metrics()
+    if not do_kill:
+        return b, m1, m1
+    rish("am kill-all")
+    time.sleep(max(0.0, settle - cmd_settle))
+    return b, m1, metrics()
+
+
 def save(recs, path=None):
     path = path or TSV
     os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
@@ -328,17 +350,13 @@ def _ui(std, recs, orig):
                 std.refresh()
                 st = current_state()
                 pl = plan_lines([recs[idx]], st)
-                b = metrics()
-                if pl:
-                    rish("; ".join(pl + ["am kill-all"]))
-                    time.sleep(3)
-                a2 = metrics()
+                b, m1, m2 = apply_measure(pl, settle=3.0)
                 orig[recs[idx][1]] = recs[idx][0]
                 if pl:
-                    status = "%s -> %s  %dcmd  MemAvail %+.1fMB procs %+d" % (
+                    status = "%s -> %s  %dcmd  cmd %+.1fMB / kill %+.1fMB" % (
                         recs[idx][1], recs[idx][0], len(pl),
-                        (a2.get("avail_kb", 0) - b.get("avail_kb", 0)) / 1024.0,
-                        a2.get("procs", 0) - b.get("procs", 0))
+                        (m1.get("avail_kb", 0) - b.get("avail_kb", 0)) / 1024.0,
+                        (m2.get("avail_kb", 0) - m1.get("avail_kb", 0)) / 1024.0)
                 else:
                     status = "%s already at %s (no command needed)" % (recs[idx][1], recs[idx][0])
                 save(recs)
@@ -352,36 +370,30 @@ def _ui(std, recs, orig):
                 std.refresh()
                 st = current_state()
                 pl = plan_lines(staged, st)
-                b = metrics()
-                if pl:
-                    rish("; ".join(pl + ["am kill-all"]))
-                    time.sleep(3)
-                a2 = metrics()
+                b, m1, m2 = apply_measure(pl, settle=3.0)
                 for r in staged:
                     orig[r[1]] = r[0]
                 save(recs)
-                status = "applied %d staged  %dcmd  MemAvail %+.1fMB procs %+d" % (
+                status = "applied %d staged  %dcmd  cmd %+.1fMB / kill %+.1fMB" % (
                     len(staged), len(pl),
-                    (a2.get("avail_kb", 0) - b.get("avail_kb", 0)) / 1024.0,
-                    a2.get("procs", 0) - b.get("procs", 0))
+                    (m1.get("avail_kb", 0) - b.get("avail_kb", 0)) / 1024.0,
+                    (m2.get("avail_kb", 0) - m1.get("avail_kb", 0)) / 1024.0)
         elif ch == ord("R"):
             std.addstr(h - 1, 1, "re-asserting..."[:w - 2], curses.A_REVERSE)
             std.refresh()
             st = current_state()
             pl = plan_lines(recs, st)
-            b = metrics()
-            if pl:
-                rish("; ".join(pl + ["am kill-all"]))
-            a2 = metrics()
+            b, m1, m2 = apply_measure(pl, settle=3.0)
             for L, p, a, r, imp in recs:
                 orig[p] = L
-            status = "re-asserted %d cmd  MemAvail %+.1fMB" % (
-                len(pl), (a2.get("avail_kb", 0) - b.get("avail_kb", 0)) / 1024.0)
+            status = "re-asserted %d cmd  cmd %+.1fMB / kill %+.1fMB" % (
+                len(pl), (m1.get("avail_kb", 0) - b.get("avail_kb", 0)) / 1024.0,
+                (m2.get("avail_kb", 0) - m1.get("avail_kb", 0)) / 1024.0)
             save(recs)
 
 def main():
     if "--help" in sys.argv or "-h" in sys.argv:
-        print("usage: tui.py [--profile|--snapshot|--seed|--diff|--plan|--apply|--reapply]")
+        print("usage: tui.py [--profile|--snapshot|--seed|--diff|--plan|--apply|--reapply] [--no-kill]")
         return
     if "--profile" in sys.argv:
         from profiles import names
@@ -440,13 +452,13 @@ def main():
         print("plan -> " + os.path.join(DIR, "plan.txt"))
         if "--plan" in sys.argv:
             return
-        b = metrics()
-        if lines:
-            rish("; ".join(lines + ["am kill-all"]))
+        b, m1, m2 = apply_measure(lines, do_kill="--no-kill" not in sys.argv)
         print("applied %d commands" % len(lines))
-        time.sleep(8)
-        print("--- delta after 8s (MemAvailable + = freed) ---")
-        show_delta(b, metrics())
+        print("--- delta: layer commands only (MemAvailable + = freed) ---")
+        show_delta(b, m1)
+        if m2 is not m1:
+            print("--- delta: after am kill-all (掃除の分。層変更とは別物) ---")
+            show_delta(m1, m2)
         return
     recs = load()
     if recs is None:

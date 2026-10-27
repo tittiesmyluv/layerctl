@@ -110,5 +110,45 @@ class Infer(unittest.TestCase):
         self.assertNotIn("am set-standby-bucket com.a restricted", out)
 
 
+class ApplyMeasure(unittest.TestCase):
+    """apply_measure は層変更の効果と掃除(kill-all)の効果を分けて計測する。
+
+    am kill-all を混ぜると、解放されたのが層変更のせいか掃除のせいか
+    区別できない。README の実測表はここを分離していない。
+    """
+
+    def setUp(self):
+        self.calls, self.seq = [], []
+        self._rish, self._metrics, self._sleep = tui.rish, tui.metrics, tui.time.sleep
+        tui.rish = lambda cmd, timeout=300: (self.calls.append(cmd), "")[1]
+        tui.metrics = lambda: self.seq.pop(0)
+        tui.time.sleep = lambda s: None
+
+    def tearDown(self):
+        tui.rish, tui.metrics, tui.time.sleep = self._rish, self._metrics, self._sleep
+
+    def test_two_phase_separates_kill_from_commands(self):
+        self.seq = [{"avail_kb": 1000}, {"avail_kb": 1000}, {"avail_kb": 1300}]
+        b, m1, m2 = tui.apply_measure(["cmd x"], settle=0, cmd_settle=0)
+        self.assertEqual(b["avail_kb"], 1000)
+        self.assertEqual(m1["avail_kb"], 1000)   # コマンドだけでは動かない
+        self.assertEqual(m2["avail_kb"], 1300)   # kill-all で初めて動く
+        self.assertEqual(self.calls, ["cmd x", "am kill-all"])
+
+    def test_no_kill_flag(self):
+        self.seq = [{"avail_kb": 1000}, {"avail_kb": 1100}]
+        b, m1, m2 = tui.apply_measure(["cmd x"], do_kill=False, settle=0, cmd_settle=0)
+        self.assertEqual(m1["avail_kb"], 1100)
+        self.assertIs(m1, m2)
+        self.assertEqual(self.calls, ["cmd x"])
+
+    def test_empty_lines_runs_nothing(self):
+        self.seq = [{"avail_kb": 1000}]
+        b, m1, m2 = tui.apply_measure([], settle=0, cmd_settle=0)
+        self.assertEqual(self.calls, [])
+        self.assertIs(b, m1)
+        self.assertIs(b, m2)
+
+
 if __name__ == "__main__":
     unittest.main()
