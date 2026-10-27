@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """venice/layers - A/B/C/D layer switchboard (non-root, rish backend)"""
-import curses, os, subprocess, sys, time
+import collections, curses, json, os, subprocess, sys, time
 
 HOME = os.path.expanduser("~")
 DIR = os.path.dirname(os.path.abspath(__file__))
@@ -169,6 +169,20 @@ def plan_lines(recs, st):
             if bkt.get(p) in BUCKET_RESTRICTIVE:
                 out.append("am set-standby-bucket %s %s" % (p, BUCKET_NEUTRAL))
     return out
+
+
+def plan_json(recs, st, profile="", transport=""):
+    """差分を JSON で返す。他ツールから食える形にするための入口。"""
+    lines = plan_lines(recs, st)
+    c = collections.Counter(x.split()[0] for x in lines)
+    return {
+        "schema": 1,
+        "profile": profile,
+        "transport": transport,
+        "counts": {"recs": len(recs), "commands": len(lines)},
+        "by_command": dict(c.most_common()),
+        "commands": lines,
+    }
 
 
 def metrics():
@@ -393,7 +407,7 @@ def _ui(std, recs, orig):
 
 def main():
     if "--help" in sys.argv or "-h" in sys.argv:
-        print("usage: tui.py [--profile|--snapshot|--seed|--diff|--plan|--apply|--reapply] [--no-kill]")
+        print("usage: tui.py [--profile|--snapshot|--seed|--diff|--plan|--apply|--reapply] [--no-kill] [--json]")
         return
     if "--profile" in sys.argv:
         from profiles import names
@@ -441,15 +455,21 @@ def main():
         if recs is None:
             print("no " + TSV)
             return
-        import collections
         pkgs, dis, wht, bkt, ops, rsn = probe()
-        lines = plan_lines(recs, (dis, wht, bkt, ops))
-        print("planned: %d commands (recs=%d)" % (len(lines), len(recs)))
-        c = collections.Counter(x.split()[0] for x in lines)
-        for k, v in c.most_common():
-            print("  %-10s %d" % (k, v))
+        st = (dis, wht, bkt, ops)
+        lines = plan_lines(recs, st)
+        if "--json" in sys.argv:
+            print(json.dumps(plan_json(recs, st, PROFILE.NAME,
+                                       getattr(_T, "name", "") or ""),
+                             ensure_ascii=False, indent=2))
+        else:
+            print("planned: %d commands (recs=%d)" % (len(lines), len(recs)))
+            c = collections.Counter(x.split()[0] for x in lines)
+            for k, v in c.most_common():
+                print("  %-10s %d" % (k, v))
         open(os.path.join(DIR, "plan.txt"), "w").write("\n".join(lines) + "\n")
-        print("plan -> " + os.path.join(DIR, "plan.txt"))
+        if "--json" not in sys.argv:
+            print("plan -> " + os.path.join(DIR, "plan.txt"))
         if "--plan" in sys.argv:
             return
         b, m1, m2 = apply_measure(lines, do_kill="--no-kill" not in sys.argv)

@@ -150,5 +150,33 @@ class ApplyMeasure(unittest.TestCase):
         self.assertIs(b, m2)
 
 
+class PlanJson(unittest.TestCase):
+    """plan_json は他ツールが食える形で差分を出す。相互運用の入口。"""
+
+    def test_shape(self):
+        recs = [["B1", "com.a", "restrict", 1, ""], ["A", "com.b", "none", 1, ""]]
+        j = tui.plan_json(recs, (set(), set(), {}, set()), "raven", "su")
+        self.assertEqual(j["schema"], 1)
+        self.assertEqual(j["profile"], "raven")
+        self.assertEqual(j["transport"], "su")
+        self.assertEqual(j["counts"]["recs"], 2)
+        self.assertEqual(j["counts"]["commands"], 2)   # B1で2本、Aは未観測bucketなので0本
+        self.assertIn("cmd", j["by_command"])
+        self.assertIsInstance(j["commands"], list)
+
+    def test_is_json_serialisable(self):
+        import json
+        recs = [["C1", "com.a", "disable", 3, ""]]
+        j = tui.plan_json(recs, (set(), set(), {}, set()))
+        self.assertEqual(json.loads(json.dumps(j))["commands"],
+                         ["pm disable-user --user 0 com.a"])
+
+    def test_converged_is_empty(self):
+        recs = [["0", "com.a", "protect", 3, ""]]
+        j = tui.plan_json(recs, (set(), {"com.a"}, {}, set()))
+        self.assertEqual(j["commands"], [])
+        self.assertEqual(j["counts"]["commands"], 0)
+
+
 if __name__ == "__main__":
     unittest.main()
