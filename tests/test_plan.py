@@ -274,5 +274,30 @@ class SampleKill(unittest.TestCase):
         self.assertEqual(tui.median([]), 0.0)
 
 
+class Baseline(unittest.TestCase):
+    """計測の前提（蓄積量と前回の掃除からの経過）を数字で出す。"""
+
+    def test_baseline_line(self):
+        m = {"avail_kb": 1024 * 1183, "swapfree_kb": 1024 * 4201, "procs": 732}
+        s = tui.baseline_line(m)
+        self.assertIn("MemAvailable 1183 MB", s)
+        self.assertIn("procs 732", s)
+
+    def test_baseline_line_with_elapsed(self):
+        m = {"avail_kb": 0, "swapfree_kb": 0, "procs": 1}
+        self.assertIn("3分12秒", tui.baseline_line(m, since=192))
+
+    def test_mark_and_since(self):
+        import tempfile, os as _os
+        saved = tui.STATE
+        try:
+            tui.STATE = _os.path.join(tempfile.mkdtemp(), "last-kill")
+            self.assertIsNone(tui.since_last_kill())
+            tui.mark_kill()
+            self.assertLess(tui.since_last_kill(), 5)
+        finally:
+            tui.STATE = saved
+
+
 if __name__ == "__main__":
     unittest.main()

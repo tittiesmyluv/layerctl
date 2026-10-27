@@ -225,6 +225,36 @@ def show_delta(b, a):
     print("  load1         %+8.2f" % (a.get("load", 0.0) - b.get("load", 0.0)))
 
 
+STATE = os.path.join(DIR, "out", "last-kill")
+
+
+def mark_kill():
+    """掃除した時刻を記録する。次回の『蓄積量』の説明に使う。"""
+    os.makedirs(os.path.dirname(STATE), exist_ok=True)
+    with open(STATE, "w") as f:
+        f.write(str(int(time.time())))
+
+
+def since_last_kill():
+    """前回の掃除からの経過秒。記録が無ければ None。"""
+    try:
+        with open(STATE) as f:
+            return max(0.0, time.time() - int(f.read().strip()))
+    except (OSError, ValueError):
+        return None
+
+
+def baseline_line(m, since=None):
+    """計測の前提。差分だけでは『なぜその数字か』が読めない。"""
+    out = "MemAvailable %d MB / SwapFree %d MB / procs %d" % (
+        m.get("avail_kb", 0) // 1024, m.get("swapfree_kb", 0) // 1024, m.get("procs", 0))
+    if since is not None:
+        out += "   (前回の掃除から %d分%02d秒)" % (since // 60, since % 60)
+    else:
+        out += "   (前回の掃除の記録なし)"
+    return out
+
+
 def sample_kill(n=5, settle=8.0):
     """am kill-all を n 回撃ち、各回の MemAvailable 差分(MB)を返す。
 
@@ -234,6 +264,7 @@ def sample_kill(n=5, settle=8.0):
     for _ in range(n):
         b = metrics()
         rish("am kill-all")
+        mark_kill()
         time.sleep(settle)
         a = metrics()
         ds.append((a.get("avail_kb", 0) - b.get("avail_kb", 0)) / 1024.0)
@@ -266,6 +297,7 @@ def apply_measure(lines, do_kill=True, settle=8.0, cmd_settle=2.0):
         return b, m1, m1
     # plan が 0 本でも掃除は撃つ。撃たないと掃除の効果が測れない
     rish("am kill-all")
+    mark_kill()
     time.sleep(max(0.0, settle - cmd_settle))
     return b, m1, metrics()
 
@@ -511,6 +543,8 @@ def main():
                 n = max(1, int(sys.argv[sys.argv.index("--repeat") + 1]))
             except (IndexError, ValueError):
                 n = 5
+            print("--- 計測の前提 ---")
+            print("  " + baseline_line(metrics(), since_last_kill()))
             b, m1, _ = apply_measure(lines, do_kill=False)
             print("applied %d commands" % len(lines))
             print("--- delta: layer commands only ---")
@@ -522,6 +556,8 @@ def main():
             print("  中央値 %+.1f MB  /  最小 %+.1f  /  最大 %+.1f"
                   % (median(ds), min(ds), max(ds)))
             return
+        print("--- 計測の前提 ---")
+        print("  " + baseline_line(metrics(), since_last_kill()))
         b, m1, m2 = apply_measure(lines, do_kill="--no-kill" not in sys.argv)
         print("applied %d commands" % len(lines))
         print("--- delta: layer commands only (MemAvailable + = freed) ---")
