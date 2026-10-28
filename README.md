@@ -241,6 +241,8 @@ TUI の操作:
 
 輸送層と計測の落とし穴は `docs/transport.md` に表でまとめてある。実機で踏んだものだけを載せた。触る前に一度読め。
 
+輸送層と計測の落とし穴は `docs/transport.md` に表でまとめてある。実機で踏んだものだけを載せた。触る前に一度読め。
+
 ~~~
 cp profiles/generic.py profiles/pixel9.py
 # NAME / MATCH_MODEL / MATCH_PLATFORM / D_HARD / C2_HARD / L0_HARD / IMPACT を書く
