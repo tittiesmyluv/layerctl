@@ -113,3 +113,11 @@ class HardOverride(unittest.TestCase):
 
     def test_as_layer_beats_hard(self):
         self.assertEqual(self._recs("android\n", as_layer="A")["android"], "A")
+
+    PKG = "com.samsung.android.dialer"
+
+    def test_name_rule_beats_verdict(self):
+        self.assertEqual(self._recs(self.PKG + "\n")[self.PKG], "0")
+
+    def test_as_layer_beats_name_rule(self):
+        self.assertEqual(self._recs(self.PKG + "\n", as_layer="C1")[self.PKG], "C1")

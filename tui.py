@@ -92,7 +92,8 @@ def import_recs(path, as_layer=None):
         elif pkg in l0_hard:
             L = "0"
         else:
-            L = VERDICT_LAYER.get(verdict or "", "C1")
+            # 名前規則は外部リストの verdict より優先する（生命線を守る）
+            L = name_layer(pkg) or VERDICT_LAYER.get(verdict or "", "C1")
         recs.append([L, pkg, ACTION[L], risk_of(L, pkg), IMPACT.get(pkg, "")])
     return recs
 

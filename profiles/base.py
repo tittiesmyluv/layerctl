@@ -18,6 +18,9 @@ NAME_RULES = (
     ("0", r"^com\.android\.providers\.(telephony|contacts|calendar|downloads|settings)$"),
     ("0", r"^com\.google\.android\.(gms|dialer|apps\.messaging|inputmethod\.latin)$"),
     ("0", r"(nexuslauncher|launcher3(\.\w+)?)$"),
+    ("0", r"^com\.samsung\.android\.(dialer|messaging|honeyboard)$"),
+    ("0", r"^com\.samsung\.android\.app\.contacts$"),
+    ("0", r"^com\.sec\.android\.app\.launcher$"),
 
     # --- B1: 背景同期で足りる。通知が数分遅れても困らない ---
     ("B1", r"^com\.google\.android\.youtube$"),
@@ -25,6 +28,11 @@ NAME_RULES = (
      (r"^com\.google\.android\.apps\."
      r"(docs|docs\.editors\.\w+|photos|nbu\.files|tips"
      r"|subscriptions\.red|pixel\.nowplaying)$")),
+
+    # --- B1: 同梱の標準アプリ。無効化すると困るので絞るだけ ---
+    ("B1", r"^com\.sec\.android\.app\.(camera|myfiles|clockpackage)$"),
+    ("B1", r"^com\.sec\.android\.gallery3d$"),
+    ("B1", r"^com\.android\.(camera2?|gallery3d|deskclock)$"),
 
     # --- C1: 同梱物。ほぼ誰も開かない ---
     ("C1", r"^com\.android\.sdm\.plugins\."),

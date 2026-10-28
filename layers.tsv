@@ -262,9 +262,9 @@ C1	com.android.browser.res.overlay_305	disable	1
 C1	com.android.calculator2	disable	1	
 C1	com.android.calendar	disable	1	
 C1	com.android.calllogbackup	disable	1	
-C1	com.android.camera	disable	1	
+B1	com.android.camera	restrict	1	
 C1	com.android.camera.overlay	disable	1	
-C1	com.android.camera2	disable	1	
+B1	com.android.camera2	restrict	1	
 C1	com.android.camerabigballconfig.overlay	disable	1	
 C1	com.android.cameraextensions	disable	1	
 C1	com.android.captiveportallogin	disable	1	
@@ -301,7 +301,7 @@ C1	com.android.credentialmanager	disable	1
 C1	com.android.cts.ctsshim	disable	1	
 B1	com.android.cts.priv.ctsshim	restrict	1	
 A	com.android.defcontainer	none	1	
-C1	com.android.deskclock	disable	1	
+B1	com.android.deskclock	restrict	1	
 C1	com.android.devicediagnostics	disable	1	
 C1	com.android.devicediagnostics.auto_generated_rro_product__	disable	1	
 B1	com.android.devicediagnostics.auto_generated_rro_vendor__	restrict	1	
@@ -341,7 +341,7 @@ B1	com.android.frameworkhwnext.honor	restrict	1
 B1	com.android.frameworkres.overlay	restrict	1	
 C1	com.android.frameworks.telresources	disable	1	
 C1	com.android.galaxy4	disable	1	
-C1	com.android.gallery3d	disable	1	
+B1	com.android.gallery3d	restrict	1	
 B1	com.android.gallery3d.refocus	restrict	1	
 C1	com.android.globalFileexplorer	disable	1	
 C1	com.android.hbmsvmanager	disable	1	
@@ -387,8 +387,8 @@ C1	com.android.internal.systemui.onehanded.gestural	disable	1
 A	com.android.keychain	none	1	
 C1	com.android.keyguard	disable	1	
 B1	com.android.launcher	restrict	1	
-B1	com.android.launcher3	restrict	1	
-B1	com.android.launcher3.tv	restrict	1	
+0	com.android.launcher3	protect	3	
+0	com.android.launcher3.tv	protect	3	
 C1	com.android.ld.appstore	disable	1	
 A	com.android.localtransport	none	1	
 B1	com.android.location.fused	restrict	1	
@@ -457,7 +457,7 @@ C1	com.android.overlay.gmssettings	disable	1
 C1	com.android.overlay.gmstelecomm	disable	1	
 C1	com.android.overlay.gmstelephony	disable	1	
 C1	com.android.overlay.iconrecentsconfig	disable	1	
-B1	com.android.overlay.launcher3	restrict	1	
+0	com.android.overlay.launcher3	protect	3	
 C1	com.android.overlay.livepicker	disable	1	
 C1	com.android.overlay.logmanager	disable	1	
 C1	com.android.overlay.messaging	disable	1	
@@ -505,13 +505,13 @@ B1	com.android.printspooler	restrict	1
 C1	com.android.protips	disable	1	
 A	com.android.providers.applications	none	1	
 B1	com.android.providers.blockednumber	restrict	1	
-B1	com.android.providers.calendar	restrict	1	
+0	com.android.providers.calendar	protect	3	
 B1	com.android.providers.calendar.overlay.base.s600ww	restrict	1	
 C1	com.android.providers.contactkeys	disable	1	
-B1	com.android.providers.contacts	restrict	1	
+0	com.android.providers.contacts	protect	3	
 C1	com.android.providers.contacts.auto_generated_rro_product__	disable	1	
 C1	com.android.providers.contacts.overlay.pixel	disable	1	
-A	com.android.providers.downloads	none	1	
+0	com.android.providers.downloads	protect	3	
 C1	com.android.providers.downloads.ui	disable	1	
 B1	com.android.providers.drm	restrict	1	
 C1	com.android.providers.icccust	disable	1	
@@ -523,7 +523,7 @@ C1	com.android.providers.partnerbookmarks.res.overlay_305	disable	1
 C1	com.android.providers.partnerbookmarks.res.overlay_310_311	disable	1	
 C1	com.android.providers.partnerbrowsercustomizations	disable	1	
 C1	com.android.providers.privacyprotection	disable	1	
-A	com.android.providers.settings	none	1	
+0	com.android.providers.settings	protect	3	
 C1	com.android.providers.settings.auto_generated_rro_product__	disable	1	
 C1	com.android.providers.settings.auto_generated_rro_vendor__	disable	1	
 B1	com.android.providers.settings.btl.s600ww.overlay	restrict	1	
@@ -532,7 +532,7 @@ B1	com.android.providers.settings.overlay.base.s600ww	restrict	1
 A	com.android.providers.settings.overlay.common	none	1	
 B1	com.android.providers.settings.res.overlay_305	restrict	1	
 B1	com.android.providers.tctdatahubprovider	restrict	1	
-A	com.android.providers.telephony	none	1	
+0	com.android.providers.telephony	protect	3	
 C1	com.android.providers.telephony.auto_generated_characteristics_rro	disable	1	
 A	com.android.providers.telephony.auto_generated_rro_product__	none	1	
 B1	com.android.providers.telephony.overlay.carriersettings	restrict	1	
@@ -565,7 +565,7 @@ C1	com.android.se.overlay.target	disable	1
 C1	com.android.secretcode	disable	1	
 A	com.android.server.NetworkPermissionConfig	none	1	
 B1	com.android.server.deviceconfig.resources	restrict	1	
-A	com.android.server.telecom	none	1	
+0	com.android.server.telecom	protect	3	
 A	com.android.server.telecom.a_overlay	none	1	
 A	com.android.server.telecom.auto_generated_rro_product__	none	1	
 B1	com.android.server.telecom.basiccolorblack.overlay	restrict	1	
@@ -1418,10 +1418,10 @@ C1	com.google.android.apps.currents	disable	1
 B1	com.google.android.apps.customization.pixel	restrict	1	
 C1	com.google.android.apps.diagnosticstool	disable	1	
 C1	com.google.android.apps.diagnostictool	disable	1	
-C1	com.google.android.apps.docs	disable	1	
-C1	com.google.android.apps.docs.editors.docs	disable	1	
-C1	com.google.android.apps.docs.editors.sheets	disable	1	
-C1	com.google.android.apps.docs.editors.slides	disable	1	
+B1	com.google.android.apps.docs	restrict	1	
+B1	com.google.android.apps.docs.editors.docs	restrict	1	
+B1	com.google.android.apps.docs.editors.sheets	restrict	1	
+B1	com.google.android.apps.docs.editors.slides	restrict	1	
 C1	com.google.android.apps.dreamliner	disable	1	
 C1	com.google.android.apps.dynamite	disable	1	
 A	com.google.android.apps.emojiwallpaper	none	1	
@@ -1454,12 +1454,12 @@ B1	com.google.android.apps.mediashell	restrict	1
 C1	com.google.android.apps.meetings	disable	1	
 0	com.google.android.apps.messaging	protect	3	SMSの受け皿。認証コードが届く
 C1	com.google.android.apps.navlite	disable	1	
-C1	com.google.android.apps.nbu.files	disable	1	
+B1	com.google.android.apps.nbu.files	restrict	1	
 C1	com.google.android.apps.nbu.paisa.user	disable	1	
-B1	com.google.android.apps.nexuslauncher	restrict	1	
+0	com.google.android.apps.nexuslauncher	protect	3	
 C1	com.google.android.apps.paidtasks	disable	1	
 C1	com.google.android.apps.pdfviewer	disable	1	
-C1	com.google.android.apps.photos	disable	1	
+B1	com.google.android.apps.photos	restrict	1	
 C1	com.google.android.apps.photos.scanner	disable	1	
 C1	com.google.android.apps.photosgo	disable	1	
 C1	com.google.android.apps.pixel.creativeassistant	disable	1	
@@ -1484,10 +1484,10 @@ C1	com.google.android.apps.searchlite	disable	1
 C1	com.google.android.apps.security.securityhub	disable	1	
 C1	com.google.android.apps.setupwizard.searchselector	disable	1	
 C1	com.google.android.apps.speechservices	disable	1	
-C1	com.google.android.apps.subscriptions.red	disable	1	
+B1	com.google.android.apps.subscriptions.red	restrict	1	
 C1	com.google.android.apps.tachyon	disable	1	
 C1	com.google.android.apps.tasks	disable	1	
-C1	com.google.android.apps.tips	disable	1	
+B1	com.google.android.apps.tips	restrict	1	
 C1	com.google.android.apps.translate	disable	1	
 C1	com.google.android.apps.travel.onthego	disable	1	
 B1	com.google.android.apps.turbo	restrict	1	
@@ -1550,7 +1550,7 @@ B1	com.google.android.contactkeys	restrict	1
 C1	com.google.android.contacts	disable	1	
 C1	com.google.android.deskclock	disable	1	
 A	com.google.android.devicelockcontroller	none	1	
-C1	com.google.android.dialer	disable	1	
+0	com.google.android.dialer	protect	3	
 C1	com.google.android.dialer.rro_common	disable	1	
 A	com.google.android.documentsui	none	1	
 C1	com.google.android.documentsui.icon_overlay	disable	1	
@@ -1590,7 +1590,7 @@ C1	com.google.android.hotspot2.osulogin	disable	1
 C1	com.google.android.ims	disable	1	
 C1	com.google.android.inputmethod.japanese	disable	1	
 C1	com.google.android.inputmethod.korean	disable	1	
-C1	com.google.android.inputmethod.latin	disable	2	Gboard。現在の既定IME
+0	com.google.android.inputmethod.latin	protect	3	Gboard。現在の既定IME
 C1	com.google.android.inputmethod.pinyin	disable	1	
 C1	com.google.android.instantapps.supervisor	disable	1	
 B1	com.google.android.iwlan	restrict	1	
@@ -1763,7 +1763,7 @@ C1	com.google.android.wifi.resources.overlay.common	disable	1
 A	com.google.android.wifi.resources.overlay.pineapple	none	1	
 A	com.google.android.wifi.resources.pixel	none	1	
 C1	com.google.android.wifi.resources.xiaomi	disable	1	
-C1	com.google.android.youtube	disable	1	
+B1	com.google.android.youtube	restrict	1	
 C1	com.google.android.youtube.tv	disable	1	
 C1	com.google.android.youtube.tvmusic	disable	1	
 C1	com.google.ar.core	disable	1	
@@ -2241,7 +2241,7 @@ C1	com.kuackmedia.orange	disable	1
 A	com.kyocera.ecomode	none	1	
 A	com.lbe.security.miui	none	1	
 C1	com.lbe.security.miui.customizedregion.overlay	disable	1	
-C1	com.ldmnq.launcher3	disable	1	
+0	com.ldmnq.launcher3	protect	3	
 C1	com.lenovo.leos.appstore	disable	1	
 C1	com.lenovo.leos.cloud.sync	disable	1	
 C1	com.lenovo.levoice.caption	disable	1	
@@ -2338,7 +2338,7 @@ C1	com.lge.ipprovider	disable	1
 B1	com.lge.ipservice	restrict	1	
 C1	com.lge.launcher2	disable	1	
 B1	com.lge.launcher2.theme.optimus	restrict	1	
-C1	com.lge.launcher3	disable	1	
+0	com.lge.launcher3	protect	3	
 C1	com.lge.leccp	disable	1	
 C1	com.lge.lgaccount	disable	1	
 C1	com.lge.lgbroadcastradioservice	disable	1	
@@ -2877,7 +2877,7 @@ C1	com.motorola.installer	disable	1
 C1	com.motorola.invisiblenet	disable	1	
 C1	com.motorola.iqimotmetrics	disable	1	
 C1	com.motorola.launcher.secondarydisplay	disable	1	
-B1	com.motorola.launcher3	restrict	1	
+0	com.motorola.launcher3	protect	3	
 C1	com.motorola.launcherconfig	disable	1	
 C1	com.motorola.leanbacklauncher	disable	1	
 C1	com.motorola.lifetimedata	disable	1	
@@ -2919,7 +2919,7 @@ C1	com.motorola.omadm.sprint	disable	1
 C1	com.motorola.omadm.usc	disable	1	
 C1	com.motorola.omadm.vzw	disable	1	
 C1	com.motorola.overlay.googleasi	disable	1	
-C1	com.motorola.overlay.launcher3	disable	1	
+0	com.motorola.overlay.launcher3	protect	3	
 C1	com.motorola.paks	disable	1	
 C1	com.motorola.paks.notification	disable	1	
 C1	com.motorola.paramupdater	disable	1	
@@ -3622,7 +3622,7 @@ B1	com.samsung.android.app.clockpack	restrict	1
 C1	com.samsung.android.app.cocktailbarservice	disable	1	
 C1	com.samsung.android.app.color	disable	1	
 C1	com.samsung.android.app.colorblind	disable	1	
-C1	com.samsung.android.app.contacts	disable	1	
+0	com.samsung.android.app.contacts	protect	3	
 C1	com.samsung.android.app.dofviewer	disable	1	
 C1	com.samsung.android.app.dressroom	disable	2	壁紙とスタイル
 C1	com.samsung.android.app.dtv.dmb	disable	1	
@@ -3727,7 +3727,7 @@ C1	com.samsung.android.da.daagent	disable	1
 C1	com.samsung.android.dbsc	disable	1	
 C1	com.samsung.android.dck.timesync	disable	1	
 C1	com.samsung.android.deviceidservice	disable	1	
-C1	com.samsung.android.dialer	disable	1	
+0	com.samsung.android.dialer	protect	3	
 C1	com.samsung.android.digitalkey	disable	1	
 C1	com.samsung.android.dkey	disable	1	
 C1	com.samsung.android.dlp.service	disable	1	
@@ -3762,7 +3762,7 @@ C1	com.samsung.android.hdmapp	disable	1
 C1	com.samsung.android.hmt.vrshell	disable	1	
 C1	com.samsung.android.hmt.vrsvc	disable	1	
 C1	com.samsung.android.homemode	disable	1	
-B1	com.samsung.android.honeyboard	restrict	1	
+0	com.samsung.android.honeyboard	protect	3	
 C1	com.samsung.android.hwresourceshare.storage	disable	1	
 C1	com.samsung.android.icecone	disable	1	
 C1	com.samsung.android.imagepp	disable	1	
@@ -3809,7 +3809,7 @@ C1	com.samsung.android.mdx.kit	disable	1
 C1	com.samsung.android.mdx.quickboard	disable	1	
 C1	com.samsung.android.mediacontroller	disable	1	
 C1	com.samsung.android.messageguardsync	disable	1	
-C1	com.samsung.android.messaging	disable	1	
+0	com.samsung.android.messaging	protect	3	
 C1	com.samsung.android.messaging.extension.chn	disable	1	
 C1	com.samsung.android.mfi	disable	1	
 C1	com.samsung.android.mobileservice	disable	1	
@@ -4165,13 +4165,13 @@ C1	com.sec.android.app.bcocr	disable	1
 C1	com.sec.android.app.billing	disable	1	
 C1	com.sec.android.app.bluetoothagent	disable	1	
 C1	com.sec.android.app.bluetoothtest	disable	1	
-C1	com.sec.android.app.camera	disable	1	
+B1	com.sec.android.app.camera	restrict	1	
 C1	com.sec.android.app.camera.plb	disable	1	
 C1	com.sec.android.app.camera.sticker	disable	1	
 B1	com.sec.android.app.camerasaver	restrict	1	
 C1	com.sec.android.app.chromecustomizations	disable	1	
 C1	com.sec.android.app.clipvideo	disable	1	
-C1	com.sec.android.app.clockpackage	disable	1	
+B1	com.sec.android.app.clockpackage	restrict	1	
 C1	com.sec.android.app.desktoplauncher	disable	1	
 C1	com.sec.android.app.dexonpc	disable	1	
 C1	com.sec.android.app.dictionary	disable	1	
@@ -4187,7 +4187,7 @@ C1	com.sec.android.app.gamehub	disable	1
 C1	com.sec.android.app.hwmoduletest	disable	1	
 C1	com.sec.android.app.interactivekeyguardtutorial	disable	1	
 C1	com.sec.android.app.kidshome	disable	1	
-B1	com.sec.android.app.launcher	restrict	1	
+0	com.sec.android.app.launcher	protect	3	
 C1	com.sec.android.app.magnifier	disable	1	
 C1	com.sec.android.app.mediasync	disable	1	
 C1	com.sec.android.app.minimode.res	disable	1	
@@ -4195,7 +4195,7 @@ C1	com.sec.android.app.mobileprint	disable	1
 C1	com.sec.android.app.mt	disable	1	
 C1	com.sec.android.app.music	disable	1	
 C1	com.sec.android.app.mv.player	disable	1	
-C1	com.sec.android.app.myfiles	disable	1	
+B1	com.sec.android.app.myfiles	restrict	1	
 C1	com.sec.android.app.ocr	disable	1	
 C1	com.sec.android.app.parser	disable	1	
 C1	com.sec.android.app.personalization	disable	1	
@@ -4262,7 +4262,7 @@ C1	com.sec.android.fido.uaf.asm	disable	1
 C1	com.sec.android.fido.uaf.client	disable	1	
 C1	com.sec.android.fotaclient	disable	1	
 C1	com.sec.android.fwupgrade	disable	1	
-C1	com.sec.android.gallery3d	disable	1	
+B1	com.sec.android.gallery3d	restrict	1	
 C1	com.sec.android.gallery3d.panorama360view	disable	1	
 C1	com.sec.android.game.gamehome	disable	1	
 C1	com.sec.android.iaft	disable	1	
@@ -4916,7 +4916,7 @@ C1	com.ubercab.driver	disable	1
 C1	com.ubercab.eats	disable	1	
 C1	com.uievolution.gguide.android	disable	1	
 C1	com.ume.browser.northamerica	disable	1	
-B1	com.uncube.launcher3	restrict	1	
+0	com.uncube.launcher3	protect	3	
 C1	com.unionpay.tsmservice	disable	1	
 C1	com.unionpay.tsmservice.mi	disable	1	
 C1	com.unisoc.keyboxchecker	disable	1	
@@ -5079,9 +5079,9 @@ C1	com.volte.config	disable	1
 C1	com.vos.as.vit	disable	1	
 C1	com.vos.user.vit	disable	1	
 C1	com.vznavigator.Generic	disable	1	
-B1	com.vzw.apnlib	restrict	1	
+C1	com.vzw.apnlib	disable	1	
 C1	com.vzw.apnservice	disable	1	
-B1	com.vzw.easvalidation	restrict	1	
+C1	com.vzw.easvalidation	disable	1	
 C1	com.vzw.ecid	disable	1	
 C1	com.vzw.hss.myverizon	disable	1	
 C1	com.vzw.hss.widgets.infozone.large	disable	1	
