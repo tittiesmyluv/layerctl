@@ -71,10 +71,12 @@ B1	aon.frameworkres.overlay.display.product	restrict	1
 C1	asusims.overlay.aosp.documentsui	disable	1	
 A	asusims.overlay.common	none	1	
 C1	asusims.overlay.documentsui	disable	1	
+A	beartail.dr.keihi	none	1	
 C1	blibli.mobile.commerce	disable	1	
 B1	bnd.com	restrict	1	
 C1	ca.bell.selfserve.mybellmobile	disable	1	
 C1	ca.bell.wt.android.tunesappswidget	disable	1	
+A	cc.bitbank.bitbank	none	1	
 C1	cci.usage	disable	1	
 C1	cn.nubia.accounts	disable	1	
 C1	cn.nubia.advanced	disable	1	
@@ -178,6 +180,7 @@ C1	com.LocalFota	disable	1
 C1	com.LogiaGroup.LogiaDeck	disable	1	
 C1	com.Qunar	disable	1	
 C1	com.Rogers.MyRogersTab	disable	1	
+A	com.Slack	none	1	
 C1	com.UCMobile	disable	1	
 C1	com.UCMobile.intl	disable	1	
 C1	com.aaa.android.discounts	disable	1	
@@ -234,7 +237,7 @@ C1	com.android.VideoPlayer	disable	1
 C1	com.android.WingFactoryCamera	disable	1	
 C1	com.android.adservices.api	disable	1	
 C1	com.android.angle	disable	1	
-C1	com.android.apps.tag	disable	1	
+A	com.android.apps.tag	none	1	
 A	com.android.appsearch.aiseal.config	none	1	
 C1	com.android.avatarpicker	disable	1	
 C1	com.android.backup	disable	1	
@@ -266,7 +269,7 @@ B1	com.android.camera	restrict	1
 C1	com.android.camera.overlay	disable	1	
 B1	com.android.camera2	restrict	1	
 C1	com.android.camerabigballconfig.overlay	disable	1	
-C1	com.android.cameraextensions	disable	1	
+A	com.android.cameraextensions	none	1	
 C1	com.android.captiveportallogin	disable	1	
 C1	com.android.captiveportallogin.overlay	disable	1	
 C1	com.android.carrierconfig	disable	1	
@@ -288,7 +291,7 @@ B1	com.android.cellbroadcastservice	restrict	1
 C1	com.android.cellbroadcastservice.overlay	disable	1	
 C1	com.android.cellbroadcastservice.overlay.pixel	disable	1	
 A	com.android.certinstaller	none	1	
-C1	com.android.chrome	disable	1	
+A	com.android.chrome	none	1	
 C1	com.android.companiondevicemanager	disable	1	
 C1	com.android.companiondevicemanager.auto_generated_characteristics_rro	disable	1	
 B1	com.android.compos.payload	restrict	1	
@@ -297,7 +300,7 @@ A	com.android.connectivity.resources.nt.overlay	none	1
 A	com.android.connectivity.resources.overlay	none	1	
 C1	com.android.contacts	disable	1	
 A	com.android.contactspicker	none	1	
-C1	com.android.credentialmanager	disable	1	
+A	com.android.credentialmanager	none	1	
 C1	com.android.cts.ctsshim	disable	1	
 B1	com.android.cts.priv.ctsshim	restrict	1	
 A	com.android.defcontainer	none	1	
@@ -766,7 +769,7 @@ C1	com.android.voicemailomtp	disable	1
 B1	com.android.vpndialogs	restrict	1	
 C1	com.android.wallpaper	disable	1	
 C1	com.android.wallpaper.holospiral	disable	1	
-C1	com.android.wallpaper.livepicker	disable	1	
+A	com.android.wallpaper.livepicker	none	1	
 C1	com.android.wallpaper.livepicker.overlay	disable	1	
 C1	com.android.wallpaperbackup	disable	1	
 C1	com.android.wallpapercropper	disable	1	
@@ -1131,9 +1134,11 @@ C1	com.crowdcare.agent.k	disable	1
 C1	com.crucialsoft.asm	disable	1	
 C1	com.crucialsoft.fido.client	disable	1	
 C1	com.crucialtec.uaf	disable	1	
+A	com.cstap.anpi2	none	1	
 C1	com.customermobile.preload.vzw	disable	1	
 C1	com.cyanogenmod.filemanager	disable	1	
 C1	com.daemon.shelper	disable	1	
+A	com.dandadanapp	none	1	
 B1	com.data.overlay.base.s600ww	restrict	1	
 C1	com.davincikids.tv	disable	1	
 C1	com.debug.loggerui	disable	1	
@@ -1148,6 +1153,7 @@ C1	com.diotek.sec.lookup.dictionary	disable	1
 B1	com.dirac.acs	restrict	1	
 C1	com.directv.dvrscheduler	disable	1	
 C1	com.directv.promo.shade	disable	1	
+A	com.discord	none	1	
 C1	com.discoveryscreen	disable	1	
 C1	com.dna.solitaireapp	disable	1	
 B1	com.dolby.daxservice	restrict	1	
@@ -1162,6 +1168,7 @@ C1	com.dsi.ant.plugins.antplus	disable	1
 C1	com.dsi.ant.sample.acquirechannels	disable	1	
 C1	com.dsi.ant.server	disable	1	
 C1	com.dsi.ant.service.socket	disable	1	
+A	com.dstukalov.walocalstoragestickers	none	1	
 C1	com.dti.amx	disable	1	
 C1	com.dti.att	disable	1	
 C1	com.dti.blu	disable	1	
@@ -1325,10 +1332,10 @@ C1	com.facemoji.lite.xiaomi.gp	disable	1
 C1	com.factory.mmigroup	disable	1	
 C1	com.fairphone.activator	disable	1	
 C1	com.fairphone.myfairphone	disable	1	
-C1	com.felicanetworks.mfc	disable	1	
-C1	com.felicanetworks.mfm.main	disable	1	
-C1	com.felicanetworks.mfs	disable	1	
-C1	com.felicanetworks.mfw.a.boot	disable	1	
+0	com.felicanetworks.mfc	protect	1	
+0	com.felicanetworks.mfm.main	protect	1	
+0	com.felicanetworks.mfs	protect	1	
+0	com.felicanetworks.mfw.a.boot	protect	1	
 C1	com.fet.fridaywallet	disable	1	
 C1	com.fido.asm	disable	1	
 C1	com.fido.fido2client	disable	1	
@@ -1365,6 +1372,7 @@ C1	com.fp.camera	disable	1
 C1	com.fpsensor.fpSensorExtensionSvc2	disable	1	
 C1	com.freemeimp.factory	disable	1	
 C1	com.funbase.xradio	disable	1	
+A	com.fundevs.app.mediaconverter	none	1	
 B1	com.funtouch.uiengine	restrict	1	
 C1	com.futuredial.asusdatatransfer	disable	1	
 C1	com.futuredial.asuslocalbackup	disable	1	
@@ -1375,6 +1383,7 @@ C1	com.gallery20	disable	1
 C1	com.gameloft.android.ANMP.GloftA9HM	disable	1	
 C1	com.gd.mobicore.pa	disable	1	
 C1	com.generalmobi.go2pay	disable	1	
+A	com.github.android	none	1	
 C1	com.glance.internet	disable	1	
 C1	com.gohappy.mobileapp	disable	1	
 C1	com.goodix	disable	1	
@@ -1402,7 +1411,7 @@ C1	com.google.android.apps.adwords	disable	1
 A	com.google.android.apps.ai.icons	none	1	
 C1	com.google.android.apps.aiwallpapers	disable	1	
 C1	com.google.android.apps.assistant	disable	1	
-C1	com.google.android.apps.authenticator2	disable	1	
+A	com.google.android.apps.authenticator2	none	1	
 C1	com.google.android.apps.bard	disable	1	
 C1	com.google.android.apps.betterbug	disable	1	
 C1	com.google.android.apps.blogger	disable	1	
@@ -1447,7 +1456,7 @@ C1	com.google.android.apps.kids.familylinkhelper	disable	1
 C1	com.google.android.apps.m4b	disable	1	
 C1	com.google.android.apps.magazines	disable	1	
 A	com.google.android.apps.magicportrait	none	1	
-C1	com.google.android.apps.maps	disable	1	
+A	com.google.android.apps.maps	none	1	
 C1	com.google.android.apps.mapslite	disable	1	
 C1	com.google.android.apps.mediahome.launcher	disable	1	
 B1	com.google.android.apps.mediashell	restrict	1	
@@ -1524,7 +1533,7 @@ C1	com.google.android.backuptransport	disable	1
 B1	com.google.android.bluetooth	restrict	1	
 C1	com.google.android.calculator	disable	1	
 C1	com.google.android.calendar	disable	1	
-C1	com.google.android.captiveportallogin	disable	1	
+A	com.google.android.captiveportallogin	none	1	
 A	com.google.android.carrier	none	1	
 C1	com.google.android.carrierconfig	disable	1	
 B1	com.google.android.carrierlocation	restrict	1	
@@ -1547,7 +1556,7 @@ B1	com.google.android.connectivity.resources.overlay	restrict	1
 A	com.google.android.connectivity.resources.overlay.oplus	none	1	
 B1	com.google.android.connectivitythermalpowermanager	restrict	1	
 B1	com.google.android.contactkeys	restrict	1	
-C1	com.google.android.contacts	disable	1	
+A	com.google.android.contacts	none	1	
 C1	com.google.android.deskclock	disable	1	
 A	com.google.android.devicelockcontroller	none	1	
 0	com.google.android.dialer	protect	3	
@@ -1569,7 +1578,7 @@ A	com.google.android.flipendo.auto_generated_rro_product__	none	1
 A	com.google.android.flipendo.auto_generated_rro_vendor__	none	1	
 C1	com.google.android.gallery3d	disable	1	
 C1	com.google.android.glasses.core	disable	1	
-C1	com.google.android.gm	disable	2	Gmail
+A	com.google.android.gm	none	2	Gmail
 C1	com.google.android.gm.exchange	disable	1	
 C1	com.google.android.gm.lite	disable	1	
 0	com.google.android.gms	protect	3	FCM / 認証 / 位置。触るな
@@ -1578,7 +1587,7 @@ C1	com.google.android.gms.pay.sidecar	disable	1
 C1	com.google.android.gms.policy_sidecar_aps	disable	1	
 C1	com.google.android.gms.supervision	disable	1	
 C1	com.google.android.gmsintegration	disable	1	
-C1	com.google.android.googlequicksearchbox	disable	2	Googleアプリ / 検索
+A	com.google.android.googlequicksearchbox	none	2	Googleアプリ / 検索
 C1	com.google.android.googlequicksearchbox.nga_resources	disable	1	
 C1	com.google.android.grilservice	disable	1	
 B1	com.google.android.gsf	restrict	1	
@@ -1595,7 +1604,7 @@ C1	com.google.android.inputmethod.pinyin	disable	1
 C1	com.google.android.instantapps.supervisor	disable	1	
 B1	com.google.android.iwlan	restrict	1	
 C1	com.google.android.katniss	disable	1	
-C1	com.google.android.keep	disable	1	
+A	com.google.android.keep	none	1	
 C1	com.google.android.launcher	disable	1	
 C1	com.google.android.location	disable	1	
 C1	com.google.android.markup	disable	1	
@@ -1650,6 +1659,7 @@ B1	com.google.android.overlay.modules.cellbroadcastservice	restrict	1
 B1	com.google.android.overlay.modules.documentsui	restrict	1	
 A	com.google.android.overlay.modules.ext.services	none	1	
 C1	com.google.android.overlay.modules.healthfitness.forframework	disable	1	
+A	com.google.android.overlay.modules.mediaprovider	none	1	
 A	com.google.android.overlay.modules.modulemetadata.forframework	none	1	
 C1	com.google.android.overlay.modules.packageinstaller	disable	1	
 C1	com.google.android.overlay.modules.permissioncontroller	disable	1	
@@ -1708,7 +1718,7 @@ A	com.google.android.storagemanager.auto_generated_rro_product__	none	1
 A	com.google.android.storagemanager.auto_generated_rro_vendor__	none	1	
 C1	com.google.android.street	disable	1	
 C1	com.google.android.syncadapters.bookmarks	disable	1	
-C1	com.google.android.syncadapters.calendar	disable	1	
+A	com.google.android.syncadapters.calendar	none	1	
 C1	com.google.android.syncadapters.contacts	disable	1	
 A	com.google.android.systemui.gxoverlay	none	1	
 A	com.google.android.systemui.overlay.glanceablehubconfig	none	1	
@@ -1722,7 +1732,7 @@ A	com.google.android.telecomresources.overlay	none	1
 A	com.google.android.telecomui	none	1	
 B1	com.google.android.telephony	restrict	1	
 C1	com.google.android.tetheringentitlement	disable	1	
-C1	com.google.android.tts	disable	1	
+A	com.google.android.tts	none	1	
 B1	com.google.android.tungsten.setupwraith	restrict	1	
 C1	com.google.android.turboadapter	disable	1	
 B1	com.google.android.tv	restrict	1	
@@ -1798,9 +1808,11 @@ C1	com.hancom.office.editor.hidden	disable	1
 C1	com.hancom.office.viewer	disable	1	
 C1	com.handmark.expressweather	disable	1	
 C1	com.handmark.expressweather.vpl	disable	1	
+A	com.handycloset.android.photolayers	none	1	
 C1	com.haoba.btsmart	disable	1	
 C1	com.haokan.pictorial	disable	1	
 C1	com.hawk.android.browser	disable	1	
+A	com.hellotalk	none	1	
 C1	com.heytap.accessory	disable	1	
 A	com.heytap.appplatform	none	1	
 C1	com.heytap.browser	disable	1	
@@ -2200,7 +2212,7 @@ B1	com.inkbook.os.library	restrict	1
 C1	com.inkbook.os.plus	disable	1	
 B1	com.inkbook.os.settings	restrict	1	
 C1	com.inmobi.installer	disable	1	
-C1	com.instagram.android	disable	2	Instagram。B1で通知が遅延する
+A	com.instagram.android	none	2	Instagram。B1で通知が遅延する
 A	com.insulet.myblue.pdm	none	1	
 A	com.insulet.myblue.pdmsystem	none	1	
 C1	com.ipsec.service	disable	1	
@@ -2235,8 +2247,9 @@ C1	com.kikaoem.hw.qisiemoji.inputmethod	disable	1
 C1	com.king.candycrush4	disable	1	
 C1	com.king.candycrushsaga	disable	1	
 C1	com.king.candycrushsodasaga	disable	1	
+A	com.kitasoft.screenrec	none	1	
 C1	com.kmsjp	disable	1	
-C1	com.knox.vpn.proxyhandler	disable	1	
+C2	com.knox.vpn.proxyhandler	restrict	1	
 C1	com.kuackmedia.orange	disable	1	
 A	com.kyocera.ecomode	none	1	
 A	com.lbe.security.miui	none	1	
@@ -2593,7 +2606,7 @@ C1	com.microsoft.office.officehub	disable	1
 C1	com.microsoft.office.officehubhl	disable	1	
 C1	com.microsoft.office.officehubrow	disable	1	
 C1	com.microsoft.office.onenote	disable	1	
-C1	com.microsoft.office.outlook	disable	1	
+A	com.microsoft.office.outlook	none	1	
 C1	com.microsoft.office.powerpoint	disable	1	
 C1	com.microsoft.office.word	disable	1	
 C1	com.microsoft.skydrive	disable	1	
@@ -2752,6 +2765,7 @@ C1	com.mmigroup.fmradio	disable	1
 C1	com.mobeam.barcodeService	disable	1	
 C1	com.mobile.iroaming	disable	1	
 A	com.mobilepasmo.android	none	1	
+A	com.mobilesuica.msb.android	none	1	
 C1	com.mobiletools.systemhelper	disable	1	
 C1	com.mobitv.client.sprinttvng	disable	1	
 C1	com.mobitv.client.tmobiletvhd	disable	1	
@@ -2762,6 +2776,7 @@ C1	com.monotype.android.font.chococooky	disable	1
 C1	com.monotype.android.font.cooljazz	disable	1	
 C1	com.monotype.android.font.felbridge	disable	1	
 C1	com.monotype.android.font.foundation	disable	1	
+A	com.monotype.android.font.hgreithicpro	none	1	
 C1	com.monotype.android.font.manroperegular	disable	1	
 C1	com.monotype.android.font.mfinancehkbold	disable	1	
 C1	com.monotype.android.font.myinghei18030m	disable	1	
@@ -3401,7 +3416,8 @@ C1	com.orange.update.OrangeUpdateApplication	disable	1
 C1	com.orange.vvm	disable	1	
 C1	com.orange.wifiorange	disable	1	
 C1	com.ordinaryjoy.woodblast	disable	1	
-C1	com.osp.app.signin	disable	1	
+A	com.osp.app.signin	none	1	
+A	com.paidy.paidy	none	1	
 C1	com.pandora.android	disable	1	
 C1	com.particlenews.newsbreak	disable	1	
 C1	com.payjoy.access	disable	1	
@@ -3410,6 +3426,7 @@ C1	com.phonepe.app	disable	1
 B1	com.picsart.studio	restrict	1	
 C1	com.pinsight.dw	disable	1	
 C1	com.pinsight.v1	disable	1	
+A	com.piriform.ccleaner	none	1	
 C1	com.playphone.gamestore	disable	1	
 C1	com.playphone.gamestore.loot	disable	1	
 C1	com.policydm	disable	1	
@@ -3560,6 +3577,7 @@ C1	com.redteamobile.roaming.deamon	disable	1
 C1	com.redteamobile.virtual.softsim	disable	1	
 C1	com.remotefairy4	disable	1	
 C1	com.republicwireless.tel	disable	1	
+A	com.revolut.revolut	none	1	
 C1	com.rhapsody	disable	1	
 C1	com.rhapsody.vpl	disable	1	
 B1	com.ringclip	restrict	1	
@@ -3573,18 +3591,21 @@ C1	com.rsupport.rs.activity.lge.allinone	disable	1
 C1	com.rsupport.rsperm.ntt	disable	1	
 C1	com.s.antivirus	disable	1	
 C1	com.sagereal.lcmtest	disable	1	
+A	com.salesforce.authenticator	none	1	
 C1	com.samsung.InputEventApp	disable	1	
 C1	com.samsung.SMT	disable	1	
 C1	com.samsung.SMT.lang_en_us_f00	disable	1	
+A	com.samsung.SMT.lang_en_us_l03	none	1	
 C1	com.samsung.SMT.lang_es_mx_f00	disable	1	
+A	com.samsung.SMT.lang_ja_jp_f00	none	1	
 C1	com.samsung.SMT.lang_pt_br_f00	disable	1	
 C1	com.samsung.aasaservice	disable	1	
 B1	com.samsung.accessibility	restrict	1	
 C1	com.samsung.accessory	disable	1	
 C1	com.samsung.accessory.beansmgr	disable	1	
-C1	com.samsung.accessory.budsunitemgr	disable	1	
+A	com.samsung.accessory.budsunitemgr	none	1	
 C1	com.samsung.accessory.safiletransfer	disable	1	
-C1	com.samsung.adaptivebrightnessgo	disable	1	
+A	com.samsung.adaptivebrightnessgo	none	1	
 C1	com.samsung.advancedcallservice	disable	1	
 C1	com.samsung.advp.imssettings	disable	1	
 C1	com.samsung.android.A10s.d01.wallpapermulti	disable	1	
@@ -3624,10 +3645,11 @@ C1	com.samsung.android.app.color	disable	1
 C1	com.samsung.android.app.colorblind	disable	1	
 0	com.samsung.android.app.contacts	protect	3	
 C1	com.samsung.android.app.dofviewer	disable	1	
-C1	com.samsung.android.app.dressroom	disable	2	壁紙とスタイル
+A	com.samsung.android.app.dressroom	none	2	壁紙とスタイル
 C1	com.samsung.android.app.dtv.dmb	disable	1	
 C1	com.samsung.android.app.earphonetypec	disable	1	
 C1	com.samsung.android.app.episodes	disable	1	
+A	com.samsung.android.app.esimkeystring	none	1	
 C1	com.samsung.android.app.filterinstaller	disable	1	
 C1	com.samsung.android.app.galaxyfinder	disable	1	
 C1	com.samsung.android.app.headlines	disable	1	
@@ -3642,7 +3664,7 @@ C1	com.samsung.android.app.mirrorlink	disable	1
 C1	com.samsung.android.app.motionpanoramaviewer	disable	1	
 C1	com.samsung.android.app.multiwindow	disable	1	
 C1	com.samsung.android.app.news	disable	1	
-C1	com.samsung.android.app.notes	disable	1	
+A	com.samsung.android.app.notes	none	1	
 C1	com.samsung.android.app.notes.addons	disable	1	
 C1	com.samsung.android.app.omcagent	disable	1	
 C1	com.samsung.android.app.panel.naver.v	disable	1	
@@ -3655,7 +3677,7 @@ C1	com.samsung.android.app.scrollcapture	disable	1
 C1	com.samsung.android.app.selfmotionpanoramaviewer	disable	1	
 C1	com.samsung.android.app.settings.bixby	disable	1	
 C1	com.samsung.android.app.shareaccessibilitysettings	disable	1	
-C1	com.samsung.android.app.sharelive	disable	1	
+A	com.samsung.android.app.sharelive	none	1	
 C1	com.samsung.android.app.simplesharing	disable	1	
 C1	com.samsung.android.app.siofviewer	disable	1	
 C1	com.samsung.android.app.sketchbook	disable	1	
@@ -3685,7 +3707,7 @@ C1	com.samsung.android.aremojieditor	disable	1
 C1	com.samsung.android.arzone	disable	1	
 C1	com.samsung.android.asksmanager	disable	1	
 C1	com.samsung.android.audiomirroring	disable	1	
-C1	com.samsung.android.authfw	disable	1	
+A	com.samsung.android.authfw	none	1	
 C1	com.samsung.android.authservice	disable	1	
 C1	com.samsung.android.aware.service	disable	1	
 C1	com.samsung.android.bbc.bbcagent	disable	1	
@@ -3693,7 +3715,7 @@ C1	com.samsung.android.bbc.fileprovider	disable	1
 C1	com.samsung.android.beaconmanager	disable	1	
 C1	com.samsung.android.bio.face.service	disable	1	
 C1	com.samsung.android.biometrics	disable	1	
-C1	com.samsung.android.biometrics.app.setting	disable	1	
+A	com.samsung.android.biometrics.app.setting	none	1	
 B1	com.samsung.android.biometrics.service	restrict	1	
 C1	com.samsung.android.bixby.agent	disable	1	
 C1	com.samsung.android.bixby.agent.dummy	disable	1	
@@ -3705,9 +3727,9 @@ C1	com.samsung.android.bixby.wakeup	disable	1
 C1	com.samsung.android.bixbyhelper	disable	1	
 C1	com.samsung.android.bixbytouch	disable	1	
 C1	com.samsung.android.bixbyvision.framework	disable	1	
-C1	com.samsung.android.bluelightfilter	disable	1	
+A	com.samsung.android.bluelightfilter	none	1	
 B1	com.samsung.android.brightnessbackupservice	restrict	1	
-C1	com.samsung.android.calendar	disable	1	
+A	com.samsung.android.calendar	none	1	
 B1	com.samsung.android.callassistant	restrict	1	
 C1	com.samsung.android.callbgprovider	disable	1	
 B1	com.samsung.android.camerasdkservice	restrict	1	
@@ -3741,8 +3763,9 @@ C1	com.samsung.android.email.provider	disable	1
 C1	com.samsung.android.email.sync	disable	1	
 C1	com.samsung.android.email.ui	disable	1	
 C1	com.samsung.android.email.widget	disable	1	
-C1	com.samsung.android.emergency	disable	1	
+A	com.samsung.android.emergency	none	1	
 C1	com.samsung.android.emojiupdater	disable	1	
+A	com.samsung.android.ese	none	1	
 C1	com.samsung.android.fast	disable	1	
 C1	com.samsung.android.fingerprint.service	disable	1	
 C2	com.samsung.android.fmm	restrict	3	Find My Mobile / 遠隔初期化。DeviceAdminで無効化不可
@@ -3771,6 +3794,7 @@ A	com.samsung.android.incallui	none	1	通話中画面（VoLTE）
 C1	com.samsung.android.inputshare	disable	1	
 C1	com.samsung.android.intelligenceservice	disable	1	
 C1	com.samsung.android.intelligenceservice2	disable	1	
+A	com.samsung.android.intellivoiceservice	none	1	
 C1	com.samsung.android.internal.overlay.config.default_contextual_search	disable	1	
 C1	com.samsung.android.ipsgeofence	disable	1	
 C1	com.samsung.android.keycustomizationinfobackupservice	disable	1	
@@ -3784,7 +3808,7 @@ C1	com.samsung.android.knox.attestation	disable	1
 C1	com.samsung.android.knox.containeragent	disable	1	
 C1	com.samsung.android.knox.containercore	disable	1	
 C1	com.samsung.android.knox.containerdesktop	disable	1	
-C1	com.samsung.android.knox.er	disable	1	
+C2	com.samsung.android.knox.er	restrict	1	
 B1	com.samsung.android.knox.kfbp	restrict	1	
 B1	com.samsung.android.knox.knnr	restrict	1	
 C1	com.samsung.android.knox.kpecore	disable	1	
@@ -3794,8 +3818,8 @@ B1	com.samsung.android.knox.sandbox	restrict	1
 C1	com.samsung.android.knox.zt.framework	disable	1	
 C1	com.samsung.android.livestickers	disable	1	
 B1	com.samsung.android.localeoverlaymanager	restrict	1	
-C1	com.samsung.android.location	disable	1	
-C1	com.samsung.android.lool	disable	2	デバイスケア本体
+A	com.samsung.android.location	none	1	
+A	com.samsung.android.lool	none	2	デバイスケア本体
 C1	com.samsung.android.mapsagent	disable	2	連絡先/カレンダーの『地図』導線が消える
 C1	com.samsung.android.mateagent	disable	1	
 B1	com.samsung.android.mcf.autohotspot	restrict	1	
@@ -3808,11 +3832,11 @@ C1	com.samsung.android.mdx	disable	1
 C1	com.samsung.android.mdx.kit	disable	1	
 C1	com.samsung.android.mdx.quickboard	disable	1	
 C1	com.samsung.android.mediacontroller	disable	1	
-C1	com.samsung.android.messageguardsync	disable	1	
+A	com.samsung.android.messageguardsync	none	1	
 0	com.samsung.android.messaging	protect	3	
 C1	com.samsung.android.messaging.extension.chn	disable	1	
 C1	com.samsung.android.mfi	disable	1	
-C1	com.samsung.android.mobileservice	disable	1	
+A	com.samsung.android.mobileservice	none	1	
 C1	com.samsung.android.mocca	disable	1	
 C1	com.samsung.android.motionphoto.app	disable	1	
 C1	com.samsung.android.motionphoto.viewer	disable	1	
@@ -3832,7 +3856,7 @@ C1	com.samsung.android.peripheral.framework	disable	1
 C1	com.samsung.android.personalpage.service	disable	1	
 C1	com.samsung.android.photoremasterservice	disable	1	
 C1	com.samsung.android.privacydashboard	disable	1	
-C1	com.samsung.android.privateaccesstokens	disable	1	
+A	com.samsung.android.privateaccesstokens	none	1	
 C1	com.samsung.android.privateshare	disable	1	
 C1	com.samsung.android.provider.filterprovider	disable	1	
 C1	com.samsung.android.provider.shootingmodeprovider	disable	1	
@@ -3849,7 +3873,7 @@ C1	com.samsung.android.rajaampat	disable	1
 C1	com.samsung.android.rampart	disable	1	
 C1	com.samsung.android.rlc	disable	1	
 C1	com.samsung.android.rubin.app	disable	1	
-C1	com.samsung.android.samsungpass	disable	2	Samsung Pass（パスワード生体認証）
+A	com.samsung.android.samsungpass	none	2	Samsung Pass（パスワード生体認証）
 C1	com.samsung.android.samsungpassautofill	disable	2	Samsung Pass 自動入力
 C1	com.samsung.android.samsungpositioning	disable	1	
 C1	com.samsung.android.scloud	disable	1	
@@ -3884,9 +3908,11 @@ C1	com.samsung.android.service.stplatform	disable	1
 C1	com.samsung.android.service.tagservice	disable	1	
 C1	com.samsung.android.service.travel	disable	1	
 B1	com.samsung.android.setting.multisound	restrict	1	
+A	com.samsung.android.settingshelper	none	1	
 C1	com.samsung.android.setupindiaservicestnc	disable	1	
 C1	com.samsung.android.shealthmonitor	disable	1	
 C1	com.samsung.android.shortcutbackupservice	disable	1	
+A	com.samsung.android.simagent	none	1	
 C1	com.samsung.android.singletake.service	disable	1	
 C1	com.samsung.android.slinkcloud	disable	1	
 C1	com.samsung.android.sm	disable	1	
@@ -3896,7 +3922,7 @@ A	com.samsung.android.sm.policy	none	1
 C1	com.samsung.android.sm.provider	disable	1	
 B1	com.samsung.android.sm_cn	restrict	1	
 C1	com.samsung.android.smartcallprovider	disable	1	
-C1	com.samsung.android.smartface	disable	1	
+A	com.samsung.android.smartface	none	1	
 C1	com.samsung.android.smartface.overlay	disable	1	
 C1	com.samsung.android.smartfitting	disable	1	
 C1	com.samsung.android.smartmirroring	disable	1	
@@ -3905,7 +3931,7 @@ C1	com.samsung.android.smartsuggestions	disable	1
 C1	com.samsung.android.smartswitchassistant	disable	1	
 C1	com.samsung.android.softsim	disable	1	
 C1	com.samsung.android.spay	disable	1	
-C1	com.samsung.android.spayfw	disable	1	
+A	com.samsung.android.spayfw	none	1	
 C1	com.samsung.android.spaymini	disable	1	
 C1	com.samsung.android.spdclient	disable	1	
 C1	com.samsung.android.spdfnote	disable	1	
@@ -3922,7 +3948,8 @@ C1	com.samsung.android.svoiceime	disable	1
 C1	com.samsung.android.tadownloader	disable	1	
 C1	com.samsung.android.tapack.authfw	disable	1	
 C1	com.samsung.android.tencentwifisecurity	disable	1	
-C1	com.samsung.android.themecenter	disable	1	
+C2	com.samsung.android.themecenter	restrict	1	
+A	com.samsung.android.themedesigner	none	1	
 C2	com.samsung.android.themestore	restrict	3	Galaxy Themes。保護パッケージ
 C1	com.samsung.android.timezone.autoupdate_N	disable	1	
 A	com.samsung.android.timezone.autoupdate_O	none	1	
@@ -3941,16 +3968,17 @@ C1	com.samsung.android.universalswitch	disable	1
 C1	com.samsung.android.uwb	disable	1	
 C1	com.samsung.android.vdc	disable	1	
 C1	com.samsung.android.vdcservice	disable	1	
-C1	com.samsung.android.video	disable	1	
+A	com.samsung.android.video	none	1	
 C1	com.samsung.android.videolist	disable	1	
 C1	com.samsung.android.visionarapps	disable	1	
 C1	com.samsung.android.visioncloudagent	disable	1	
 C1	com.samsung.android.visionintelligence	disable	1	
+A	com.samsung.android.visual.cloudcore	none	1	
 C1	com.samsung.android.visualars	disable	1	
 C1	com.samsung.android.voc	disable	1	
 C1	com.samsung.android.voicewakeup	disable	1	
 C1	com.samsung.android.vtcamerasettings	disable	1	
-C1	com.samsung.android.wallpaper.live	disable	2	レイヤード壁紙エンジン。殺すと壁紙が適用不能
+A	com.samsung.android.wallpaper.live	none	2	レイヤード壁紙エンジン。殺すと壁紙が適用不能
 C1	com.samsung.android.wallpaper.res	disable	1	
 C1	com.samsung.android.watch.alarm	disable	1	
 C1	com.samsung.android.watch.cameracontroller	disable	1	
@@ -4016,10 +4044,12 @@ A	com.samsung.android.wifi.h2e.resources	none	1
 A	com.samsung.android.wifi.increase.scan.interval.resources	none	1	
 B1	com.samsung.android.wifi.largetcpbuffer.resources	restrict	1	
 C1	com.samsung.android.wifi.p2paware.resources	disable	1	
+A	com.samsung.android.wifi.p2pawarejpn.resources	none	1	
 A	com.samsung.android.wifi.resources	none	1	
 A	com.samsung.android.wifi.resources.qc	none	1	
 A	com.samsung.android.wifi.resources.wifilock	none	1	
 A	com.samsung.android.wifi.resources.wpa2	none	1	
+A	com.samsung.android.wifi.saeupgradeoffload.resources	none	1	
 C1	com.samsung.android.wifi.sbs.resources	disable	1	
 A	com.samsung.android.wifi.softap.resources	none	1	
 B1	com.samsung.android.wifi.softapwpathree.resources	restrict	1	
@@ -4051,7 +4081,7 @@ C1	com.samsung.emergencyreporthelper	disable	1
 C1	com.samsung.enhanceservice	disable	1	
 B1	com.samsung.euicc	restrict	1	eSIM のLPA本体
 C1	com.samsung.everglades.video	disable	1	
-C1	com.samsung.faceservice	disable	1	
+A	com.samsung.faceservice	none	1	
 C1	com.samsung.felicalock	disable	1	
 C1	com.samsung.fresco.logging	disable	1	
 B1	com.samsung.gamedriver.ex2100	restrict	1	
@@ -4076,13 +4106,13 @@ B1	com.samsung.internal.systemui.navbar.sec_gestural	restrict	1
 B1	com.samsung.internal.systemui.navbar.sec_gestural_no_hint	restrict	1	
 C1	com.samsung.ipservice	disable	1	
 C1	com.samsung.japan.initonce	disable	1	
-C1	com.samsung.klmsagent	disable	2	Knox ライセンス管理。Secure Folder が使う
+C2	com.samsung.klmsagent	restrict	2	Knox ライセンス管理。Secure Folder が使う
 C1	com.samsung.knox.appsupdateagent	disable	1	
 A	com.samsung.knox.keychain	none	1	
 C1	com.samsung.knox.knoxtrustagent	disable	1	
 C1	com.samsung.knox.kss	disable	1	
 C1	com.samsung.knox.rcp.components	disable	1	
-C1	com.samsung.knox.securefolder	disable	2	Secure Folder 本体
+A	com.samsung.knox.securefolder	none	2	Secure Folder 本体
 C1	com.samsung.knox.securefolder.setuppage	disable	1	
 C1	com.samsung.locationhistory	disable	1	
 C1	com.samsung.logwriter	disable	1	
@@ -4156,6 +4186,7 @@ C1	com.sec.android.allshare.service.mediashare	disable	1
 C1	com.sec.android.app.DataCreate	disable	1	
 C1	com.sec.android.app.FileShareClient	disable	1	
 C1	com.sec.android.app.FileShareServer	disable	1	
+A	com.sec.android.app.RilPhoneNumberService	none	1	
 C1	com.sec.android.app.SecSetupWizard	disable	1	
 C1	com.sec.android.app.SmartClipService	disable	1	
 C1	com.sec.android.app.aftersalecamera	disable	1	
@@ -4163,13 +4194,13 @@ C1	com.sec.android.app.apex	disable	1
 C1	com.sec.android.app.applinker	disable	1	
 C1	com.sec.android.app.bcocr	disable	1	
 C1	com.sec.android.app.billing	disable	1	
-C1	com.sec.android.app.bluetoothagent	disable	1	
+A	com.sec.android.app.bluetoothagent	none	1	
 C1	com.sec.android.app.bluetoothtest	disable	1	
 B1	com.sec.android.app.camera	restrict	1	
 C1	com.sec.android.app.camera.plb	disable	1	
 C1	com.sec.android.app.camera.sticker	disable	1	
 B1	com.sec.android.app.camerasaver	restrict	1	
-C1	com.sec.android.app.chromecustomizations	disable	1	
+A	com.sec.android.app.chromecustomizations	none	1	
 C1	com.sec.android.app.clipvideo	disable	1	
 B1	com.sec.android.app.clockpackage	restrict	1	
 C1	com.sec.android.app.desktoplauncher	disable	1	
@@ -4184,6 +4215,7 @@ C1	com.sec.android.app.filtermanager	disable	1
 C1	com.sec.android.app.firewall	disable	1	
 C1	com.sec.android.app.fm	disable	1	
 C1	com.sec.android.app.gamehub	disable	1	
+A	com.sec.android.app.googlelpaoverlay	none	1	
 C1	com.sec.android.app.hwmoduletest	disable	1	
 C1	com.sec.android.app.interactivekeyguardtutorial	disable	1	
 C1	com.sec.android.app.kidshome	disable	1	
@@ -4199,7 +4231,7 @@ B1	com.sec.android.app.myfiles	restrict	1
 C1	com.sec.android.app.ocr	disable	1	
 C1	com.sec.android.app.parser	disable	1	
 C1	com.sec.android.app.personalization	disable	1	
-C1	com.sec.android.app.popupcalculator	disable	1	
+A	com.sec.android.app.popupcalculator	none	1	
 C1	com.sec.android.app.popupuireceiver	disable	1	
 C1	com.sec.android.app.qsfastpairoverlay	disable	1	
 C1	com.sec.android.app.quicktool	disable	1	
@@ -4290,7 +4322,7 @@ C1	com.sec.android.providers.mapcon	disable	1
 C1	com.sec.android.providers.security	disable	1	
 C1	com.sec.android.providers.tasks	disable	1	
 C1	com.sec.android.romantic2	disable	1	
-C1	com.sec.android.sdhms	disable	2	デバイスケアのバッテリー/温度統計
+C2	com.sec.android.sdhms	restrict	2	デバイスケアのバッテリー/温度統計
 C1	com.sec.android.service.bezel	disable	1	
 C1	com.sec.android.service.cm	disable	1	
 C1	com.sec.android.service.health	disable	1	
@@ -4364,8 +4396,8 @@ C1	com.sec.knox.switcher	disable	1
 C1	com.sec.knox.switchknox	disable	1	
 C1	com.sec.knox.switchknoxI	disable	1	
 C1	com.sec.knox.switchknoxII	disable	1	
-C1	com.sec.location.nfwlocationprivacy	disable	1	
-C1	com.sec.location.nsflp2	disable	1	
+A	com.sec.location.nfwlocationprivacy	none	1	
+A	com.sec.location.nsflp2	none	1	
 B1	com.sec.mhs.smarttethering	restrict	1	
 C1	com.sec.mldapchecker	disable	1	
 C1	com.sec.modem.settings	disable	1	
@@ -4374,7 +4406,7 @@ B1	com.sec.omadm	restrict	1
 B1	com.sec.omadmspr	restrict	1	
 B1	com.sec.omadmspr.syncmlphoneif	restrict	1	
 C1	com.sec.pcw.device	disable	1	
-C1	com.sec.phone	disable	1	
+A	com.sec.phone	none	1	
 C1	com.sec.providers.assisteddialing	disable	1	
 C1	com.sec.providers.settingsearch	disable	1	
 C1	com.sec.readershub	disable	1	
@@ -4383,7 +4415,7 @@ C1	com.sec.smartcard.manager	disable	1
 C1	com.sec.spen.flashannotate	disable	1	
 C1	com.sec.spp.push	disable	1	
 C1	com.sec.sprint.wfcstub	disable	1	
-C1	com.sec.sve	disable	1	
+A	com.sec.sve	none	1	
 C1	com.sec.svoice.lang.de_DE	disable	1	
 C1	com.sec.svoice.lang.en_GB	disable	1	
 C1	com.sec.svoice.lang.en_US	disable	1	
@@ -4631,6 +4663,7 @@ C1	com.ss.android.ugc.aweme	disable	1
 B1	com.st.nfc.dta.mobile	restrict	1	
 C1	com.stability.camerastability	disable	1	
 C1	com.staplegames.blocksClassicSGGP	disable	1	
+A	com.starbucks.jp	none	1	
 C1	com.stevesoltys.seedvault	disable	1	
 C1	com.sukhavati.gotoplaying.bubble.BubbleShooter.mint	disable	1	
 C1	com.summit.motorola.rcs	disable	1	
@@ -4776,12 +4809,14 @@ C1	com.tencent.qqlivehuawei	disable	1
 C1	com.tencent.soter.soterserver	disable	1	
 0	com.termux	protect	3	
 B1	com.termux.api	restrict	1	
+A	com.termux.styling	none	1	
 C1	com.test.LTEfunctionality	disable	1	
 C1	com.test.logcollect	disable	1	
 C1	com.theme.icondefaultshape	disable	1	
 C1	com.thinkuem.motolc	disable	1	
 C1	com.thundercomm.ar.core	disable	1	
 C1	com.til.timesnews	disable	1	
+A	com.tinder	none	1	
 C1	com.tiqiaa.remote	disable	1	
 C1	com.tmobile.echolocate	disable	1	
 C1	com.tmobile.pr.adapt	disable	1	
@@ -4910,6 +4945,7 @@ B1	com.trustonic.teeservice	restrict	1
 B1	com.trustonic.tuiservice	restrict	1	
 B1	com.ts.setupwizard.overlay.overlay	restrict	1	
 C1	com.turner.cnvideoapp	disable	1	
+A	com.twitter.android	none	1	
 A	com.twoheadedshark.tco	none	1	
 C1	com.ubercab	disable	1	
 C1	com.ubercab.driver	disable	1	
@@ -4925,6 +4961,7 @@ B1	com.unisoc.localeupdate	restrict	1
 B1	com.unisoc.phone	restrict	1	
 C1	com.unisoc.storageclearmanager	disable	1	
 C1	com.val.hardware	disable	1	
+A	com.valvesoftware.android.steam.community	none	1	
 C1	com.vcast.mediamanager	disable	1	
 B1	com.vendor.frameworkresoverlay	restrict	1	
 C1	com.verizon.cloudsetupwizard	disable	1	
@@ -5094,8 +5131,9 @@ C1	com.wapi.wapicertmanager	disable	1
 C1	com.wavemarket.waplauncher	disable	1	
 C1	com.wb.goog.got.conquest	disable	1	
 C1	com.wdstechnology.android.kryten	disable	1	
+A	com.weawow	none	1	
 C1	com.westalgo.factorycamera	disable	1	
-C1	com.whatsapp	disable	2	WhatsApp
+A	com.whatsapp	none	2	WhatsApp
 C1	com.whitepages.nameid.tmobile	disable	1	
 C1	com.wifi.rxsenstest	disable	1	
 C1	com.wiko.packageinstaller	disable	1	
@@ -5106,7 +5144,7 @@ C1	com.wingtech.sartest	disable	1
 C1	com.wingtech.stability	disable	1	
 C1	com.wingtech.standard	disable	1	
 B1	com.ws.dm	restrict	1	
-C1	com.wsomacp	disable	1	
+A	com.wsomacp	none	1	
 C1	com.wssnps	disable	1	
 B1	com.wssyncmldm	restrict	1	
 C1	com.wt.secret_code_manager	disable	1	
@@ -5341,6 +5379,9 @@ B1	io.github.a13e300.tricky_store	restrict	1
 B1	io.github.vvb2060.keyattestation	restrict	1	
 C1	jp.co.daj.consumer.ifilter.aflauncher	disable	1	
 A	jp.co.jorudan.nrkj	none	1	
+A	jp.co.matsuyafoods.officialapp.dis	none	1	
+A	jp.co.mizuhobank.banking	none	1	
+A	jp.co.nichigas.mynicigas	none	1	
 C1	jp.co.nttdocomo.anshinmode	disable	1	
 C1	jp.co.nttdocomo.carriermail	disable	1	
 C1	jp.co.nttdocomo.lcsapp	disable	1	
@@ -5352,11 +5393,18 @@ C1	jp.co.omronsoft.openwnn	disable	1
 C1	jp.co.omronsoft.wnnext.skin.std_dark_type2_HW	disable	1	
 C1	jp.co.omronsoft.wnnext.skin.std_light_type2_HW	disable	1	
 C1	jp.co.radius.neplayer_asus	disable	1	
+A	jp.co.rakuten.android	none	1	
 A	jp.co.rakuten.mobile.rcs	none	1	
+A	jp.co.rakuten.pay	none	1	
+A	jp.co.rakuten_bank.rakutenbank	none	1	
 C1	jp.co.yahoo.android.ebookjapan.preinstall	disable	1	
 C1	jp.gocro.smartnews.android	disable	1	
+A	jp.jmty.app2	none	1	
 B1	jp.kanmu.vandle.android	restrict	1	
+A	jp.linecorp.linemusic.android	none	1	
 B2	jp.mixi.minimo	frequent	1	
+A	jp.naver.line.android	none	1	
+A	jp.nekonote.tryfull	none	1	
 B2	jp.unext.mediaplayer	frequent	1	
 A	lineageos.platform	none	1	
 C1	ma.android.com.mafactory	disable	1	
@@ -5399,7 +5447,9 @@ C1	org.codeaurora.gps.gpslogsave	disable	1
 C1	org.codeaurora.ims	disable	1	
 B1	org.codeaurora.qti.nrNetworkSettingApp	restrict	1	
 C1	org.dtx.aidl.manager	disable	1	
+A	org.fdroid.fdroid	none	1	
 C1	org.ifaa.aidl.manager	disable	1	
+A	org.intoorbit.spectrum	none	1	
 C1	org.lineageos.aperture	disable	1	
 C1	org.lineageos.camelot	disable	1	
 C1	org.lineageos.etar	disable	1	
@@ -5414,6 +5464,7 @@ C1	org.simalliance.openmobileapi.eseterminal	disable	1
 C1	org.simalliance.openmobileapi.service	disable	1	
 C1	org.simalliance.openmobileapi.uicc1terminal	disable	1	
 C1	org.simalliance.openmobileapi.uicc2terminal	disable	1	
+A	org.telegram.messenger	none	1	
 B1	org.torproject.android	restrict	1	
 B1	org.torproject.torbrowser	restrict	1	
 C1	pl.tmobile.miboa	disable	1	

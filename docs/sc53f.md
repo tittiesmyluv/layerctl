@@ -63,3 +63,17 @@ diff: 22（正しい端末と意志の組み合わせ。他機種の意志だと
 - kill の初回が +31.7 MB と小さいのは、前回の掃除から5分しか経っていなかったため。
   **kill の大きさは操作ではなく蓄積量が決める**という仮説を支持する
 - 3台すべてで、連続 kill の中央値は数MB〜数十MBに落ちる
+
+## 無効化を拒む5本 (2026-10-28)
+
+`pm disable-user` が成功を返すのに、`pm list packages -d` に出てこない個体が5本あった。
+Knox 系と端末管理系で、システムが有効へ戻す。
+
+- `com.knox.vpn.proxyhandler`
+- `com.samsung.android.knox.er`
+- `com.samsung.android.themecenter`
+- `com.samsung.klmsagent`
+- `com.sec.android.sdhms`
+
+`QUIRKS.protected_refuse_disable` に記録し、意志でも C2（無効化せず縛る）に置いた。
+これで `plan` の `pm` は 0 になり、永続コマンドの失敗も 0 になった。

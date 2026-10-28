@@ -66,6 +66,12 @@ QUIRKS = {
     "appops_query_op": True,              # cmd appops query-op が一括で返す
     "usagestats_bucket_dump": True,       # dumpsys usagestats に App Standby States がある
     "protected_refuse_disable": [         # pm disable-user を拒む。C2 へ回す
+        # 2026-10-28 実測: 無効化が通らず有効のまま残る5本
+        "com.knox.vpn.proxyhandler",
+        "com.samsung.android.knox.er",
+        "com.samsung.android.themecenter",
+        "com.samsung.klmsagent",
+        "com.sec.android.sdhms",
         "com.samsung.android.themestore",
         "com.samsung.android.kgclient",
         "com.samsung.android.fmm",
