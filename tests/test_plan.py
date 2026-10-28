@@ -3,7 +3,9 @@
 これまで core と profile 照合しかテストが無く、
 一番バグが出るこの2関数が無検証だった。
 """
-import os, sys, unittest
+import os
+import sys
+import unittest
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import tui
@@ -297,7 +299,8 @@ class Baseline(unittest.TestCase):
         self.assertIn("3分12秒", tui.baseline_line(m, since=192))
 
     def test_mark_and_since(self):
-        import tempfile, os as _os
+        import os as _os
+        import tempfile
         saved = tui.STATE
         try:
             tui.STATE = _os.path.join(tempfile.mkdtemp(), "last-kill")

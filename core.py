@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 """venice/core - transport + env + batched metrics. non-root first, portable."""
-import os, shutil, subprocess, sys, time
+import os
+import shutil
+import subprocess
+import sys
+import time
 
 HOME = os.path.expanduser("~")
 RISH = os.path.join(HOME, "rish")

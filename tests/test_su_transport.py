@@ -1,4 +1,8 @@
-import os, shutil, sys, unittest
+import os
+import shutil
+import sys
+import unittest
+
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import core
 

@@ -1,6 +1,12 @@
 #!/usr/bin/env python3
 """venice/layers - A/B/C/D layer switchboard (non-root, rish backend)"""
-import collections, curses, json, os, re, subprocess, sys, time
+import collections
+import curses
+import json
+import os
+import re
+import sys
+import time
 
 HOME = os.path.expanduser("~")
 DIR = os.path.dirname(os.path.abspath(__file__))
@@ -31,9 +37,11 @@ def rish(cmd, timeout=300):
 
 sys.path.insert(0, DIR)
 import core
+
 _T = core.detect(os.environ.get("VENICE_TRANSPORT"))
-from profiles import load_profile, base as pbase
 import importers
+from profiles import base as pbase
+from profiles import load_profile
 
 PROFILE = load_profile(rish("getprop ro.product.model").strip(),
                        rish("getprop ro.board.platform").strip())
@@ -414,8 +422,7 @@ def save(recs, path=None):
     os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
     with open(path, "w") as f:
         f.write("# layer\tpkg\taction\trisk\timpact\n")
-        for L, p, a, r, imp in recs:
-            f.write("%s\t%s\t%s\t%d\t%s\n" % (L, p, a, r, imp))
+        f.writelines("%s\t%s\t%s\t%d\t%s\n" % (L, p, a, r, imp) for L, p, a, r, imp in recs)
 
 def load(path=None):
     path = path or TSV

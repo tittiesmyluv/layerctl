@@ -1,4 +1,7 @@
-import os, sys, unittest
+import os
+import sys
+import unittest
+
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import core
 from profiles import load_profile
@@ -55,6 +58,7 @@ class TestProfiles(unittest.TestCase):
 class TestStore(unittest.TestCase):
     def test_roundtrip(self):
         import tempfile
+
         import tui
         d = tempfile.mkdtemp()
         p = os.path.join(d, "x.tsv")

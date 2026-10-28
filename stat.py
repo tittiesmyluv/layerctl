@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 """venice/stat - live dashboard. rish/adb/su."""
-import curses, os, sys, time
+import curses
+import os
+import sys
+import time
+
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import core
 
