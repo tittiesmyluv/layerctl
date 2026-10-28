@@ -1,8 +1,10 @@
 {
-  "python.defaultInterpreterPath": "/opt/local/bin/python3",
+  "python.defaultInterpreterPath": "/opt/local/Library/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
   "files.trimTrailingWhitespace": true,
   "files.insertFinalNewline": true,
-  "editor.rulers": [100],
+  "editor.rulers": [
+    100
+  ],
   "files.exclude": {
     "**/__pycache__": true,
     "*.bak*": true,
