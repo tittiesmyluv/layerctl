@@ -10,7 +10,7 @@
 import json
 import re
 
-PKG = re.compile(r"^\w+(\.\w+)+$")
+PKG = re.compile(r"^\w+(\.\w+)*$")
 
 
 def _clean(line):

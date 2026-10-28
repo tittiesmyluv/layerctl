@@ -57,14 +57,16 @@ git clone https://github.com/tittiesmyluv/layerctl
 cd layerctl
 ./layers profile     # 端末が認識されるか確認（外れれば generic に落ちる）
 ./layers snapshot    # 現状を観測。意志は壊れない
-./layers diff        # 同梱の layers.tsv（作者の端末）とのズレを見る
+./layers diff        # 同梱の layers.tsv とのズレを見る
 ./layers seed        # 自分の端末に合わせて意志を作り直す
 ./layers plan        # 差分コマンドを確認。実行はしない
 ./layers apply       # 適用。層コマンドと掃除を分けて計測し、適用後に検証する
 ~~~
 
-同梱の `layers.tsv` は作者の Pixel 6 Pro の層割り当てだ（SC-53F 版は docs/layers.sc53f.tsv）。別機種なら `seed` で
-自分の観測に置き換えるところから始めろ。`plan` は何も壊さないので、まずそれで
+同梱の `layers.tsv` は UAD (Universal Android Debloater) の公開リストから取り込んだ汎用の初期値だ。
+端末の中核（`android` / `systemui` など）は `D`、`pm disable-user` を拒む個体は `C2` に固定してある。
+作者が実機で詰めた端末別の意志は `docs/layers.sc53f.tsv` / `docs/layers.sh53d.tsv` / `docs/layers.raven.tsv` にある。
+自分の端末に合わせるなら `seed` で観測に置き換えろ。`plan` は何も壊さないので、まずそれで
 差分を眺めるのが安全だ。
 
 ## なぜ差分計測なのか、そしてなぜ2段なのか

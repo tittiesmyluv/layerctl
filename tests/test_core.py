@@ -66,6 +66,14 @@ class TestStore(unittest.TestCase):
         tui.save(recs, p)
         self.assertEqual(tui.load(p), recs)
 
+    def test_normalises_action(self):
+        import tempfile
+
+        import tui
+        p = os.path.join(tempfile.mkdtemp(), "x.tsv")
+        tui.save([["D", "android", "none", 3, ""]], p)
+        self.assertEqual(tui.load(p)[0][2], "root")
+
 if __name__ == "__main__":
     unittest.main()
 

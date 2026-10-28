@@ -14,10 +14,13 @@ class ParsePlain(unittest.TestCase):
         d = imp.parse_plain("com.a\n# comment\ncom.b\n\n   com.c   \n")
         self.assertEqual(sorted(d), ["com.a", "com.b", "com.c"])
 
+    def test_single_segment(self):
+        self.assertEqual(sorted(imp.parse_plain("android\nsystem\n")), ["android", "system"])
+
     def test_ignores_junk(self):
-        d = imp.parse_plain("notapackage\ncom.a\n")
-        self.assertNotIn("notapackage", d)
-        self.assertIn("com.a", d)
+        # 単一セグメント (android 等) は正当。ハイフンや空セグメントは不正
+        d = imp.parse_plain("com.a-b\ncom..b\ncom.a\n")
+        self.assertEqual(sorted(d), ["com.a"])
 
 
 class ParseTsv(unittest.TestCase):
@@ -82,3 +85,31 @@ class Mapping(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class HardOverride(unittest.TestCase):
+    """取り込みでも端末の中核は verdict より優先する。"""
+
+    def setUp(self):
+        self._saved = (tui.D_HARD, tui.C2_HARD, tui.L0_HARD)
+        tui.D_HARD, tui.C2_HARD, tui.L0_HARD = {"android"}, {"com.b"}, {"com.c"}
+
+    def tearDown(self):
+        tui.D_HARD, tui.C2_HARD, tui.L0_HARD = self._saved
+
+    def _recs(self, text, **kw):
+        p = os.path.join(tempfile.mkdtemp(), "l.txt")
+        pathlib.Path(p).write_text(text)
+        return {r[1]: r[0] for r in tui.import_recs(p, **kw)}
+
+    def test_d_hard_beats_verdict(self):
+        self.assertEqual(self._recs("android\n")["android"], "D")
+
+    def test_c2_hard_beats_verdict(self):
+        self.assertEqual(self._recs("com.b\n")["com.b"], "C2")
+
+    def test_l0_hard_beats_verdict(self):
+        self.assertEqual(self._recs("com.c\n")["com.c"], "0")
+
+    def test_as_layer_beats_hard(self):
+        self.assertEqual(self._recs("android\n", as_layer="A")["android"], "A")

@@ -74,10 +74,25 @@ VERDICT_LAYER = {
 
 
 def import_recs(path, as_layer=None):
-    """外部リストを読み、層に写像して recs を返す。"""
+    """外部リストを読み、層に写像して recs を返す。
+
+    as_layer を渡すと全件その層に固定する。渡さない場合も、端末の中核
+    （D_HARD / C2_HARD / L0_HARD と QUIRKS）は verdict より優先する。
+    """
     recs = []
+    c2_hard = C2_HARD | _quirks_list("protected_refuse_disable")
+    l0_hard = L0_HARD | _quirks_list("l0_force")
     for pkg, verdict in sorted(importers.load(path).items()):
-        L = as_layer or VERDICT_LAYER.get(verdict or "", "C1")
+        if as_layer:
+            L = as_layer
+        elif pkg in D_HARD:
+            L = "D"
+        elif pkg in c2_hard:
+            L = "C2"
+        elif pkg in l0_hard:
+            L = "0"
+        else:
+            L = VERDICT_LAYER.get(verdict or "", "C1")
         recs.append([L, pkg, ACTION[L], risk_of(L, pkg), IMPACT.get(pkg, "")])
     return recs
 
@@ -424,7 +439,9 @@ def save(recs, path=None):
     os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
     with open(path, "w") as f:
         f.write("# layer\tpkg\taction\trisk\timpact\n")
-        f.writelines("%s\t%s\t%s\t%d\t%s\n" % (L, p, a, r, imp) for L, p, a, r, imp in recs)
+        # action は層から導出する。古い tsv の残留値を引き継がない
+        f.writelines("%s\t%s\t%s\t%d\t%s\n" % (L, p, ACTION.get(L, a), r, imp)
+                     for L, p, a, r, imp in recs)
 
 def load(path=None):
     path = path or TSV
