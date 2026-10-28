@@ -10,7 +10,7 @@
         "--profile"
       ],
       "console": "integratedTerminal",
-      "python": "/opt/local/Library/Frameworks/Python.framework/Versions/3.14/bin/python3.14"
+      "python": "${command:python.interpreterPath}"
     },
     {
       "name": "tui --snapshot",
@@ -21,7 +21,7 @@
         "--snapshot"
       ],
       "console": "integratedTerminal",
-      "python": "/opt/local/Library/Frameworks/Python.framework/Versions/3.14/bin/python3.14"
+      "python": "${command:python.interpreterPath}"
     },
     {
       "name": "tui --diff",
@@ -32,7 +32,7 @@
         "--diff"
       ],
       "console": "integratedTerminal",
-      "python": "/opt/local/Library/Frameworks/Python.framework/Versions/3.14/bin/python3.14"
+      "python": "${command:python.interpreterPath}"
     },
     {
       "name": "tui --plan",
@@ -43,7 +43,7 @@
         "--plan"
       ],
       "console": "integratedTerminal",
-      "python": "/opt/local/Library/Frameworks/Python.framework/Versions/3.14/bin/python3.14"
+      "python": "${command:python.interpreterPath}"
     }
   ]
 }

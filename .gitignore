@@ -27,3 +27,4 @@ layers.new.tsv
 layers.observed.tsv
 hwparam.json
 out/
+.venv/
