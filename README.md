@@ -239,6 +239,8 @@ TUI の操作:
 **意志は端末固有**なので、他機種の意志で `apply` すると未インストール分が差分に
 残る（`plan` は installed で絞るので実行は安全）。別機種ではまず `seed` を打て。
 
+輸送層と計測の落とし穴は `docs/transport.md` に表でまとめてある。実機で踏んだものだけを載せた。触る前に一度読め。
+
 ~~~
 cp profiles/generic.py profiles/pixel9.py
 # NAME / MATCH_MODEL / MATCH_PLATFORM / D_HARD / C2_HARD / L0_HARD / IMPACT を書く
