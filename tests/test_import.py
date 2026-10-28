@@ -1,4 +1,4 @@
-import os, sys, tempfile, unittest
+import os, pathlib, sys, tempfile, unittest
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import importers as imp
@@ -71,7 +71,7 @@ class Mapping(unittest.TestCase):
 
     def test_as_layer_overrides(self):
         p = os.path.join(tempfile.mkdtemp(), "l.txt")
-        open(p, "w").write("com.a\ncom.b\n")
+        pathlib.Path(p).write_text("com.a\ncom.b\n")
         recs = tui.import_recs(p, as_layer="B1")
         self.assertEqual({r[0] for r in recs}, {"B1"})
 
