@@ -20,10 +20,10 @@ def _clean(line):
 def parse_plain(text):
     out = {}
     for line in text.splitlines():
-        line = _clean(line)
-        if not line:
+        cl = _clean(line)
+        if not cl:
             continue
-        pkg = line.split()[0]
+        pkg = cl.split()[0]
         if PKG.match(pkg):
             out[pkg] = ""
     return out
@@ -32,10 +32,10 @@ def parse_plain(text):
 def parse_tsv(text):
     out = {}
     for line in text.splitlines():
-        line = _clean(line)
-        if not line:
+        cl = _clean(line)
+        if not cl:
             continue
-        c = line.split("\t")
+        c = cl.split("\t")
         pkg = c[0].strip()
         if not PKG.match(pkg):
             continue

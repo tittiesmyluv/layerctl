@@ -3,7 +3,10 @@
 ro.product.model = SC-53F, ro.board.platform = mt6835 で照合される。
 このファイルだけ書き換えれば他端末へ移植できる。"""
 NAME = "sc53f"
-DESC = "docomo SC-53F / Galaxy A25 5G / mt6835 / Android 16 / RAM 3.48GiB / 非root（rish/adb どちらでも）"
+DESC = (
+    "docomo SC-53F / Galaxy A25 5G / mt6835 / Android 16 / RAM 3.48GiB / "
+    "非root（rish/adb どちらでも）"
+)
 MATCH_MODEL = ("SC-53F",)
 MATCH_PLATFORM = ("mt6835",)
 
@@ -59,7 +62,7 @@ IMPACT = {'com.ai.venice': 'このアプリ',
 QUIRKS = {
     "proc_swaps_denied": True,            # /proc/swaps は Permission denied。dumpsys meminfo で代用
     "euicc_service": "econtroller",       # dumpsys euicc は Can't find service。正は econtroller
-    "wallpaper_live_is_engine": True,     # com.samsung.android.wallpaper.live はレイヤード壁紙エンジン。殺すと壁紙が壊れる
+    "wallpaper_live_is_engine": True,     # レイヤード壁紙エンジン。殺すと壁紙が壊れる
     "appops_query_op": True,              # cmd appops query-op が一括で返す
     "usagestats_bucket_dump": True,       # dumpsys usagestats に App Standby States がある
     "protected_refuse_disable": [         # pm disable-user を拒む。C2 へ回す

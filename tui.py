@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """venice/layers - A/B/C/D layer switchboard (non-root, rish backend)"""
 import collections
+import contextlib
 import curses
 import json
 import os
@@ -32,7 +33,7 @@ def rish(cmd, timeout=300):
         return ""
     try:
         return _T.run(cmd, timeout=timeout)
-    except Exception:
+    except Exception:  # noqa: BLE001
         return ""
 
 sys.path.insert(0, DIR)
@@ -143,7 +144,7 @@ def probe():
             f = t.split()
             try:
                 pk = f[0][8:]; b = f[2].split("=")[1]; r = f[3].split("=")[1]
-            except Exception:
+            except Exception:  # noqa: BLE001
                 continue
             bkt[pk] = b; rsn[pk] = r
     else:
@@ -182,7 +183,7 @@ def infer(pkgs, dis, wht, bkt, ops, rsn=None):
     return recs
 
 def current_state():
-    pkgs, dis, wht, bkt, ops, rsn = probe()
+    _, dis, wht, bkt, ops, _ = probe()
     return dis, wht, bkt, ops
 
 
@@ -194,7 +195,7 @@ def plan_lines(recs, st, installed=None):
     """
     dis, wht, bkt, ops = st
     out = []
-    for L, p, a, r, imp in recs:
+    for L, p, _a, _r, _imp in recs:
         if installed is not None and p not in installed:
             continue
         if L == "C1":
@@ -260,16 +261,16 @@ def metrics():
         else:
             f = t.split()
             if f:
-                try:
+                with contextlib.suppress(ValueError):
                     d["load"] = float(f[0])
-                except ValueError:
-                    pass
     return d
 
 
 def show_delta(b, a):
-    print("  MemAvailable  %+8.1f MB" % ((a.get("avail_kb", 0) - b.get("avail_kb", 0)) / 1024.0))
-    print("  SwapFree      %+8.1f MB" % ((a.get("swapfree_kb", 0) - b.get("swapfree_kb", 0)) / 1024.0))
+    print("  MemAvailable  %+8.1f MB"
+          % ((a.get("avail_kb", 0) - b.get("avail_kb", 0)) / 1024.0))
+    print("  SwapFree      %+8.1f MB"
+          % ((a.get("swapfree_kb", 0) - b.get("swapfree_kb", 0)) / 1024.0))
     print("  procs         %+8d" % (a.get("procs", 0) - b.get("procs", 0)))
     print("  load1         %+8.2f" % (a.get("load", 0.0) - b.get("load", 0.0)))
 
@@ -458,7 +459,7 @@ def _ui(std, recs, orig):
         std.erase()
         h, w = std.getmaxyx()
         grp = {L: [] for L in LAYERS}
-        for i, (L, p, a, r, imp) in enumerate(recs):
+        for i, (L, _p, _a, _r, _imp) in enumerate(recs):
             grp.setdefault(L, []).append(i)
         std.addstr(0, 1, "LAYERS", curses.A_BOLD)
         for i, L in enumerate(LAYERS):
@@ -536,7 +537,8 @@ def _ui(std, recs, orig):
             if focus == 1 and lst and orig.get(recs[lst[cur_p]][1]) != recs[lst[cur_p]][0]:
                 idx = lst[cur_p]
                 if recs[idx][3] >= 3:
-                    std.addstr(h - 1, 1, "DANGER risk>=3 - press y to confirm"[:w - 2], curses.A_REVERSE)
+                    std.addstr(h - 1, 1, "DANGER risk>=3 -press y to confirm"[:w - 2],
+                               curses.A_REVERSE)
                     std.refresh()
                     if std.getch() not in (ord("y"), ord("Y")):
                         continue
@@ -560,7 +562,8 @@ def _ui(std, recs, orig):
         elif ch == ord("A"):
             staged = [r for r in recs if orig.get(r[1]) != r[0]]
             if staged:
-                std.addstr(h - 1, 1, ("applying %d staged..." % len(staged))[:w - 2], curses.A_REVERSE)
+                std.addstr(h - 1, 1, ("applying %d staged..." % len(staged))[:w - 2],
+                           curses.A_REVERSE)
                 std.refresh()
                 st = current_state()
                 pl = plan_lines(staged, st)
@@ -578,7 +581,7 @@ def _ui(std, recs, orig):
             st = current_state()
             pl = plan_lines(recs, st)
             b, m1, m2 = apply_measure(pl, settle=3.0)
-            for L, p, a, r, imp in recs:
+            for L, p, _a, _r, _imp in recs:
                 orig[p] = L
             status = "re-asserted %d cmd  cmd %+.1fMB / kill %+.1fMB" % (
                 len(pl), (m1.get("avail_kb", 0) - b.get("avail_kb", 0)) / 1024.0,
@@ -587,7 +590,10 @@ def _ui(std, recs, orig):
 
 def main():
     if "--help" in sys.argv or "-h" in sys.argv:
-        print("usage: tui.py [--profile|--snapshot|--seed|--diff|--plan|--apply|--reapply] [--no-kill] [--json] [--repeat N] | import <file> [--as LAYER] [--dry]")
+        print(
+            "usage: tui.py [--profile|--snapshot|--seed|--diff|--plan|--apply|--reapply]"
+            " [--no-kill] [--json] [--repeat N] | import <file> [--as LAYER] [--dry]"
+        )
         return
     if "--import" in sys.argv:
         try:
@@ -644,7 +650,7 @@ def main():
             seeded = True
         print("observed -> " + OBS + ("   (seeded " + TSV + ")" if seeded else ""))
         n = {L: 0 for L in LAYERS}
-        for L, p, a, r, imp in recs:
+        for L, _p, _a, _r, _imp in recs:
             n[L] += 1
         for L in LAYERS:
             print("  %-3s %-12s %4d" % (L, TITLE[L], n[L]))
@@ -682,7 +688,8 @@ def main():
             c = collections.Counter(x.split()[0] for x in lines)
             for k, v in c.most_common():
                 print("  %-10s %d" % (k, v))
-        open(os.path.join(DIR, "plan.txt"), "w").write("\n".join(lines) + "\n")
+        with open(os.path.join(DIR, "plan.txt"), "w") as fh:
+            fh.write("\n".join(lines) + "\n")
         if "--json" not in sys.argv:
             print("plan -> " + os.path.join(DIR, "plan.txt"))
         if "--plan" in sys.argv:

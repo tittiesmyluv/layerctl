@@ -11,10 +11,12 @@ def load_profile(model="", platform=""):
     platform = (platform or "").strip()
     for name in KNOWN:
         mod = importlib.import_module("." + name, __package__)
-        if model in getattr(mod, "MATCH_MODEL", ()) or platform in getattr(mod, "MATCH_PLATFORM", ()):
+        mm = getattr(mod, "MATCH_MODEL", ())
+        mp = getattr(mod, "MATCH_PLATFORM", ())
+        if model in mm or platform in mp:
             return mod
     return generic
 
 
 def names():
-    return list(KNOWN) + ["generic"]
+    return [*KNOWN, "generic"]

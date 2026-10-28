@@ -21,8 +21,10 @@ NAME_RULES = (
 
     # --- B1: 背景同期で足りる。通知が数分遅れても困らない ---
     ("B1", r"^com\.google\.android\.youtube$"),
-    ("B1", r"^com\.google\.android\.apps\."
-           r"(docs|docs\.editors\.\w+|photos|nbu\.files|tips|subscriptions\.red|pixel\.nowplaying)$"),
+    ("B1",
+     (r"^com\.google\.android\.apps\."
+     r"(docs|docs\.editors\.\w+|photos|nbu\.files|tips"
+     r"|subscriptions\.red|pixel\.nowplaying)$")),
 
     # --- C1: 同梱物。ほぼ誰も開かない ---
     ("C1", r"^com\.android\.sdm\.plugins\."),

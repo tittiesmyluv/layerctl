@@ -15,7 +15,7 @@ class _T:
     def run(self, cmd, timeout=30):
         r = subprocess.run(self.argv(cmd), text=True,
                            stderr=subprocess.STDOUT, timeout=timeout, stdout=subprocess.PIPE,
-                           stdin=subprocess.DEVNULL)
+                           stdin=subprocess.DEVNULL, check=False)
         return r.stdout
 
 class Rish(_T):
@@ -31,7 +31,7 @@ class Adb(_T):
         dev = os.environ.get("ANDROID_SERIAL")
         if dev:
             a += ["-s", dev]
-        return a + ["exec-out", c]
+        return [*a, "exec-out", c]
     def run(self, cmd, timeout=30):
         return super().run(cmd, timeout).replace("\r\n", "\n").replace("\r", "\n")
 
@@ -50,7 +50,7 @@ class Su(_T):
         dev = os.environ.get("ANDROID_SERIAL")
         if dev:
             a += ["-s", dev]
-        return a + ["exec-out", "su -c '%s'" % c]
+        return [*a, "exec-out", "su -c '%s'" % c]
     def run(self, cmd, timeout=30):
         return super().run(cmd, timeout).replace("\r\n", "\n").replace("\r", "\n")
 
@@ -77,7 +77,7 @@ ENV_KEYS = ["model","device","android","sdk","platform","devmode","adb","adbwifi
 def env(t):
     out = t.run(ENV_CMD).splitlines()
     out += [""] * (len(ENV_KEYS) - len(out))
-    d = dict(zip(ENV_KEYS, [x.strip() for x in out]))
+    d = dict(zip(ENV_KEYS, [x.strip() for x in out], strict=False))
     d["root"] = "1" if t.run("command -v su || which su").strip() else "0"
     d["adb_bin"] = "1" if shutil.which("adb") else "0"
     d["rish"] = "1" if os.access(RISH, os.X_OK) else "0"
@@ -186,7 +186,7 @@ def probe_all(t):
     for name, c in PROBES:
         try:
             o = t.run(c, timeout=20).strip().replace("\n", " | ")
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001
             o = "EXC " + repr(e)
         print("%-9s %s" % (name, o[:80]))
 
