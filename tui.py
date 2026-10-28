@@ -20,9 +20,10 @@ TITLE = {"0": "UNTOUCHABLE", "A": "DAILY", "B1": "THROTTLED", "B2": "FREQUENT",
          "C1": "DEAD", "C2": "PINNED", "D": "GREYOUT"}
 DESC = {"0": "instant / doze-protected", "A": "resident allowed",
         "B1": "background cut / notif delayed", "B2": "notif kept",
-        "C1": "disabled", "C2": "protected pkg / throttled", "D": "root required"}
+        "C1": "disabled", "C2": "protected pkg / throttled",
+        "D": "root required / no diff"}
 ACTION = {"0": "protect", "A": "none", "B1": "restrict", "B2": "frequent",
-          "C1": "disable", "C2": "restrict", "D": "none"}
+          "C1": "disable", "C2": "restrict", "D": "root"}
 
 # 端末固有データは profiles/ に分離。下の load_profile() で注入される
 

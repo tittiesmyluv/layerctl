@@ -475,3 +475,15 @@ class NoBucketHold(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class DLayer(unittest.TestCase):
+    """D は root が要るので非rootでは差分を出さない。表示専用の層。"""
+
+    def test_d_emits_nothing(self):
+        recs = [["D", "android", "root", 3, ""]]
+        st = (set(), set(), {"android": "40"}, {})
+        self.assertEqual(tui.plan_lines(recs, st), [])
+
+    def test_d_action_is_root(self):
+        self.assertEqual(tui.ACTION["D"], "root")
