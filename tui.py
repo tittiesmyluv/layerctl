@@ -609,7 +609,7 @@ def _ui(std, recs, orig):
 def main():
     if "--help" in sys.argv or "-h" in sys.argv:
         print(
-            "usage: tui.py [--profile|--snapshot|--seed|--diff|--plan|--apply|--reapply]"
+            "usage: tui.py [--profile|--snapshot|--seed|--diff|--plan|--apply|--reapply] [--all]"
             " [--no-kill] [--json] [--repeat N] | import <file> [--as LAYER] [--dry]"
         )
         return
@@ -682,10 +682,12 @@ def main():
         will = {r[1]: r[0] for r in recs}
         ch = [(p, will.get(p, "-"), now.get(p, "-"))
               for p in sorted(set(will) | set(now)) if will.get(p) != now.get(p)]
-        print("diff: %d" % len(ch))
         gone = [c for c in ch if c[2] == "-"]
+        if "--all" not in sys.argv:
+            ch = [c for c in ch if c[2] != "-"]
+        print("diff: %d" % len(ch))
         if gone:
-            print("  うち未インストール（意志にのみ存在）: %d" % len(gone))
+            print("  未インストール（意志にのみ存在、--all で表示）: %d" % len(gone))
         for p, a, b in ch:
             print("  %-3s -> %-3s  %s" % (a, b, p))
         return

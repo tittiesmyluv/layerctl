@@ -57,7 +57,7 @@ git clone https://github.com/tittiesmyluv/layerctl
 cd layerctl
 ./layers profile     # 端末が認識されるか確認（外れれば generic に落ちる）
 ./layers snapshot    # 現状を観測。意志は壊れない
-./layers diff        # 同梱の layers.tsv とのズレを見る
+./layers diff        # 同梱の layers.tsv とのズレ（実インストール分のみ。--all で全件）
 ./layers seed        # 自分の端末に合わせて意志を作り直す
 ./layers plan        # 差分コマンドを確認。実行はしない
 ./layers apply       # 適用。層コマンドと掃除を分けて計測し、適用後に検証する
