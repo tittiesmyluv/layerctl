@@ -610,7 +610,7 @@ def _ui(std, recs, orig):
 def main():
     if "--help" in sys.argv or "-h" in sys.argv:
         print(
-            "usage: tui.py [--profile|--snapshot|--seed|--diff|--plan|--apply|--reapply] [--all]"
+            "usage: tui.py [--profile|--snapshot|--seed|--diff|--plan|--apply|--reapply|--verify] [--all]"
             " [--no-kill] [--json] [--repeat N] | import <file> [--as LAYER] [--dry]"
         )
         return
@@ -743,6 +743,15 @@ def main():
         if m2 is not m1:
             print("--- delta: after am kill-all (掃除の分。層変更とは別物) ---")
             show_delta(m1, m2)
+        report_verify(recs, lines)
+        return
+    if "--verify" in sys.argv:
+        recs = load()
+        if recs is None:
+            print("no " + TSV)
+            return
+        pkgs, dis, wht, bkt, ops, rsn = probe()
+        lines = plan_lines(recs, (dis, wht, bkt, ops), set(pkgs))
         report_verify(recs, lines)
         return
     recs = load()

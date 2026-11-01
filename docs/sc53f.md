@@ -77,3 +77,22 @@ Knox 系と端末管理系で、システムが有効へ戻す。
 
 `QUIRKS.protected_refuse_disable` に記録し、意志でも C2（無効化せず縛る）に置いた。
 これで `plan` の `pm` は 0 になり、永続コマンドの失敗も 0 になった。
+
+## 適用3日後の実測 (2026-11-01)
+
+2026-10-28 の全適用（371 cmd）から3日、普段どおり使った後の値。生データは端末の
+`/proc/meminfo` と `dumpsys meminfo`。
+
+- MemAvailable 1,166,812K / 3,643,468K (**32%**)。適用前は 25%、直後は 28%
+- Free RAM 1,416,098K (39%) うち cached 1.3GB、空き 116MB
+- ZRAM 627,256K physical for 2,001,100K in swap（2GB を 627MB に圧縮。異常ではない）
+- 残差 130 本、**すべて揮発**。永続コマンドの失敗は **0**
+- 上位 RSS: instagram 276MB / system_server 268MB / gms 163MB
+
+### 結論
+
+- 永続側（`pm disable-user` / `deviceidle whitelist`）は3日経っても崩れない
+- 揮発側（`am set-standby-bucket` / `cmd appops set`）は毎回書き戻る。130本。
+  これは仕様で、`reapply` で再主張する対象
+- 空き率は適用前より上がったが、**実利用（SNS の 276MB 等）の影響の方が大きい**。
+  無効化は「蓄積を鈍らせる」効果であって、使用中のメモリを減らすものではない

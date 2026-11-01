@@ -4610,7 +4610,7 @@ C1	com.sonymobile.xperiatransfermobile	disable	1
 C1	com.sonymobile.xperiaweather	disable	1	
 C1	com.sonymobile.xperiaxlivewallpaper	disable	1	
 C1	com.sonymobile.xperiaxlivewallpaper.product.res.overlay	disable	1	
-C1	com.spotify.music	disable	1	
+A	com.spotify.music	none	1	
 C1	com.sprd	disable	1	
 B1	com.sprd.ImsConnectionManager	restrict	1	
 C1	com.sprd.autoslt	disable	1	
