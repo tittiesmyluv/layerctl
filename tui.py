@@ -610,8 +610,9 @@ def _ui(std, recs, orig):
 def main():
     if "--help" in sys.argv or "-h" in sys.argv:
         print(
-            "usage: tui.py [--profile|--snapshot|--seed|--diff|--plan|--apply|--reapply|--verify] [--all]"
-            " [--no-kill] [--json] [--repeat N] | import <file> [--as LAYER] [--dry]"
+            "usage: tui.py [--profile|--snapshot|--seed|--diff|--plan|--apply|--reapply"
+            "|--verify] [--all] [--no-kill] [--json] [--repeat N]"
+            " | import <file> [--as LAYER] [--dry]"
         )
         return
     if "--import" in sys.argv:
