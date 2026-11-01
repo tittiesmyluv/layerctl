@@ -96,3 +96,13 @@ Knox 系と端末管理系で、システムが有効へ戻す。
   これは仕様で、`reapply` で再主張する対象
 - 空き率は適用前より上がったが、**実利用（SNS の 276MB 等）の影響の方が大きい**。
   無効化は「蓄積を鈍らせる」効果であって、使用中のメモリを減らすものではない
+
+## 書き戻される93本を no_bucket_hold に記録 (2026-11-01)
+
+`reapply` 後も残った93本は、すべて `am set-standby-bucket` の書き戻しだった。
+内訳は `com.android.*` の AOSP 中核、`com.google.android.gsf` / `webview` /
+`networkstack` 系、Samsung の `providers.*` / `nfc` / `ims` / `knox` 系。
+いずれもシステムが bucket を管理しており、外部から縛っても戻される。
+
+`QUIRKS.no_bucket_hold` に93本を記録した。bucket は主張せず、`appops ignore` だけで
+絞る。これで `plan` は 0 に収束し、`reapply` が空振りしなくなった。
