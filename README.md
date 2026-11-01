@@ -276,7 +276,6 @@ cp profiles/generic.py profiles/pixel9.py
   正規化を含む。適用後は 0 に収束する（実測: 116 cmd → 0）
 - 書き戻される個体は `QUIRKS.no_bucket_hold` に記録し、bucket の主張を諦める。
   SC-53F では93本を実測で特定した。諦めた分だけ `plan` は 0 に収束する
-
 - `verify` の『揮発で書き戻された』は異常ではない。`am set-standby-bucket` と
   `cmd appops set` は Android が書き戻す。`pm disable-user` と
   `deviceidle whitelist` は持続するので、こちらが残ったときだけ本当の失敗
