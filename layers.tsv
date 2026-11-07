@@ -5,7 +5,7 @@ B1	android.auto_generated_rro_product__	restrict	1
 B1	android.auto_generated_rro_vendor__	restrict	1	
 C1	android.autoinstalls.config.google.nexus	disable	1	
 D	com.ai.venice	root	3	
-C1	com.android.DeviceAsWebcam	disable	1	
+0	com.android.DeviceAsWebcam	protect	3	
 C1	com.android.angle	disable	1	
 A	com.android.appsearch.aiseal.config	none	1	
 B1	com.android.backupconfirm	restrict	1	
@@ -35,7 +35,7 @@ C1	com.android.devicelockcontroller	disable	1
 C1	com.android.dreams.basic	disable	1	
 0	com.android.dynsystem	protect	3	
 C1	com.android.egg	disable	1	
-C1	com.android.emergency	disable	1	
+0	com.android.emergency	protect	3	
 B1	com.android.externalstorage	restrict	1	
 A	com.android.eyedropper	none	1	
 C1	com.android.hbmsvmanager	disable	1	
@@ -114,7 +114,7 @@ C1	com.android.sharedstoragebackup	disable	1
 B1	com.android.simappdialog	restrict	1	
 C1	com.android.simappdialog.auto_generated_rro_product__	disable	1	
 B1	com.android.soundpicker	restrict	1	
-C1	com.android.stk	disable	1	
+0	com.android.stk	protect	3	
 D	com.android.systemui	root	3	ステータスバー / 通知 / 壁紙描画
 C1	com.android.systemui.accessibility.accessibilitymenu	disable	1	
 C1	com.android.systemui.accessibility.accessibilitymenu.auto_generated_rro_product__	disable	1	
@@ -366,7 +366,7 @@ C1	com.shannon.rcsservice	disable	1
 0	com.termux	protect	3	
 B1	com.termux.api	restrict	1	
 A	com.topjohnwu.magisk	none	1	
-A	com.twoheadedshark.tco	none	1	
+B1	com.twoheadedshark.tco	restrict	1	
 C1	com.verizon.mips.services	disable	1	
 C1	com.verizon.services	disable	1	
 C1	com.vzw.apnlib	disable	1	

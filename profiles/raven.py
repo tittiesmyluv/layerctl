@@ -19,6 +19,10 @@ L0_HARD = {
     "com.google.android.apps.nexuslauncher",
     "com.google.android.inputmethod.latin",
     "com.google.android.apps.wallpaper",
+    # 作者の意志 (docs/layers.raven.tsv より)。seed で C1 へ落ちるのを防ぐ
+    "com.android.DeviceAsWebcam",
+    "com.android.emergency",
+    "com.android.stk",
 }
 
 IMPACT = {
