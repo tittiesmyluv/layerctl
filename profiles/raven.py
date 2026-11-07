@@ -44,5 +44,8 @@ QUIRKS = {
     "wallpaper_live_is_engine": False,   # 実測: 該当パッケージ無し
     "appops_query_op": True,             # 実測: set 後に query-op が拾う (Android 17 でも生存)
     "usagestats_bucket_dump": True,      # 実測: App Standby States を一括パース可能
-    "protected_refuse_disable": [],      # 実測: egg/turbo/wallpaper は素直に disable できた
+    "protected_refuse_disable": [        # 実測: egg/turbo/wallpaper は素直に disable できた
+        # 実測 (2026-11-07): SecurityException: Cannot disable a protected package
+        "com.google.android.apps.work.oobconfig",
+    ],
 }
