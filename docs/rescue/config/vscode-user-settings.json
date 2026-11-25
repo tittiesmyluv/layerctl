@@ -1,0 +1,9 @@
+{
+  "update.mode": "none",
+  "extensions.autoCheckUpdates": false,
+  "extensions.autoUpdate": false,
+  "telemetry.telemetryLevel": "off",
+  "workbench.startupEditor": "none",
+  "python.defaultInterpreterPath": "/opt/local/bin/python3",
+  "terminal.integrated.env.osx": { "PATH": "/opt/local/bin:/opt/local/sbin:${env:PATH}" }
+}

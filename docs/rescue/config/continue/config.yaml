@@ -1,0 +1,17 @@
+name: layerctl
+version: 0.0.1
+schema: v1
+models:
+  - name: venice
+    provider: openai
+    model: FILL_ME
+    apiBase: https://api.venice.ai/api/v1
+    apiKey: FILL_ME
+context:
+  - provider: code
+  - provider: docs
+  - provider: diff
+  - provider: terminal
+  - provider: problems
+  - provider: folder
+  - provider: codebase
