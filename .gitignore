@@ -28,3 +28,6 @@ layers.observed.tsv
 hwparam.json
 out/
 .venv/
+
+# docs/rescue は .bak も追跡する
+!docs/rescue/**
